@@ -2,6 +2,7 @@ import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { CSStateStats, OverallStateStats } from "../Preset/StateNumber";
+import GenderRatioChart from "./CellComponents/GenderRatioChart";
 type Props = {
 
 };
@@ -30,7 +31,11 @@ const StateTable: FC<Props> = ({ }: Props) => {
                         State Wise
                     </TableCell>
                     <TableCell>{OverallStateStats.totalStudent}</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell>
+                        <GenderRatioChart
+                            maleNum={OverallStateStats.maleStudent}
+                            femaleNum={OverallStateStats.femaleStudent} />
+                    </TableCell>
                     <TableCell></TableCell>
                     <TableCell></TableCell>
                     <TableCell></TableCell>
@@ -44,7 +49,9 @@ const StateTable: FC<Props> = ({ }: Props) => {
                         Computer Science
                     </TableCell>
                     <TableCell>{CSStateStats.totalStudent}</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell>    <GenderRatioChart
+                        maleNum={CSStateStats.maleStudent}
+                        femaleNum={CSStateStats.femaleStudent} /></TableCell>
                     <TableCell></TableCell>
                     <TableCell></TableCell>
                     <TableCell></TableCell>

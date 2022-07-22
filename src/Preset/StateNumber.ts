@@ -1,7 +1,7 @@
 export const OverallStateStats = {
     totalStudent: 100,
-    femaleStudent: 50,
-    maleStudent: 50,
+    femaleStudent: 30,
+    maleStudent: 70,
 };
 
 export const CSStateStats = {
