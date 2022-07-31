@@ -16,6 +16,8 @@ const StateTable: FC<Props> = ({ }: Props) => {
     //data variables
     const [courseCategorization, setCourseCategorization] = useState([]);
     const [stateDemographic, setStateDemographic] = useState([]);
+    const [stateCSDemographic, setStateCSDemographic] = useState([]);
+    const [schoolCSOffer, setSchoolCSOffer] = useState([]);
 
     //import data
     useEffect(() => {
@@ -31,7 +33,13 @@ const StateTable: FC<Props> = ({ }: Props) => {
 
         // state CS demographic
         csv("/data/stateCSDemographic.csv").then((stateCSDemo) => {
+            stateUpdateWrapperUseJSON(stateCSDemographic, stateCSDemo, setStateCSDemographic);
+        });
 
+        // shool offering
+        csv("/data/schoolOffer.csv").then((schoolCSOfferInput) => {
+            console.log(schoolCSOfferInput);
+            stateUpdateWrapperUseJSON(schoolCSOffer, schoolCSOfferInput, setSchoolCSOffer);
         });
 
         //
