@@ -1,14 +1,43 @@
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { CSStateStats, OverallStateStats } from "../Preset/StateNumber";
 import GenderRatioChart from "./CellComponents/GenderRatioChart";
+import { csv } from 'd3-fetch';
+import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
+// import stateData from "";
+
 type Props = {
 
 };
 
 const StateTable: FC<Props> = ({ }: Props) => {
-    return <TableContainer component={Paper} >
+
+    //data variables
+    const [courseCategorization, setCourseCategorization] = useState([]);
+    const [stateDemographic, setStateDemographic] = useState([]);
+
+    //import data
+    useEffect(() => {
+        //category
+        csv("/data/category.csv").then((categorization) => {
+            stateUpdateWrapperUseJSON(courseCategorization, categorization, setCourseCategorization);
+        });
+
+        // state general demographic
+        csv("/data/StateDemographicData.csv").then((stateDemo) => {
+            stateUpdateWrapperUseJSON(stateDemographic, stateDemo, setStateDemographic);
+        });
+
+        // state CS demographic
+        csv("/data/stateCSDemographic.csv").then((stateCSDemo) => {
+
+        });
+
+        //
+    }, []);
+
+    return (<TableContainer component={Paper} >
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
@@ -62,7 +91,7 @@ const StateTable: FC<Props> = ({ }: Props) => {
 
             </TableBody>
         </Table>
-    </TableContainer>;
+    </TableContainer>);
 };
 
 export default observer(StateTable);
