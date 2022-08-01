@@ -1,11 +1,24 @@
 import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { csv } from "d3-fetch";
 import { observer } from "mobx-react-lite";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
 type Props = {
 
 };
 
 const SchoolTable: FC<Props> = ({ }: Props) => {
+    const [schoolCSOffer, setSchoolCSOffer] = useState([]);
+
+    useEffect(() => {
+        // shool offering
+        csv("/data/schoolOffer.csv").then((schoolCSOfferInput) => {
+            console.log(schoolCSOfferInput);
+            stateUpdateWrapperUseJSON(schoolCSOffer, schoolCSOfferInput, setSchoolCSOffer);
+        });
+    }, []);
+
+
     return <TableContainer component={Container}>
         <Table sx={{ minWidth: 300 }} aria-label="simple table">
             <TableHead>

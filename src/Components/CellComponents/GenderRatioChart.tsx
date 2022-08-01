@@ -1,46 +1,48 @@
-import styled from "@emotion/styled";
-import { FC } from "react";
-import { CellSVGHeight, CellSVGWidth, FemaleColor, MaleColor } from "../../Preset/Constants";
+import { Tooltip } from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import { GenderColor } from "../../Preset/Colors";
+import { CellSVGHeight, CellSVGWidth } from "../../Preset/Constants";
+import { ComponentSVG } from "../GeneralComponents";
 type Props = {
     maleNum: number,
     femaleNum: number,
+    otherNum: number,
 };
-const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum
-}: Props) => {
+const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum, otherNum }: Props) => {
 
+    const [totalStudent, setTotalStudent] = useState(maleNum + femaleNum + otherNum);
+
+    useEffect(() => {
+        setTotalStudent(maleNum + femaleNum + otherNum);
+    }, [maleNum, femaleNum, otherNum]);
     return (
         <ComponentSVG>
             <g>
-                <rect
-                    x={0}
-                    y={0}
-                    height={CellSVGHeight}
-                    width={CellSVGWidth * (maleNum / (maleNum + femaleNum
-                    ))}
-                    fill={MaleColor} />
-                <rect x={CellSVGWidth * (maleNum / (maleNum + femaleNum
-                ))}
-                    y={0}
-                    height={CellSVGHeight}
-                    width={CellSVGWidth * (femaleNum
-                        / (maleNum + femaleNum
-                        ))}
-                    fill={FemaleColor} />
-            </g>
-            <g>
-                <BarText
-                    x={2}
-                    y={0.5 * CellSVGHeight}
-                    textAnchor="start"
-                >
-                    {maleNum}
-                </BarText>
-                <BarText
-                    x={CellSVGWidth - 2}
-                    y={0.5 * CellSVGHeight}
-                    textAnchor="end">
-                    {femaleNum}
-                </BarText>
+                <Tooltip title={`Male: ${maleNum}`}>
+                    <rect
+                        x={0}
+                        y={0}
+                        height={CellSVGHeight}
+                        width={CellSVGWidth * (maleNum / totalStudent)}
+                        fill={GenderColor.male} />
+                </Tooltip>
+                <Tooltip title={`Female: ${femaleNum}`}>
+                    <rect x={CellSVGWidth * (maleNum / totalStudent)}
+                        y={0}
+                        height={CellSVGHeight}
+                        width={CellSVGWidth * (femaleNum
+                            / totalStudent)}
+                        fill={GenderColor.female} />
+                </Tooltip>
+                {otherNum > 0 ? <Tooltip title={`Other: ${otherNum}`}>
+                    <rect x={CellSVGHeight * ((maleNum + femaleNum) / totalStudent)}
+                        y={0}
+                        height={CellSVGHeight}
+                        fill={GenderColor.other}
+                        width={CellSVGHeight * otherNum / totalStudent}
+                    />
+                </Tooltip> : <></>}
+
             </g>
         </ComponentSVG>
     );
@@ -48,12 +50,3 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum
 
 export default GenderRatioChart;
 
-const ComponentSVG = styled.svg`
-    width: ${CellSVGWidth}px;
-    height: ${CellSVGHeight}px
-`;
-
-const BarText = styled.text`
-    alignment-baseline: middle;
-    fill: white;
-`;
