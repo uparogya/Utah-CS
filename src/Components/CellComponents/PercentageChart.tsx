@@ -9,11 +9,12 @@ import { ComponentSVG } from "../GeneralComponents";
 type Props = {
     actualVal: number;
     percentage: number;
+    tooltip?: string;
 };
 
-const PercentageChart: FC<Props> = ({ actualVal, percentage }: Props) => {
+const PercentageChart: FC<Props> = ({ actualVal, percentage, tooltip }: Props) => {
     return (
-        <Tooltip title={format(',.2%')(percentage)}>
+        <Tooltip title={tooltip ? tooltip : format(',.2%')(percentage)}>
             <ComponentSVG>
                 {/* minimum width would be 2 px to show things. */}
                 <rect x={0}

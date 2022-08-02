@@ -17,3 +17,4 @@ export const RaceColor = {
 };
 
 export const LightGray = '#ededed';
+export const MediumGray = '#adadad';

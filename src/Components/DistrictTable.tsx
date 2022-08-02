@@ -1,38 +1,58 @@
 import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { csv } from "d3-fetch";
 import { observer } from "mobx-react-lite";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
+import { MediumGray } from "../Preset/Colors";
+import GenderRatioChart from "./CellComponents/GenderRatioChart";
 type Props = {
 
 };
 
 const DistrictTable: FC<Props> = ({ }: Props) => {
-    return <TableContainer component={Container}>
+
+    const [districtDemographic, setDistrictDemographic] = useState([]);
+    //import district data
+    useEffect(() => {
+        csv("/data/districtDemographic.csv").then((disDemo) => {
+
+            stateUpdateWrapperUseJSON(districtDemographic, disDemo.filter(d => d["LEA TYPE"] === 'District'), setDistrictDemographic);
+            console.log(districtDemographic);
+        });
+    });
+
+    return (<TableContainer component={Container}>
         <Table sx={{ minWidth: 400 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
                     <TableCell>Disctrict Name</TableCell>
                     <TableCell>Total Students</TableCell>
-                    <TableCell >Gender</TableCell>
+                    <TableCell>Gender</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
-                {/* {rows.map((row) => (
-          <TableRow
-            key={row.name}
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-          >
-            <TableCell component="th" scope="row">
-              {row.name}
-            </TableCell>
-            <TableCell align="right">{row.calories}</TableCell>
-            <TableCell align="right">{row.fat}</TableCell>
-            <TableCell align="right">{row.carbs}</TableCell>
-            <TableCell align="right">{row.protein}</TableCell>
-          </TableRow>
-        ))} */}
+                {districtDemographic.map((districtEntry) => {
+                    return (
+                        <>
+                            <TableRow>
+                                <TableCell>{districtEntry['LEA Name']}</TableCell>
+                                <TableCell>{districtEntry['Total HS']}</TableCell>
+                                <TableCell>
+                                    <GenderRatioChart
+                                        femaleNum={parseInt(districtEntry['Female'])}
+                                        maleNum={parseInt(districtEntry['Male'])}
+                                        otherNum={0} />
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell style={{ color: MediumGray }}>{` -- CS`}</TableCell>
+                            </TableRow>
+                        </>
+                    );
+                })}
             </TableBody>
         </Table>
-    </TableContainer>;
+    </TableContainer>);
 };
 
 export default observer(DistrictTable);

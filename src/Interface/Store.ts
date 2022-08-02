@@ -1,15 +1,18 @@
 import { makeAutoObservable } from "mobx";
 import { createContext } from "react";
 
-export class Store {
+export class AppStore {
+    selectedCategory: string[];
+    constructor() {
+        this.selectedCategory = ['CS-basic', 'CS-advanced'];
+        makeAutoObservable(this);
+    }
 
-  constructor() {
-
-    makeAutoObservable(this);
-  }
-
+    setCategory(input: string[]) {
+        this.selectedCategory = input;
+    }
 
 }
 
-const store = createContext(new Store());
-export default store;
+const Store = createContext(new AppStore());
+export default Store;

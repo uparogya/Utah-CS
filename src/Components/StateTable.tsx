@@ -1,11 +1,14 @@
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import GenderRatioChart from "./CellComponents/GenderRatioChart";
 import { csv } from 'd3-fetch';
 import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
 import RaceChart from "./CellComponents/RaceChart";
 import PercentageChart from "./CellComponents/PercentageChart";
+import Store from "../Interface/Store";
+import { format } from "d3-format";
+import { CategoryContext } from "../App";
 // import stateData from "";
 
 type Props = {
@@ -13,14 +16,15 @@ type Props = {
 };
 
 const StateTable: FC<Props> = ({ }: Props) => {
-
+    const courseCategorization = useContext(CategoryContext);
+    const store = useContext(Store);
     //data variables
-    const [courseCategorization, setCourseCategorization] = useState([]);
+
     const [stateDemographic, setStateDemographic] = useState([]);
     const [stateCSDemographic, setStateCSDemographic] = useState([]);
 
 
-    const [selectedCSCategory, setSelectedCSCategory] = useState(['CS-basic', 'CS-advanced']);
+    // const [selectedCSCategory, setSelectedCSCategory] = useState(store.selectedCSCategory);
 
     const [totalStudentNum, setTotalStudentNum] = useState(0);
     const [totalCSStudentNum, setTotalCSStudentNum] = useState(0);
@@ -35,26 +39,17 @@ const StateTable: FC<Props> = ({ }: Props) => {
 
     //import data
     useEffect(() => {
-        //category
-        csv("/data/category.csv").then((categorization) => {
-            stateUpdateWrapperUseJSON(courseCategorization, categorization, setCourseCategorization);
-        });
+
         // state general demographic
         csv("/data/StateDemographicData.csv").then((stateDemo) => {
             stateUpdateWrapperUseJSON(stateDemographic, stateDemo, setStateDemographic);
 
         });
 
-        console.log(stateDemographic);
-
-
         // state CS demographic
         csv("/data/stateCSDemographic.csv").then((stateCSDemo) => {
             stateUpdateWrapperUseJSON(stateCSDemographic, stateCSDemo, setStateCSDemographic);
         });
-        console.log(stateDemographic, stateCSDemographic);
-        //
-
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -72,7 +67,8 @@ const StateTable: FC<Props> = ({ }: Props) => {
 
         // first we gather the course list for the category
         // courseCategorization
-        const courseList = courseCategorization.filter(d => selectedCSCategory.includes(d['category'])).map(d => d['core_code']);
+
+        const courseList = courseCategorization.filter(d => store.selectedCategory.includes(d['category'])).map(d => d['core_code']);
 
         //use a reducer to find the sum
         return stateCSDemographic.reduce((prev, current) => courseList.includes(current['core_code']) ? prev + parseInt(current[attributeName]) : prev, 0);
@@ -100,7 +96,9 @@ const StateTable: FC<Props> = ({ }: Props) => {
                     <TableCell component="th" scope="row">
                         General State
                     </TableCell>
-                    <TableCell>{totalStudentNum}</TableCell>
+                    <TableCell> <PercentageChart
+                        actualVal={totalStudentNum}
+                        percentage={1} /></TableCell>
                     <TableCell>
                         <GenderRatioChart
                             maleNum={findGeneralDemographicAttributeWithYear("2022", "Male")}
@@ -140,7 +138,11 @@ const StateTable: FC<Props> = ({ }: Props) => {
                     <TableCell component="th" scope="row">
                         Computer Science
                     </TableCell>
-                    <TableCell>{totalCSStudentNum}</TableCell>
+                    <TableCell>
+                        <PercentageChart
+                            actualVal={totalCSStudentNum}
+                            percentage={totalCSStudentNum / totalStudentNum}
+                            tooltip={`${format(',.2%')(totalCSStudentNum / totalStudentNum)} out of all HS students`} /></TableCell>
                     <TableCell>
                         <GenderRatioChart
                             maleNum={findCSDemographicAttribute('Male')}

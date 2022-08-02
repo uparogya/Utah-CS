@@ -10,10 +10,12 @@ type Props = {
 const SchoolTable: FC<Props> = ({ }: Props) => {
     const [schoolCSOffer, setSchoolCSOffer] = useState([]);
 
+    const [schoolDemographic, setSchoolDemographic] = useState([]);
+
     useEffect(() => {
         // shool offering
         csv("/data/schoolOffer.csv").then((schoolCSOfferInput) => {
-            console.log(schoolCSOfferInput);
+            // console.log(schoolCSOfferInput);
             stateUpdateWrapperUseJSON(schoolCSOffer, schoolCSOfferInput, setSchoolCSOffer);
         });
     }, []);
