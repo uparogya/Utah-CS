@@ -16,13 +16,15 @@ const Toolbox: FC = () => {
     };
     return (
         <Box>
-            {PossibleCategories.map((chipName) => (
-                <Chip label={chipName}
-                    clickable
-                    onClick={() => chipClickHandler(chipName)}
-                    style={{ margin: '5px' }}
-                    color={store.selectedCategory.includes(chipName) ? 'primary' : 'default'} />
-            ))}
+            <Stack>
+                {PossibleCategories.map((chipName) => (
+                    <Chip label={chipName}
+                        clickable
+                        onClick={() => chipClickHandler(chipName)}
+                        style={{ margin: '5px' }}
+                        color={store.selectedCategory.includes(chipName) ? 'primary' : 'default'} />
+                ))}
+            </Stack>
         </Box>
     );
 };

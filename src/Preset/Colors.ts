@@ -18,3 +18,4 @@ export const RaceColor = {
 
 export const LightGray = '#ededed';
 export const MediumGray = '#adadad';
+export const DarkGray = '#878787';

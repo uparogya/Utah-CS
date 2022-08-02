@@ -19,7 +19,6 @@ const DistrictTable: FC<Props> = ({ }: Props) => {
         csv("/data/districtDemographic.csv").then((disDemo) => {
 
             stateUpdateWrapperUseJSON(districtDemographic, disDemo.filter(d => d["LEA TYPE"] === 'District'), setDistrictDemographic);
-            console.log(districtDemographic);
         });
     });
 
