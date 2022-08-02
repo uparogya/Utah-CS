@@ -7,6 +7,7 @@ import SchoolTable from './Components/SchoolTable';
 import Toolbox from './Components/Toolbox';
 import { csv } from 'd3-fetch';
 import { stateUpdateWrapperUseJSON } from './Interface/StateChecker';
+import styled from '@emotion/styled';
 
 
 export const CategoryContext = createContext<{ [key: string]: string; }[]>([]);
@@ -33,17 +34,25 @@ function App() {
                         <Grid item xs={2}>
                             <Toolbox />
                         </Grid>
-                        <Grid item xs={5} style={{ maxHeight: '68vh' }} overflow='auto'>
+                        <BasicGrid item xs={5}>
                             <DistrictTable />
-                        </Grid>
-                        <Grid item xs={5}>
+                        </BasicGrid>
+                        <BasicGrid item xs={5}>
                             <SchoolTable />
-                        </Grid>
+                        </BasicGrid>
                     </Grid>
                 </Container>
             </div>
-        </CategoryContext.Provider>
+        </CategoryContext.Provider >
     );
 }
 
 export default App;
+
+const BasicGrid = styled(Grid)`
+max-height: 68vh;
+overflow:hidden;
+  &:hover{
+    overflow: overlay;
+  }
+`;

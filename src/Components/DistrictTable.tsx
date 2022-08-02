@@ -1,8 +1,9 @@
-import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody, Checkbox } from "@mui/material";
 import { csv } from "d3-fetch";
 import { observer } from "mobx-react-lite";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
+import Store from "../Interface/Store";
 import { MediumGray } from "../Preset/Colors";
 import GenderRatioChart from "./CellComponents/GenderRatioChart";
 type Props = {
@@ -11,6 +12,7 @@ type Props = {
 
 const DistrictTable: FC<Props> = ({ }: Props) => {
 
+    const store = useContext(Store);
     const [districtDemographic, setDistrictDemographic] = useState([]);
     //import district data
     useEffect(() => {
@@ -25,6 +27,7 @@ const DistrictTable: FC<Props> = ({ }: Props) => {
         <Table sx={{ minWidth: 400 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
+                    <TableCell>Selected</TableCell>
                     <TableCell>Disctrict Name</TableCell>
                     <TableCell>Total Students</TableCell>
                     <TableCell>Gender</TableCell>
@@ -35,6 +38,10 @@ const DistrictTable: FC<Props> = ({ }: Props) => {
                     return (
                         <>
                             <TableRow>
+                                <TableCell>
+                                    <Checkbox checked={store.selectedDistricts.includes(districtEntry['LEA Name'])}
+                                        onChange={() => store.setSelectedDistricts(districtEntry['LEA Name'])} />
+                                </TableCell>
                                 <TableCell>{districtEntry['LEA Name']}</TableCell>
                                 <TableCell>{districtEntry['Total HS']}</TableCell>
                                 <TableCell>
@@ -45,7 +52,10 @@ const DistrictTable: FC<Props> = ({ }: Props) => {
                                 </TableCell>
                             </TableRow>
                             <TableRow>
+                                <TableCell></TableCell>
                                 <TableCell style={{ color: MediumGray }}>{` -- CS`}</TableCell>
+                                <TableCell> - </TableCell>
+                                <TableCell> - </TableCell>
                             </TableRow>
                         </>
                     );
