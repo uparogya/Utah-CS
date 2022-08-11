@@ -2,7 +2,7 @@ import { TableRow, TableCell } from "@mui/material";
 import { FC, useState } from "react";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { DarkGray } from "../Preset/Colors";
+import { DarkGray } from "../../Preset/Colors";
 
 type Props = {
     schoolEntry: { [key: string]: string | any[]; };

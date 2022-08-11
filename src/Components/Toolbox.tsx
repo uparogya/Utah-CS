@@ -5,6 +5,7 @@ import Store from "../Interface/Store";
 import { PossibleCategories } from "../Preset/Constants";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { CategoryContext } from "../App";
+import { CourseCategoryColor, LightGray } from "../Preset/Colors";
 
 const Toolbox: FC = () => {
 
@@ -22,7 +23,10 @@ const Toolbox: FC = () => {
         }
     };
     return (
-        <Box>
+        <Box style={{ maxWidth: '300px', padding: '5px' }}>
+            <Container>
+                Select courses to include for state-wise data.
+            </Container>
             <Stack>
                 {PossibleCategories.map((chipName) => (
                     <Container key={`${chipName}-chip`}>
@@ -30,8 +34,13 @@ const Toolbox: FC = () => {
                         <Chip label={chipName}
                             clickable
                             onClick={() => chipClickHandler(chipName)}
-                            style={{ margin: '5px' }}
-                            color={store.selectedCategory.includes(chipName) ? 'primary' : 'default'} />
+                            style={{
+                                margin: '5px',
+                                backgroundColor: store.selectedCategory.includes(chipName) ? CourseCategoryColor[chipName] : undefined,
+                                color: store.selectedCategory.includes(chipName) ? LightGray : undefined
+                            }}
+                        // color={store.selectedCategory.includes(chipName) ? 'primary' : 'default'}
+                        />
                         <Tooltip title='See list of courses'>
                             <IconButton onClick={() => setDialog(chipName)}>
                                 <InfoOutlinedIcon />

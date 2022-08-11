@@ -1,4 +1,4 @@
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import GenderRatioChart from "./CellComponents/GenderRatioChart";
@@ -23,10 +23,23 @@ const StateTable: FC<Props> = ({ }: Props) => {
     const [stateDemographic, setStateDemographic] = useState([]);
     const [stateCSDemographic, setStateCSDemographic] = useState([]);
 
+    const findCSDemographicAttribute = (attributeName: string) => {
+        //category is the CS course category we need
+
+        // first we gather the course list for the category
+        // courseCategorization
+
+        const courseList = courseCategorization.filter(d => store.selectedCategory.includes(d['category'])).map(d => d['core_code']);
+
+        //use a reducer to find the sum
+        return stateCSDemographic.reduce((prev, current) => courseList.includes(current['core_code']) ? prev + parseInt(current[attributeName]) : prev, 0);
+    };
+
 
     // const [selectedCSCategory, setSelectedCSCategory] = useState(store.selectedCSCategory);
 
     const [totalStudentNum, setTotalStudentNum] = useState(0);
+
     const [totalCSStudentNum, setTotalCSStudentNum] = useState(0);
 
 
@@ -62,19 +75,14 @@ const StateTable: FC<Props> = ({ }: Props) => {
     }, [stateDemographic, stateCSDemographic]);
 
 
-    const findCSDemographicAttribute = (attributeName: string) => {
-        //category is the CS course category we need
+    useEffect(() => {
+        setTotalCSStudentNum(findCSDemographicAttribute('Enrolled'));
+    }, [store.selectedCategory]);
 
-        // first we gather the course list for the category
-        // courseCategorization
 
-        const courseList = courseCategorization.filter(d => store.selectedCategory.includes(d['category'])).map(d => d['core_code']);
 
-        //use a reducer to find the sum
-        return stateCSDemographic.reduce((prev, current) => courseList.includes(current['core_code']) ? prev + parseInt(current[attributeName]) : prev, 0);
-    };
 
-    return (<TableContainer component={Paper} >
+    return (<TableContainer component={Container} >
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
@@ -94,7 +102,7 @@ const StateTable: FC<Props> = ({ }: Props) => {
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                     <TableCell component="th" scope="row">
-                        General State
+                        Total Student Population
                     </TableCell>
                     <TableCell> <PercentageChart
                         actualVal={totalStudentNum}
@@ -103,7 +111,7 @@ const StateTable: FC<Props> = ({ }: Props) => {
                         <GenderRatioChart
                             maleNum={findGeneralDemographicAttributeWithYear("2022", "Male")}
                             femaleNum={findGeneralDemographicAttributeWithYear("2022", "Female")}
-                            otherNum={findGeneralDemographicAttributeWithYear("2022", "Other Gender")} />
+                        />
                     </TableCell>
                     <TableCell>
                         <RaceChart keyIdentity="GeneralState"
@@ -146,8 +154,7 @@ const StateTable: FC<Props> = ({ }: Props) => {
                     <TableCell>
                         <GenderRatioChart
                             maleNum={findCSDemographicAttribute('Male')}
-                            femaleNum={findCSDemographicAttribute('Female')}
-                            otherNum={findCSDemographicAttribute('GenderOther')} />
+                            femaleNum={findCSDemographicAttribute('Female')} />
                     </TableCell>
                     <TableCell>
                         <RaceChart keyIdentity="CS"

@@ -2,8 +2,8 @@ import { TableContainer, Container, Table, TableHead, TableRow, TableCell, Table
 import { csv } from "d3-fetch";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
-import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
-import Store from "../Interface/Store";
+import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
+import Store from "../../Interface/Store";
 import SchoolRow from "./SchoolRow";
 type Props = {
 
@@ -25,6 +25,7 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
                         const totalHS = parseInt(schoolEntry['Grade_9'] || '0') + parseInt(schoolEntry['Grade_10'] || '0') + parseInt(schoolEntry['Grade_11'] || '0') + parseInt(schoolEntry['Grade_12'] || '0');
                         return {
                             ...schoolEntry,
+                            'LEA Name': (schoolEntry['LEA Name'] || '').split(' ').slice(0, -1).join(' '),
                             Female: `${parseInt(schoolEntry['Female'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
                             Male: `${parseInt(schoolEntry['Male'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
                             'Total-HS': `${totalHS}`,

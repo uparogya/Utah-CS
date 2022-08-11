@@ -1,10 +1,12 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { ComponentSVG } from "../GeneralComponents";
 import { range } from 'd3-array';
 import { CellSVGHeight, CellSVGWidth } from "../../Preset/Constants";
-import { Tooltip } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Tooltip } from "@mui/material";
 import { format } from "d3-format";
-import { RaceColor } from "../../Preset/Colors";
+import { XDarkGray, RaceColor } from "../../Preset/Colors";
+import styled from "@emotion/styled";
+import { scaleBand, scaleLinear } from "d3-scale";
 
 type Props = {
     whiteNum: number,
@@ -21,56 +23,75 @@ type Props = {
 const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asianNum, otherNum, hispaNum, otherTooltip }: Props) => {
 
 
-    const rectWidth = CellSVGWidth / 20;
-    const rectHeight = CellSVGHeight / 5;
+    const dialogSVGWidth = 300;
+    const dialogSVGHeight = 500;
+
+    const [outputObj, setOutput] = useState<{ [key: string]: number; }>({
+        white: whiteNum,
+        hispanic: hispaNum,
+        asian: asianNum,
+        black: blackNum,
+        native: nativeNum,
+        other: otherNum
+    });
+
+    useEffect(() => {
+        setOutput({
+            white: whiteNum,
+            hispanic: hispaNum,
+            asian: asianNum,
+            black: blackNum,
+            native: nativeNum,
+            other: otherNum
+        });
+    }, [whiteNum, nativeNum, blackNum, asianNum, otherNum, hispaNum]);
+
     const totalStudent = whiteNum + nativeNum + blackNum + asianNum + otherNum + hispaNum;
 
-    //sequence: white, hispanic, black, native, asian, other
+    const [openDialog, setDialogVisibility] = useState(false);
 
-    const findFill = (index: number) => {
+    const barChartScale = scaleLinear().domain([0, 1]).range([0, dialogSVGWidth]);
+    const barChartHeightScale = scaleBand().domain(Object.keys(outputObj)).range([0, dialogSVGHeight]).padding(0.3);
 
-        let cumulator = Math.round(whiteNum / totalStudent * 100);
-        if ((index + 1) <= cumulator) {
-            return { color: RaceColor.white, tooltip: `White: ${whiteNum}, ${format(',.2%')(whiteNum / totalStudent)}` };
-        }
-        cumulator += Math.round(hispaNum / totalStudent * 100);
-        if ((index + 1) <= cumulator) {
-            return { color: RaceColor.hispanic, tooltip: `Hispanic: ${hispaNum}, ${format(',.2%')(hispaNum / totalStudent)}` };
-        }
-        cumulator += Math.round(blackNum / totalStudent * 100);
-        if ((index + 1) <= cumulator) {
-            return { color: RaceColor.black, tooltip: `Black: ${blackNum}, ${format(',.2%')(blackNum / totalStudent)} ` };
-        }
-        cumulator += Math.round(nativeNum / totalStudent * 100);
-        if ((index + 1) <= cumulator) {
-            return { color: RaceColor.native, tooltip: `Native American: ${nativeNum}, ${format(',.2%')(nativeNum / totalStudent)} ` };
-        }
-        cumulator += Math.round(asianNum / totalStudent * 100);
-        if ((index + 1) <= cumulator) {
-            return { color: RaceColor.asian, tooltip: `Asian / Pacific Islander: ${asianNum}, ${format(',.2%')(asianNum / totalStudent)} ` };
-        }
-        return { color: RaceColor.other, tooltip: otherTooltip || `Other: ${otherNum} ` };
-    };
-
-
-
-    return (<ComponentSVG>
-        {range(100).map((index) => {
-            const { color, tooltip } = findFill(index);
-            return (
-                <Tooltip title={tooltip} key={`${keyIdentity
-                    } -${index} `}>
-                    <rect
-                        x={index % 20 * rectWidth}
-                        y={Math.floor(index / 20) * rectHeight}
-                        width={rectWidth - 1}
-                        height={rectHeight - 1}
-                        fill={color}
-
-                    />
-                </Tooltip>);
-        })}
-    </ComponentSVG>);
+    return (
+        <div>
+            <div onClick={() => setDialogVisibility(true)}>
+                <SmallerText>Black: {format(',.2%')(blackNum / totalStudent)}</SmallerText><br />
+                <SmallerText>Hispanic: {format(',.2%')(hispaNum / totalStudent)}</SmallerText><br />
+                <SmallerText>Asian: {format(',.2%')(asianNum / totalStudent)}</SmallerText><br />
+                <SmallerText>Native American: {format(',.2%')(nativeNum / totalStudent)} </SmallerText>
+            </div>
+            <Dialog open={openDialog} onClose={() => setDialogVisibility(false)}>
+                <DialogTitle children={`${keyIdentity} Race Breakdown`} />
+                <DialogContent>
+                    <svg width={dialogSVGWidth} height={dialogSVGHeight}>
+                        {Object.keys(outputObj).map((d) => (
+                            <g key={`${keyIdentity}${d}`}>
+                                <rect x={0}
+                                    fill={RaceColor[d]}
+                                    height={barChartHeightScale.bandwidth()}
+                                    y={barChartHeightScale(d)}
+                                    width={barChartScale(outputObj[d] / totalStudent)} />
+                                <text children={`${d}, ${outputObj[d]}, ${format(',.2%')(outputObj[d] / totalStudent)}`}
+                                    x={dialogSVGWidth}
+                                    y={(barChartHeightScale(d) || 0) + 0.5 * barChartHeightScale.bandwidth()}
+                                    alignmentBaseline='middle'
+                                    fill={XDarkGray}
+                                    textAnchor='end' />
+                            </g>
+                        ))}
+                    </svg>
+                    <DialogActions>
+                        <Button children='Close' onClick={() => setDialogVisibility(false)} />
+                    </DialogActions>
+                </DialogContent>
+            </Dialog>
+        </div>
+    );
 };
 
-export default RaceChart;;;;;;;
+const SmallerText = styled.span({
+    fontSize: 'smaller'
+});
+
+export default RaceChart;
