@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import { Tooltip } from "@mui/material";
 import { format } from "d3-format";
-import { FC } from "react";
+import { observer } from "mobx-react-lite";
+import { FC, useContext } from "react";
+import Store from "../../Interface/Store";
 import { LightGray } from "../../Preset/Colors";
 import { CellSVGHeight, CellSVGWidth } from "../../Preset/Constants";
-import { ComponentSVG } from "../GeneralComponents";
 
 type Props = {
     actualVal: number;
@@ -13,22 +13,22 @@ type Props = {
 };
 
 const PercentageChart: FC<Props> = ({ actualVal, percentage, tooltip }: Props) => {
+
+    const store = useContext(Store);
     return (
-        <Tooltip title={tooltip ? tooltip : format(',.2%')(percentage)}>
-            <ComponentSVG>
-                {/* minimum width would be 2 px to show things. */}
-                <rect x={0}
-                    y={0}
-                    width={percentage * CellSVGWidth > 2 ? percentage * CellSVGWidth : 2}
-                    height={CellSVGHeight}
-                    fill={LightGray} />
-                <BarText x={CellSVGWidth / 2}
-                    y={CellSVGHeight / 2}
-                    textAnchor='middle'>
-                    {actualVal}
-                </BarText>
-            </ComponentSVG>
-        </Tooltip>
+        <SmallerComponentSVG onClick={() => store.updateShowPercentage()}>
+            {/* minimum width would be 2 px to show things. */}
+            <rect x={0}
+                y={0}
+                width={percentage * CellSVGWidth > 2 ? percentage * CellSVGWidth : 2}
+                height={CellSVGHeight}
+                fill={LightGray} />
+            <BarText x={CellSVGWidth / 2}
+                y={CellSVGHeight / 2}
+                textAnchor='middle'>
+                {store.showPercentage ? format(',.2%')(percentage) : actualVal}
+            </BarText>
+        </SmallerComponentSVG>
     );
 };
 
@@ -37,4 +37,9 @@ const BarText = styled.text`
     fill: black;
 `;
 
-export default PercentageChart;
+const SmallerComponentSVG = styled.svg({
+    width: CellSVGWidth - 20,
+    height: CellSVGHeight
+});
+
+export default observer(PercentageChart);

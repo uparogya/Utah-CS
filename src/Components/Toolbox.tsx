@@ -12,7 +12,6 @@ const Toolbox: FC = () => {
     const store = useContext(Store);
 
     const categories = useContext(CategoryContext);
-    console.log(categories);
 
     const [openCategoryDialog, setDialog] = useState('');
     const chipClickHandler = (chipName: string) => {

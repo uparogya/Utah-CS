@@ -4,15 +4,21 @@ import { createContext } from "react";
 export class AppStore {
     selectedCategory: string[];
     selectedDistricts: string[];
+    showPercentage: boolean;
 
     constructor() {
         this.selectedCategory = ['CS-basic', 'CS-advanced'];
         this.selectedDistricts = [];
+        this.showPercentage = true;
         makeAutoObservable(this);
     }
 
     setCategory(input: string[]) {
         this.selectedCategory = input;
+    }
+
+    updateShowPercentage() {
+        this.showPercentage = !this.showPercentage;
     }
 
     setSelectedDistricts(districtName: string) {
