@@ -2,10 +2,11 @@ import styled from "@emotion/styled";
 import { TableCell, TableContainer } from "@mui/material";
 import { CellSVGWidth, CellSVGHeight } from "../Preset/Constants";
 
-export const ComponentSVG = styled.svg`
-    width: ${CellSVGWidth}px;
-    height: ${CellSVGHeight}px;
-`;
+export const ComponentSVG = styled.svg({
+    width: CellSVGWidth,
+    height: CellSVGHeight,
+    verticalAlign: 'middle'
+});
 
 
 export const StickyTableContainer = styled(TableContainer)({
@@ -13,7 +14,8 @@ export const StickyTableContainer = styled(TableContainer)({
 });
 
 export const TextCell = styled(TableCell)({
-    padding: '10px'
+    textAlign: 'center',
+    padding: '8px'
 });
 
 
@@ -23,4 +25,4 @@ export const FunctionCell = styled(TableCell)({
 
 export const NoBorderCell = styled(TableCell)({
     borderBottom: 'none'
-});
+});;

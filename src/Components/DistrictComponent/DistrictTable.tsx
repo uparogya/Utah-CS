@@ -4,7 +4,7 @@ import { csv } from "d3-fetch";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
-import { StickyTableContainer } from "../GeneralComponents";
+import { FunctionCell, StickyTableContainer, TextCell } from "../GeneralComponents";
 import DistrictRow from "./DistrictRow";
 
 
@@ -25,12 +25,12 @@ const DistrictTable: FC = () => {
             <Table stickyHeader sx={{ minWidth: '50vw' }} aria-label="sticky table">
                 <TableHead>
                     <TableRow>
-                        <TableCell ></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell>Disctrict Name</TableCell>
-                        <TableCell>Total Students</TableCell>
-                        <TableCell>CS Enrollment</TableCell>
-                        <TableCell>Gender</TableCell>
+                        <FunctionCell />
+                        <FunctionCell />
+                        <TextCell>Disctrict Name</TextCell>
+                        <TextCell>Total Students</TextCell>
+                        <TextCell>CS Enrollment</TextCell>
+                        <TextCell>Gender</TextCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

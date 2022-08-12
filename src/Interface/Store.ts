@@ -25,7 +25,7 @@ export class AppStore {
         if (this.selectedDistricts.includes(districtName)) {
             this.selectedDistricts = this.selectedDistricts.filter(d => d !== districtName);
         } else {
-            this.selectedDistricts.push(districtName);
+            this.selectedDistricts = this.selectedDistricts.concat([districtName]);
         }
     }
 

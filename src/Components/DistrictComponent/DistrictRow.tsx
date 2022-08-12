@@ -9,7 +9,7 @@ import { FunctionCell, NoBorderCell, TextCell } from "../GeneralComponents";
 import PercentageChart from "../CellComponents/PercentageChart";
 import { CategoryContext, EnrollmentDataContext } from "../../App";
 import { sum } from "d3-array";
-import { CSCategory } from "../../Preset/Constants";
+import RemoveIcon from '@mui/icons-material/Remove';
 import { CourseCategoryColor } from "../../Preset/Colors";
 
 type Props = {
@@ -49,12 +49,12 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
         <TableRow >
             <FunctionCell>
                 <Checkbox checked={store.selectedDistricts.includes(districtEntry['LEA Name'])}
-                    onChange={(e, d) => { store.setSelectedDistricts(districtEntry['LEA Name']); }} />
+                    onChange={() => store.setSelectedDistricts(districtEntry['LEA Name'])} />
             </FunctionCell>
 
             <FunctionCell style={{ paddingTop: '5px' }}
                 onClick={expansionToggle}>
-                {isExpandable ? (isExpanded ? <ArrowDropDownIcon /> : <ArrowRightIcon />) : <></>}
+                {isExpandable ? (isExpanded ? <ArrowDropDownIcon /> : <ArrowRightIcon />) : <RemoveIcon style={{ paddingLeft: '2px' }} fontSize="small" />}
             </FunctionCell>
             <TextCell onClick={expansionToggle}>{districtEntry['LEA Name']}</TextCell>
             <TextCell onClick={expansionToggle}>{districtEntry['Total HS']}</TextCell>
