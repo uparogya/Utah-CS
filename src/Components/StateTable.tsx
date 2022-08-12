@@ -1,4 +1,4 @@
-import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody, Paper } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import GenderRatioChart from "./CellComponents/GenderRatioChart";
@@ -82,7 +82,7 @@ const StateTable: FC<Props> = ({ }: Props) => {
 
 
 
-    return (<TableContainer component={Container} >
+    return (<TableContainer component={Paper} >
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
                 <TableRow>

@@ -39,7 +39,8 @@ const BarText = styled.text`
 
 const SmallerComponentSVG = styled.svg({
     width: CellSVGWidth - 20,
-    height: CellSVGHeight
+    height: CellSVGHeight,
+    verticalAlign: 'middle'
 });
 
 export default observer(PercentageChart);

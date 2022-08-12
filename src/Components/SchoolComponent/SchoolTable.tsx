@@ -1,10 +1,11 @@
-import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody, Checkbox } from "@mui/material";
+import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody, Checkbox, Paper } from "@mui/material";
 import { csv } from "d3-fetch";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import { EnrollmentDataContext } from "../../App";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import Store from "../../Interface/Store";
+import { StickyTableContainer } from "../GeneralComponents";
 import SchoolRow from "./SchoolRow";
 type Props = {
 
@@ -58,8 +59,8 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
     }, [enrollmentData]);
 
 
-    return <TableContainer component={Container}>
-        <Table sx={{ minWidth: 300 }} aria-label="simple table">
+    return <StickyTableContainer>
+        <Table stickyHeader sx={{ minWidth: '50vw' }} aria-label="sticky table">
             <TableHead>
                 <TableRow>
                     <TableCell></TableCell>
@@ -77,7 +78,7 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
                     : schoolDemographic.map((schoolEntry) => <SchoolRow key={schoolEntry['School Name']} schoolEntry={schoolEntry} />)}
             </TableBody>
         </Table>
-    </TableContainer>;
+    </StickyTableContainer>;
 };
 
 export default observer(SchoolTable);

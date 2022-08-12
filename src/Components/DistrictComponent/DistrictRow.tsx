@@ -5,6 +5,7 @@ import Store from "../../Interface/Store";
 import { observer } from "mobx-react-lite";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { FunctionCell, TextCells } from "../GeneralComponents";
 
 type Props = {
     districtEntry: { [key: string]: string; };
@@ -14,21 +15,23 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
     const store = useContext(Store);
     const [isExpanded, setExpanded] = useState(false);
     return (<TableRow >
-        <TableCell>
+        <FunctionCell>
             <Checkbox checked={store.selectedDistricts.includes(districtEntry['LEA Name'])}
                 onChange={(e, d) => { store.setSelectedDistricts(districtEntry['LEA Name']); }} />
-        </TableCell>
-        <TableCell onClick={() => setExpanded(!isExpanded)}>{isExpanded ? <ArrowDropDownIcon /> : <ArrowRightIcon />}</TableCell>
-        <TableCell>{districtEntry['LEA Name']}</TableCell>
-
-        <TableCell>{districtEntry['Total HS']}</TableCell>
-        <TableCell></TableCell>
-        <TableCell>
+        </FunctionCell>
+        <FunctionCell style={{ paddingTop: '5px' }}
+            onClick={() => setExpanded(!isExpanded)}>
+            {isExpanded ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
+        </FunctionCell>
+        <TextCells>{districtEntry['LEA Name']}</TextCells>
+        <TextCells>{districtEntry['Total HS']}</TextCells>
+        <FunctionCell />
+        <TextCells>
             <GenderRatioChart
                 femaleNum={parseInt(districtEntry['Female'])}
                 maleNum={parseInt(districtEntry['Male'])}
             />
-        </TableCell>
+        </TextCells>
     </TableRow>);
 };
 

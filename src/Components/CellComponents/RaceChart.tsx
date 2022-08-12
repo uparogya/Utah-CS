@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { ComponentSVG } from "../GeneralComponents";
 import { range } from 'd3-array';
-import { CellSVGHeight, CellSVGWidth } from "../../Preset/Constants";
+import { CellSVGHeight, CellSVGWidth, RaceDictionary } from "../../Preset/Constants";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Tooltip } from "@mui/material";
 import { format } from "d3-format";
 import { XDarkGray, RaceColor } from "../../Preset/Colors";
@@ -35,15 +35,20 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
         other: otherNum
     });
 
+    const [topThreeRace, setTopThree] = useState(['black', 'asian', 'hispanic']);
     useEffect(() => {
-        setOutput({
+        const output: { [key: string]: number; } = {
             white: whiteNum,
             hispanic: hispaNum,
             asian: asianNum,
             black: blackNum,
             native: nativeNum,
             other: otherNum
-        });
+        };
+
+        const topThree = Object.keys(output).sort((a, b) => output[b] - output[a]).filter(r => r !== 'white')!.slice(0, 3);
+        setOutput(output);
+        setTopThree(topThree);
     }, [whiteNum, nativeNum, blackNum, asianNum, otherNum, hispaNum]);
 
     const totalStudent = whiteNum + nativeNum + blackNum + asianNum + otherNum + hispaNum;
@@ -53,13 +58,17 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
     const barChartScale = scaleLinear().domain([0, 1]).range([0, dialogSVGWidth]);
     const barChartHeightScale = scaleBand().domain(Object.keys(outputObj)).range([0, dialogSVGHeight]).padding(0.3);
 
+
     return (
         <div>
             <div onClick={() => setDialogVisibility(true)}>
-                <SmallerText>Black: {format(',.2%')(blackNum / totalStudent)}</SmallerText><br />
-                <SmallerText>Hispanic: {format(',.2%')(hispaNum / totalStudent)}</SmallerText><br />
-                <SmallerText>Asian: {format(',.2%')(asianNum / totalStudent)}</SmallerText><br />
-                <SmallerText>Native American: {format(',.2%')(nativeNum / totalStudent)} </SmallerText>
+                {topThreeRace.map((race) => (
+                    <span>
+                        <SmallerText children={
+                            `${RaceDictionary[race]}: ${format(',.2%')(outputObj[race] / totalStudent)}`
+                        } /><br />
+                    </span>
+                ))}
             </div>
             <Dialog open={openDialog} onClose={() => setDialogVisibility(false)}>
                 <DialogTitle children={`${keyIdentity} Race Breakdown`} />
@@ -72,12 +81,20 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
                                     height={barChartHeightScale.bandwidth()}
                                     y={barChartHeightScale(d)}
                                     width={barChartScale(outputObj[d] / totalStudent)} />
-                                <text children={`${d}, ${outputObj[d]}, ${format(',.2%')(outputObj[d] / totalStudent)}`}
+                                <text
                                     x={dialogSVGWidth}
                                     y={(barChartHeightScale(d) || 0) + 0.5 * barChartHeightScale.bandwidth()}
                                     alignmentBaseline='middle'
                                     fill={XDarkGray}
-                                    textAnchor='end' />
+                                >
+                                    <DialogTSpan x={dialogSVGWidth} dy='-0.8em'>
+                                        {d}
+                                    </DialogTSpan>
+                                    <DialogTSpan x={dialogSVGWidth} dy='1.5em' >
+                                        {outputObj[d]}, {format(',.2%')(outputObj[d] / totalStudent)}
+                                    </DialogTSpan>
+
+                                </text>
                             </g>
                         ))}
                     </svg>
@@ -93,5 +110,8 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
 const SmallerText = styled.span({
     fontSize: 'smaller'
 });
-
+const DialogTSpan = styled.tspan({
+    textAnchor: 'end',
+    alignmentBaseline: 'middle'
+});
 export default RaceChart;

@@ -2,10 +2,11 @@ import { TableRow, TableCell } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { DarkGray } from "../../Preset/Colors";
+import { CourseCategoryColor, DarkGray } from "../../Preset/Colors";
 import { format } from "d3-format";
 import { CategoryContext } from "../../App";
 import PercentageChart from "../CellComponents/PercentageChart";
+import { FunctionCell, TextCells } from "../GeneralComponents";
 
 type Props = {
     schoolEntry: { [key: string]: string | any[]; };
@@ -23,21 +24,35 @@ const SchoolRow: FC<Props> = ({ schoolEntry }: Props) => {
         setEnrollment(schoolEntry['CSCourses'].length > 0 && typeof schoolEntry['CSCourses'] === 'object' ? schoolEntry['CSCourses'].reduce((sum, course) => sum + parseInt(course['enrollment']), 0) : 0);
     }, [schoolEntry]);
 
+
+    const findCourseCategoryColor = (csCourse: { [key: string]: string; }) => {
+        let categoryResult = category.filter((d) => d['core_code'] === csCourse['Course ID']);
+        return categoryResult.length > 0 ? CourseCategoryColor[categoryResult[0]['category']] : DarkGray;
+    };
+
     return (
         <>
             <TableRow style={{ cursor: 'pointer' }}>
-                <TableCell onClick={() => setIsExpanded(!isExpanded)}>{isExpanded ? <ArrowDropDownIcon /> : <ArrowRightIcon />}</TableCell>
-                <TableCell onClick={() => setIsExpanded(!isExpanded)}>{schoolEntry['School Name']}</TableCell>
-                <TableCell>{schoolEntry['Total-HS']}</TableCell>
-                <TableCell> {totalCSEnrollment > 0 && schoolEntry['Total-HS'] !== '0' ?
-                    <PercentageChart actualVal={totalCSEnrollment} percentage={totalCSEnrollment / parseInt(schoolEntry['Total-HS'] as string)} /> : '-'} </TableCell>
+                <FunctionCell onClick={() => setIsExpanded(!isExpanded)}>
+                    {isExpanded ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
+                </FunctionCell>
+                <TextCells onClick={() => setIsExpanded(!isExpanded)}>
+                    {schoolEntry['School Name']}
+                </TextCells>
+                <TextCells onClick={() => setIsExpanded(!isExpanded)}>
+                    {schoolEntry['Total-HS']}
+                </TextCells>
+                <TextCells>
+                    {totalCSEnrollment > 0 && schoolEntry['Total-HS'] !== '0' ?
+                        <PercentageChart actualVal={totalCSEnrollment} percentage={totalCSEnrollment / parseInt(schoolEntry['Total-HS'] as string)} /> : '-'}
+                </TextCells>
             </TableRow>
             {isExpanded ?
                 (schoolEntry['CSCourses'].length > 0 && typeof schoolEntry['CSCourses'] === 'object') ?
                     schoolEntry['CSCourses'].map((csCourse) => (
                         <TableRow key={`${schoolEntry['School Name']}-${csCourse['Course ID']}`}>
                             <TableCell style={{ borderBottom: 'none' }} />
-                            <TableCell colSpan={2} style={{ color: DarkGray }}>
+                            <TableCell colSpan={2} style={{ color: findCourseCategoryColor(csCourse) }}>
                                 {csCourse['Course Name']}
                             </TableCell>
                             <TableCell style={{ color: DarkGray }}>
