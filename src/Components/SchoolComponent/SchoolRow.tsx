@@ -6,7 +6,7 @@ import { CourseCategoryColor, DarkGray } from "../../Preset/Colors";
 import { format } from "d3-format";
 import { CategoryContext } from "../../App";
 import PercentageChart from "../CellComponents/PercentageChart";
-import { FunctionCell, TextCells } from "../GeneralComponents";
+import { FunctionCell, NoBorderCell, TextCell } from "../GeneralComponents";
 
 type Props = {
     schoolEntry: { [key: string]: string | any[]; };
@@ -36,22 +36,21 @@ const SchoolRow: FC<Props> = ({ schoolEntry }: Props) => {
                 <FunctionCell onClick={() => setIsExpanded(!isExpanded)}>
                     {isExpanded ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
                 </FunctionCell>
-                <TextCells onClick={() => setIsExpanded(!isExpanded)}>
+                <TextCell onClick={() => setIsExpanded(!isExpanded)}>
                     {schoolEntry['School Name']}
-                </TextCells>
-                <TextCells onClick={() => setIsExpanded(!isExpanded)}>
+                </TextCell>
+                <TextCell onClick={() => setIsExpanded(!isExpanded)}>
                     {schoolEntry['Total-HS']}
-                </TextCells>
-                <TextCells>
-                    {totalCSEnrollment > 0 && schoolEntry['Total-HS'] !== '0' ?
-                        <PercentageChart actualVal={totalCSEnrollment} percentage={totalCSEnrollment / parseInt(schoolEntry['Total-HS'] as string)} /> : '-'}
-                </TextCells>
+                </TextCell>
+                <TextCell>
+                    <PercentageChart actualVal={totalCSEnrollment} percentage={totalCSEnrollment / parseInt(schoolEntry['Total-HS'] as string)} />
+                </TextCell>
             </TableRow>
             {isExpanded ?
                 (schoolEntry['CSCourses'].length > 0 && typeof schoolEntry['CSCourses'] === 'object') ?
                     schoolEntry['CSCourses'].map((csCourse) => (
                         <TableRow key={`${schoolEntry['School Name']}-${csCourse['Course ID']}`}>
-                            <TableCell style={{ borderBottom: 'none' }} />
+                            <NoBorderCell />
                             <TableCell colSpan={2} style={{ color: findCourseCategoryColor(csCourse) }}>
                                 {csCourse['Course Name']}
                             </TableCell>

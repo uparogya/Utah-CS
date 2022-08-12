@@ -12,11 +12,15 @@ export const StickyTableContainer = styled(TableContainer)({
     maxHeight: '55vh'
 });
 
-export const TextCells = styled(TableCell)({
+export const TextCell = styled(TableCell)({
     padding: '10px'
 });
 
 
 export const FunctionCell = styled(TableCell)({
     padding: '0px'
+});
+
+export const NoBorderCell = styled(TableCell)({
+    borderBottom: 'none'
 });

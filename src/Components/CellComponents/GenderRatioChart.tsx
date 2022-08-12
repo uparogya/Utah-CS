@@ -30,14 +30,14 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum }: Props) => {
                     x={0}
                     y={0}
                     height={CellSVGHeight}
-                    width={CellSVGWidth * (maleNum / totalStudent)}
+                    width={CellSVGWidth * (maleNum / totalStudent) || 0}
                     fill={GenderColor.male} />
 
-                <rect x={CellSVGWidth * (maleNum / totalStudent)}
+                <rect x={(CellSVGWidth * (maleNum / totalStudent)) || 0}
                     y={0}
                     height={CellSVGHeight}
                     width={CellSVGWidth * (femaleNum
-                        / totalStudent)}
+                        / totalStudent) || 0}
                     fill={GenderColor.female} />
                 <OnChartText children={store.showPercentage ? format('.0%')(maleNum / totalStudent) : maleNum} x={TextMargin} y={CellSVGHeight * 0.5} alignmentBaseline='middle' textAnchor='start' />
                 <OnChartText children={store.showPercentage ? format('.0%')(femaleNum / totalStudent) : femaleNum} x={CellSVGWidth - TextMargin} y={CellSVGHeight * 0.5} fill={XDarkGray} alignmentBaseline='middle' textAnchor='end' />

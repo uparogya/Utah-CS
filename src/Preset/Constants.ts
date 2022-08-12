@@ -13,3 +13,5 @@ export const RaceDictionary: { [key: string]: string; } = {
     other: 'Other/Multiple Races',
     asian: 'Asian',
 };
+
+export type CSCategory = "CS-related" | "CS-advanced" | "CS-basic";

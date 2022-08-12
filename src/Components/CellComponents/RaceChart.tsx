@@ -63,7 +63,7 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
         <div>
             <div onClick={() => setDialogVisibility(true)}>
                 {topThreeRace.map((race) => (
-                    <span>
+                    <span key={`${keyIdentity}-${race}`}>
                         <SmallerText children={
                             `${RaceDictionary[race]}: ${format(',.2%')(outputObj[race] / totalStudent)}`
                         } /><br />

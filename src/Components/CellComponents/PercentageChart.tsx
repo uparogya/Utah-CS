@@ -15,18 +15,20 @@ type Props = {
 const PercentageChart: FC<Props> = ({ actualVal, percentage, tooltip }: Props) => {
 
     const store = useContext(Store);
+
     return (
-        <SmallerComponentSVG onClick={() => store.updateShowPercentage()}>
+        <SmallerComponentSVG onClick={() => actualVal === 0 ? null : store.updateShowPercentage()}>
             {/* minimum width would be 2 px to show things. */}
             <rect x={0}
                 y={0}
-                width={percentage * CellSVGWidth > 2 ? percentage * CellSVGWidth : 2}
+                opacity={actualVal === 0 ? 0 : 1}
+                width={(percentage * CellSVGWidth > 2 ? percentage * CellSVGWidth : 2) || 0}
                 height={CellSVGHeight}
                 fill={LightGray} />
             <BarText x={CellSVGWidth / 2}
                 y={CellSVGHeight / 2}
                 textAnchor='middle'>
-                {store.showPercentage ? format(',.2%')(percentage) : actualVal}
+                {actualVal === 0 ? '-' : store.showPercentage ? format(',.2%')(percentage) : actualVal}
             </BarText>
         </SmallerComponentSVG>
     );
