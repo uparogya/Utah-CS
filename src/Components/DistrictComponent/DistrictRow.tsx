@@ -13,31 +13,38 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { CourseCategoryColor } from "../../Preset/Colors";
 
 type Props = {
-    districtEntry: { [key: string]: string; };
+    districtEntry: { [key: string]: string | { [key: string]: number; }; };
 };
 
 const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
     const store = useContext(Store);
     const [isExpanded, setExpanded] = useState(false);
-    const [isExpandable, setExpandable] = useState(false);
+    const [isExpandable, setExpandable] = useState(districtEntry.expandable === 'true');
 
-    const [csDistrictEnrollment, setCSEnrollment] = useState<{ [key: string]: number; }>({ "CS-related": 0, "CS-advanced": 0, "CS-basic": 0 });
+    const [csDistrictEnrollment, setCSEnrollment] = useState<{ [key: string]: number; }>(districtEntry['enrollment'] as { [key: string]: number; });
 
     const enrollmentData = useContext(EnrollmentDataContext);
 
     const courseCategory = useContext(CategoryContext);
-    useEffect(() => {
-        const courseEnrollment = enrollmentData.filter(d => d['LEA'] === districtEntry['LEA Name']);
-        setExpandable(courseEnrollment.length > 0);
-        const newDistrictEnrollment: { [key: string]: number; } = { "CS-related": 0, "CS-advanced": 0, "CS-basic": 0 };
-        courseEnrollment.forEach((course) => {
-            const filterResult = courseCategory.filter(c => c['core_code'] === course['core_code']);
-            const categoryResult = (filterResult.length > 0 ? filterResult[0][`category`] : 'CS-related');
-            newDistrictEnrollment[categoryResult] += parseInt(course['Student enrollment']);
-        });
-        setCSEnrollment(newDistrictEnrollment);
 
-    }, [enrollmentData, courseCategory, districtEntry]);
+    useEffect(() => {
+        setCSEnrollment(districtEntry['enrollment'] as { [key: string]: number; });
+        setExpandable(districtEntry['expandable'] === 'true');
+    }, [districtEntry]);
+    // useEffect(() => {
+    //     const courseEnrollment = enrollmentData.filter(d => d['LEA'] === districtEntry['LEA Name']);
+    //     setExpandable(courseEnrollment.length > 0);
+    //     const newDistrictEnrollment: { [key: string]: number; } = { "CS-related": 0, "CS-advanced": 0, "CS-basic": 0 };
+    //     courseEnrollment.forEach((course) => {
+    //         const filterResult = courseCategory.filter(c => c['core_code'] === course['core_code']);
+    //         const categoryResult = (filterResult.length > 0 ? filterResult[0][`category`] : 'CS-related');
+    //         newDistrictEnrollment[categoryResult] += parseInt(course['Student enrollment']);
+    //     });
+    //     setCSEnrollment(newDistrictEnrollment);
+
+    // }, [enrollmentData, courseCategory, districtEntry]);
+
+
 
     const expansionToggle = () => {
         if (isExpandable) {
@@ -48,21 +55,21 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
     return (<>
         <TableRow >
             <FunctionCell>
-                <Checkbox checked={store.selectedDistricts.includes(districtEntry['LEA Name'])}
-                    onChange={() => store.setSelectedDistricts(districtEntry['LEA Name'])} />
+                <Checkbox checked={store.selectedDistricts.includes(districtEntry['LEA Name'] as string)}
+                    onChange={() => store.setSelectedDistricts(districtEntry['LEA Name'] as string)} />
             </FunctionCell>
 
             <FunctionCell style={{ paddingTop: '5px' }}
                 onClick={expansionToggle}>
                 {isExpandable ? (isExpanded ? <ArrowDropDownIcon /> : <ArrowRightIcon />) : <RemoveIcon style={{ paddingLeft: '2px' }} fontSize="small" />}
             </FunctionCell>
-            <TextCell onClick={expansionToggle}>{districtEntry['LEA Name']}</TextCell>
-            <TextCell onClick={expansionToggle}>{districtEntry['Total HS']}</TextCell>
-            <TextCell> <PercentageChart actualVal={sum(Object.values(csDistrictEnrollment))} percentage={sum(Object.values(csDistrictEnrollment)) / parseInt(districtEntry['Total HS'])} /></TextCell>
+            <TextCell onClick={expansionToggle}>{districtEntry['LEA Name'] as string}</TextCell>
+            <TextCell onClick={expansionToggle}>{districtEntry['Total HS'] as string}</TextCell>
+            <TextCell> <PercentageChart actualVal={sum(Object.values(csDistrictEnrollment))} percentage={sum(Object.values(csDistrictEnrollment)) / parseInt(districtEntry['Total HS'] as string)} /></TextCell>
             <TextCell>
                 <GenderRatioChart
-                    femaleNum={parseInt(districtEntry['Female'])}
-                    maleNum={parseInt(districtEntry['Male'])}
+                    femaleNum={parseInt(districtEntry['Female'] as string)}
+                    maleNum={parseInt(districtEntry['Male'] as string)}
                 />
             </TextCell>
         </TableRow>
