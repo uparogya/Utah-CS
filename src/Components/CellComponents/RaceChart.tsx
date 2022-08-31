@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, useContext } from "react";
 import { ComponentSVG } from "../GeneralComponents";
 import { range } from 'd3-array';
 import { CellSVGHeight, CellSVGWidth, RaceDictionary } from "../../Preset/Constants";
@@ -7,6 +7,8 @@ import { format } from "d3-format";
 import { XDarkGray, RaceColor } from "../../Preset/Colors";
 import styled from "@emotion/styled";
 import { scaleBand, scaleLinear } from "d3-scale";
+import { observer } from "mobx-react-lite";
+import Store from "../../Interface/Store";
 
 type Props = {
     whiteNum: number,
@@ -25,6 +27,8 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
 
     const dialogSVGWidth = 300;
     const dialogSVGHeight = 500;
+
+    const store = useContext(Store);
 
     const [outputObj, setOutput] = useState<{ [key: string]: number; }>({
         white: whiteNum,
@@ -65,7 +69,7 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
                 {topThreeRace.map((race) => (
                     <span key={`${keyIdentity}-${race}`}>
                         <SmallerText children={
-                            `${RaceDictionary[race]}: ${format(',.2%')(outputObj[race] / totalStudent)}`
+                            `${RaceDictionary[race]}: ${store.showPercentage ? format(',.2%')(outputObj[race] / totalStudent) : outputObj[race]}`
                         } /><br />
                     </span>
                 ))}
@@ -114,4 +118,4 @@ const DialogTSpan = styled.tspan({
     textAnchor: 'end',
     alignmentBaseline: 'middle'
 });
-export default RaceChart;
+export default observer(RaceChart);

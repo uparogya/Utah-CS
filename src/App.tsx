@@ -114,5 +114,5 @@ const AppBarButton = styled(IconButton)({
 
 const TableTitle = styled(Typography)({
     textAlign: 'start',
-    paddingLeft: '5px'
+    paddingLeft: '12px!important'
 });
