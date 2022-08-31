@@ -104,6 +104,7 @@ export default observer(App);
 const BasicGrid = styled(Grid)`
 max-height: 58vh;
 overflow: hidden;
+padding:0px!important;
 `;
 
 const AppBarButton = styled(IconButton)({

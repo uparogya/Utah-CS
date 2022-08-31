@@ -114,7 +114,7 @@ const StateTable: FC<Props> = ({ }: Props) => {
                         />
                     </TableCell>
                     <TableCell>
-                        <RaceChart keyIdentity="GeneralState"
+                        <RaceChart keyIdentity="State Wise"
                             whiteNum={findGeneralDemographicAttributeWithYear("2022", "White")}
                             asianNum={findGeneralDemographicAttributeWithYear("2022", "Asian") + findGeneralDemographicAttributeWithYear("2022", "Pacific Islander")}
                             hispaNum={findGeneralDemographicAttributeWithYear("2022", "Hispanic")}
