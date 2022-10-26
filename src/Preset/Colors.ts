@@ -27,7 +27,7 @@ export const XDarkGray = '#252525';
 // export const CSAdvancedColor = '#00b8cc';
 
 export const CourseCategoryColor: { [key: string]: string; } = {
-    'CS-related': '#1400cc',
-    'CS-advanced': '#00b8cc',
-    'CS-basic': '#cc7a00'
+    CSR: '#1400cc',
+    CSA: '#00b8cc',
+    CSB: '#cc7a00'
 };
