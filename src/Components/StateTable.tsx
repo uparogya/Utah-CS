@@ -1,4 +1,4 @@
-import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody, Paper } from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import GenderRatioChart from "./CellComponents/GenderRatioChart";
@@ -9,34 +9,32 @@ import PercentageChart from "./CellComponents/PercentageChart";
 import Store from "../Interface/Store";
 import { format } from "d3-format";
 import { CategoryContext } from "../App";
-// import stateData from "";
 
 type Props = {
 
 };
 
 const StateTable: FC<Props> = ({ }: Props) => {
-    const courseCategorization = useContext(CategoryContext);
     const store = useContext(Store);
+    const SCHOOL_YEAR = '2021-22';
     //data variables
 
     const [stateDemographic, setStateDemographic] = useState([]);
     const [stateCSDemographic, setStateCSDemographic] = useState([]);
 
     const findCSDemographicAttribute = (attributeName: string) => {
-        //category is the CS course category we need
+        let returning = 0;
+        if (stateCSDemographic.length) {
+            const currentSelectedCate = store.selectedCategory;
+            const currentYearEntry = stateCSDemographic.filter(d => d['School Year'] === SCHOOL_YEAR)[0];
+            returning = currentSelectedCate.reduce((currentSum, currCate) => currentSum + parseInt(currentYearEntry[`${currCate} ${attributeName}`]) || 0, 0);
+        }
+        return returning;
 
-        // first we gather the course list for the category
-        // courseCategorization
-
-        const courseList = courseCategorization.filter(d => store.selectedCategory.includes(d['category'])).map(d => d['core_code']);
-
-        //use a reducer to find the sum
-        return stateCSDemographic.reduce((prev, current) => courseList.includes(current['core_code']) ? prev + parseInt(current[attributeName]) : prev, 0);
     };
 
 
-    // const [selectedCSCategory, setSelectedCSCategory] = useState(store.selectedCSCategory);
+
 
     const [totalStudentNum, setTotalStudentNum] = useState(0);
 
@@ -60,23 +58,24 @@ const StateTable: FC<Props> = ({ }: Props) => {
         });
 
         // state CS demographic
-        csv("/data/stateCSDemographic.csv").then((stateCSDemo) => {
+        csv("/data/cs-state-level.csv").then((stateCSDemo) => {
             stateUpdateWrapperUseJSON(stateCSDemographic, stateCSDemo, setStateCSDemographic);
         });
 
+        console.log(stateCSDemographic);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
 
         setTotalStudentNum(findGeneralDemographicAttributeWithYear("2022", "Total HS"));
-        setTotalCSStudentNum(findCSDemographicAttribute('Enrolled'));
+        setTotalCSStudentNum(findCSDemographicAttribute('Total'));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [stateDemographic, stateCSDemographic]);
 
 
     useEffect(() => {
-        setTotalCSStudentNum(findCSDemographicAttribute('Enrolled'));
+        setTotalCSStudentNum(findCSDemographicAttribute('Total'));
     }, [store.selectedCategory]);
 
 
@@ -114,7 +113,7 @@ const StateTable: FC<Props> = ({ }: Props) => {
                         />
                     </TableCell>
                     <TableCell>
-                        <RaceChart keyIdentity="State Wise"
+                        <RaceChart keyIdentity="State Total"
                             whiteNum={findGeneralDemographicAttributeWithYear("2022", "White")}
                             asianNum={findGeneralDemographicAttributeWithYear("2022", "Asian") + findGeneralDemographicAttributeWithYear("2022", "Pacific Islander")}
                             hispaNum={findGeneralDemographicAttributeWithYear("2022", "Hispanic")}
@@ -160,25 +159,25 @@ const StateTable: FC<Props> = ({ }: Props) => {
                         <RaceChart keyIdentity="CS"
                             whiteNum={findCSDemographicAttribute('White')}
                             blackNum={findCSDemographicAttribute('Black')}
-                            hispaNum={findCSDemographicAttribute('Hispanic/Latino/Latina')}
-                            nativeNum={findCSDemographicAttribute('Native American/Alaska Native')}
-                            otherNum={findCSDemographicAttribute('Two or More Races') + findCSDemographicAttribute('Race/Ethnicity not reported')}
-                            otherTooltip={`Multipl Race: ${findCSDemographicAttribute('Two or More Races')}, Not Reported: ${findCSDemographicAttribute('Race/Ethnicity not reported')}`}
-                            asianNum={findCSDemographicAttribute('Asian') + findCSDemographicAttribute('Native Hawaiian/Other Pacific Islander')} />
+                            hispaNum={findCSDemographicAttribute('Hispanic or Latino')}
+                            nativeNum={findCSDemographicAttribute('American Indian or Alaska Native')}
+                            otherNum={findCSDemographicAttribute('Two or more races')}
+                            otherTooltip={`Multipl Race: ${findCSDemographicAttribute('Two or More Races')}')}`}
+                            asianNum={findCSDemographicAttribute('Asian') + findCSDemographicAttribute('Native Hawaiian or Pacific Islander')} />
 
                     </TableCell>
                     <TableCell>
                         <PercentageChart
-                            actualVal={findCSDemographicAttribute('SPED') + findCSDemographicAttribute('Serv504')}
-                            percentage={(findCSDemographicAttribute('SPED') + findCSDemographicAttribute('Serv504')) / totalCSStudentNum} />
+                            actualVal={findCSDemographicAttribute('Disability')}
+                            percentage={findCSDemographicAttribute('Disability') / totalCSStudentNum} />
                     </TableCell>
                     <TableCell>
                         <PercentageChart
-                            actualVal={findCSDemographicAttribute('Economically Disadvantaged')}
-                            percentage={findCSDemographicAttribute('Economically Disadvantaged') / totalCSStudentNum} />
+                            actualVal={findCSDemographicAttribute('Eco. Dis.')}
+                            percentage={findCSDemographicAttribute('Eco. Dis.') / totalCSStudentNum} />
                     </TableCell>
                     <TableCell>
-                        <PercentageChart actualVal={findCSDemographicAttribute('EL')} percentage={findCSDemographicAttribute('EL') / totalCSStudentNum} />
+                        <PercentageChart actualVal={findCSDemographicAttribute('Eng. Learners')} percentage={findCSDemographicAttribute('Eng. Learners') / totalCSStudentNum} />
                     </TableCell>
                 </TableRow>
 
