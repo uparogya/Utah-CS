@@ -65,20 +65,21 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
             </FunctionCell>
             <TextCell onClick={expansionToggle}>{districtEntry['LEA Name'] as string}</TextCell>
             <TextCell onClick={expansionToggle}>{districtEntry['Total HS'] as string}</TextCell>
-            <TextCell> <PercentageChart actualVal={sum(Object.values(csDistrictEnrollment))} percentage={sum(Object.values(csDistrictEnrollment)) / parseInt(districtEntry['Total HS'] as string)} /></TextCell>
             <TextCell>
                 <GenderRatioChart
                     femaleNum={parseInt(districtEntry['Female'] as string)}
                     maleNum={parseInt(districtEntry['Male'] as string)}
                 />
             </TextCell>
+            <TextCell> <PercentageChart actualVal={sum(Object.values(csDistrictEnrollment))} percentage={sum(Object.values(csDistrictEnrollment)) / parseInt(districtEntry['Total HS'] as string)} /></TextCell>
+
         </TableRow>
         {isExpanded ? (
             Object.keys(csDistrictEnrollment).map((category) => (
                 <TableRow key={`${districtEntry['LEA Name']}-${category}`}>
                     <NoBorderCell />
                     <NoBorderCell />
-                    <TextCell style={{ color: CourseCategoryColor[category] }} colSpan={2} children={category} />
+                    <TextCell style={{ color: CourseCategoryColor[category] }} children={category} />
                     <TextCell>
                         <PercentageChart actualVal={csDistrictEnrollment[category]} percentage={csDistrictEnrollment[category] / sum(Object.values(csDistrictEnrollment))} />
                     </TextCell>
