@@ -11,9 +11,10 @@ import { CategoryContext, EnrollmentDataContext } from "../../App";
 import { sum } from "d3-array";
 import RemoveIcon from '@mui/icons-material/Remove';
 import { CourseCategoryColor } from "../../Preset/Colors";
+import { DistrictCSDemographic } from "./DistrictTable";
 
 type Props = {
-    districtEntry: { [key: string]: string | { [key: string]: number; }; };
+    districtEntry: { [key: string]: string | { [key: string]: DistrictCSDemographic; }; };
 };
 
 const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
@@ -21,14 +22,14 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
     const [isExpanded, setExpanded] = useState(false);
     const [isExpandable, setExpandable] = useState(districtEntry.expandable === 'true');
 
-    const [csDistrictEnrollment, setCSEnrollment] = useState<{ [key: string]: number; }>(districtEntry['enrollment'] as { [key: string]: number; });
+    const [csDistrictEnrollment, setCSEnrollment] = useState<{ [key: string]: DistrictCSDemographic; }>(districtEntry['enrollment'] as { [key: string]: DistrictCSDemographic; });
 
     const enrollmentData = useContext(EnrollmentDataContext);
 
     const courseCategory = useContext(CategoryContext);
 
     useEffect(() => {
-        setCSEnrollment(districtEntry['enrollment'] as { [key: string]: number; });
+        setCSEnrollment(districtEntry['enrollment'] as { [key: string]: DistrictCSDemographic; });
         setExpandable(districtEntry['expandable'] === 'true');
     }, [districtEntry]);
     // useEffect(() => {
@@ -65,14 +66,15 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
             </FunctionCell>
             <TextCell onClick={expansionToggle}>{districtEntry['LEA Name'] as string}</TextCell>
             <TextCell onClick={expansionToggle}>{districtEntry['Total HS'] as string}</TextCell>
+            <TextCell> <PercentageChart actualVal={sum(Object.values(csDistrictEnrollment).map(d => d.Total))} percentage={sum(Object.values(csDistrictEnrollment).map(d => d.Total)) / parseInt(districtEntry['Total HS'] as string)} /></TextCell>
             <TextCell>
                 <GenderRatioChart
                     femaleNum={parseInt(districtEntry['Female'] as string)}
                     maleNum={parseInt(districtEntry['Male'] as string)}
                 />
             </TextCell>
-            //TODO need to change this
-            <TextCell> <PercentageChart actualVal={sum(Object.values(csDistrictEnrollment))} percentage={sum(Object.values(csDistrictEnrollment)) / parseInt(districtEntry['Total HS'] as string)} /></TextCell>
+
+
 
         </TableRow>
         {isExpanded ? (
@@ -81,10 +83,13 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
                     <NoBorderCell />
                     <NoBorderCell />
                     <TextCell style={{ color: CourseCategoryColor[category] }} children={category} />
-                    <TextCell>
-                        <PercentageChart actualVal={csDistrictEnrollment[category]} percentage={csDistrictEnrollment[category] / sum(Object.values(csDistrictEnrollment))} />
+                    <TextCell colSpan={2}>
+                        <PercentageChart actualVal={csDistrictEnrollment[category].Total} percentage={csDistrictEnrollment[category].Total / sum(Object.values(csDistrictEnrollment).map(d => d.Total))} />
                     </TextCell>
-                    <NoBorderCell />
+
+                    <TextCell>
+                        <GenderRatioChart femaleNum={csDistrictEnrollment[category].Female} maleNum={csDistrictEnrollment[category].Total - csDistrictEnrollment[category].Female} />
+                    </TextCell>
                 </TableRow>
             ))
         ) : <></>}

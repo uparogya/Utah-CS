@@ -20,10 +20,11 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum }: Props) => {
 
     useEffect(() => {
         setTotalStudent(maleNum + femaleNum);
+
     }, [maleNum, femaleNum]);
 
     const TextMargin = 5;
-    return (
+    return (totalStudent ?
         <ComponentSVG onClick={(e) => store.updateShowPercentage()}>
             <g>
                 <rect
@@ -42,7 +43,7 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum }: Props) => {
                 <OnChartText children={store.showPercentage ? format('.0%')(maleNum / totalStudent) : maleNum} x={TextMargin} y={CellSVGHeight * 0.5} alignmentBaseline='middle' textAnchor='start' />
                 <OnChartText children={store.showPercentage ? format('.0%')(femaleNum / totalStudent) : femaleNum} x={CellSVGWidth - TextMargin} y={CellSVGHeight * 0.5} fill={XDarkGray} alignmentBaseline='middle' textAnchor='end' />
             </g>
-        </ComponentSVG>
+        </ComponentSVG> : <>-</>
     );
 };
 

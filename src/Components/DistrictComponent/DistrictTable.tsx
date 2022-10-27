@@ -127,8 +127,9 @@ const DistrictTable: FC = () => {
                         <FunctionCell />
                         <SortableHeader onClick={() => toggleSort('LEA Name')} headerName='Disctrict Name' isSorting={sortAttribute === 'LEA Name' && !sortUp} isSortUp={sortUp} />
                         <SortableHeader onClick={() => toggleSort('Total HS')} isSortUp={sortUp} headerName='Total Students' isSorting={sortAttribute === 'Total HS'} />
-                        <SortableHeader isSorting={sortAttribute === 'Female'} onClick={() => toggleSort('Female')} isSortUp={sortUp} isSortPercentage={sortCSPercentage} headerName='Gender' />
+
                         <SortableHeader isSorting={sortAttribute === 'enrollment'} onClick={() => toggleSort('enrollment')} isSortUp={sortUp} headerName='CS Enrollment' isSortPercentage={sortCSPercentage} />
+                        <SortableHeader isSorting={sortAttribute === 'Female'} onClick={() => toggleSort('Female')} isSortUp={sortUp} isSortPercentage={sortCSPercentage} headerName='Gender' />
 
                     </TableRow>
                 </TableHead>
