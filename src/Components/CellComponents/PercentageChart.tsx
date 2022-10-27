@@ -19,12 +19,19 @@ const PercentageChart: FC<Props> = ({ actualVal, percentage, tooltip }: Props) =
     return (
         <SmallerComponentSVG onClick={() => actualVal === 0 ? null : store.updateShowPercentage()}>
             {/* minimum width would be 2 px to show things. */}
+            <rect x={0} y={0}
+                fill="none"
+                width={CellSVGWidth}
+                height={CellSVGHeight}
+                strokeWidth={2}
+                stroke={LightGray} />
             <rect x={0}
                 y={0}
                 opacity={actualVal === 0 ? 0 : 1}
                 width={(percentage * CellSVGWidth > 2 ? percentage * CellSVGWidth : 2) || 0}
                 height={CellSVGHeight}
                 fill={LightGray} />
+
             <BarText x={CellSVGWidth / 2}
                 y={CellSVGHeight / 2}
                 textAnchor='middle'>
@@ -50,7 +57,7 @@ const BarText = styled.text`
 `;
 
 const SmallerComponentSVG = styled.svg({
-    width: CellSVGWidth - 20,
+    width: CellSVGWidth,
     height: CellSVGHeight,
     verticalAlign: 'middle'
 });
