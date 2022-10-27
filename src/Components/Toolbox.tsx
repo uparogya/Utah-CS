@@ -24,24 +24,24 @@ const Toolbox: FC = () => {
     return (
         <Box style={{ maxWidth: '300px', padding: '5px' }}>
             <Container>
-                Select courses to include for state-wise data.
+                Select courses to include for state total data.
             </Container>
             <Stack>
-                {PossibleCategories.map((chipName) => (
-                    <Container key={`${chipName}-chip`}>
+                {PossibleCategories.map((category) => (
+                    <Container key={`${category.name}-chip`}>
 
-                        <Chip label={chipName}
+                        <Chip label={category.name}
                             clickable
-                            onClick={() => chipClickHandler(chipName)}
+                            onClick={() => chipClickHandler(category.key)}
                             style={{
                                 margin: '5px',
-                                backgroundColor: store.selectedCategory.includes(chipName) ? CourseCategoryColor[chipName] : undefined,
-                                color: store.selectedCategory.includes(chipName) ? LightGray : undefined
+                                backgroundColor: store.selectedCategory.includes(category.key) ? CourseCategoryColor[category.key] : undefined,
+                                color: store.selectedCategory.includes(category.key) ? LightGray : undefined
                             }}
                         // color={store.selectedCategory.includes(chipName) ? 'primary' : 'default'}
                         />
                         <Tooltip title='See list of courses'>
-                            <IconButton onClick={() => setDialog(chipName)}>
+                            <IconButton onClick={() => setDialog(category.name)}>
                                 <InfoOutlinedIcon />
                             </IconButton>
                         </Tooltip>

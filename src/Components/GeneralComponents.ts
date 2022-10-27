@@ -23,6 +23,6 @@ export const FunctionCell = styled(TableCell)({
     padding: '0px'
 });
 
-export const NoBorderCell = styled(TableCell)({
-    borderBottom: 'none'
+export const NoBorderCell = styled(FunctionCell)({
+    borderBottom: 'none',
 });;

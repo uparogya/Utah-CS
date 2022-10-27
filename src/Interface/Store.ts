@@ -7,7 +7,7 @@ export class AppStore {
     showPercentage: boolean;
 
     constructor() {
-        this.selectedCategory = ['CS-basic', 'CS-advanced'];
+        this.selectedCategory = ['CSB', 'CSA'];
         this.selectedDistricts = [];
         this.showPercentage = true;
         makeAutoObservable(this);

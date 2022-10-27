@@ -71,6 +71,7 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
                     maleNum={parseInt(districtEntry['Male'] as string)}
                 />
             </TextCell>
+            //TODO need to change this
             <TextCell> <PercentageChart actualVal={sum(Object.values(csDistrictEnrollment))} percentage={sum(Object.values(csDistrictEnrollment)) / parseInt(districtEntry['Total HS'] as string)} /></TextCell>
 
         </TableRow>

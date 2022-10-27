@@ -28,7 +28,8 @@ function App() {
 
     useEffect(() => {
         //category
-        csv("/data/category.csv").then((categorization) => {
+        csv("/data/courses.csv").then((categorization) => {
+            console.log(categorization);
             stateUpdateWrapperUseJSON(courseCategorization, categorization, setCourseCategorization);
         });
 
@@ -37,14 +38,17 @@ function App() {
     useEffect(() => {
 
         // enrollment
-        csv("/data/enrollment.csv").then((enrollmentData) => {
-            const allCourseCode: string[] = courseCategorization.map((d) => d['core_code']);
-            stateUpdateWrapperUseJSON(enrollment, enrollmentData.filter((d) => d.school_year === '2018' && allCourseCode.includes(d['core_code'] || '')), setEnrollmentData);
+        csv("/data/school-cs-2021-22.csv").then((enrollmentData) => {
+            // const allCourseCode: string[] = courseCategorization.map((d) => d['core_code']);
+
+            // stateUpdateWrapperUseJSON(enrollment, enrollmentData.filter((d) => d.school_year === '2018' && allCourseCode.includes(d['core_code'] || '')), setEnrollmentData);
+
+            stateUpdateWrapperUseJSON(enrollment, enrollmentData, setEnrollmentData);
+            console.log(enrollmentData);
+
 
         });
     }, [courseCategorization]);
-
-    console.log(enrollment);
 
     const iOS =
         typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -65,7 +69,7 @@ function App() {
                         <Toolbar>
                             <AppBarButton children={<MenuIcon />} onClick={() => setDrawer(!drawerOpen)} />
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                Utah CS
+                                Utah CS, 2021-22 Academic Year
                             </Typography>
                             {/* <Button color="inherit">Login</Button> */}
                             <AppBarButton onClick={() => store.updateShowPercentage()}

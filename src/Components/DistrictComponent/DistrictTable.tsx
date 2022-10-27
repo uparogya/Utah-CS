@@ -1,5 +1,4 @@
-import styled from "@emotion/styled";
-import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody, Checkbox, Paper } from "@mui/material";
+import { Table, TableHead, TableRow, TableBody } from "@mui/material";
 import { sum } from "d3-array";
 import { csv } from "d3-fetch";
 import { observer } from "mobx-react-lite";
@@ -8,9 +7,10 @@ import { CategoryContext, EnrollmentDataContext } from "../../App";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import { PossibleCategories } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
-import { FunctionCell, StickyTableContainer, TextCell } from "../GeneralComponents";
+import { FunctionCell, StickyTableContainer } from "../GeneralComponents";
 import DistrictRow from "./DistrictRow";
 
+export type DistrictCSDemographic = { Total: number, Female: number; };
 
 const DistrictTable: FC = () => {
 
@@ -34,12 +34,17 @@ const DistrictTable: FC = () => {
 
                     console.log(schoolEnrollments);
 
-                    const newDistrictEnrollment: { [key: string]: number; } = { 'CSB': 0, 'CSA': 0, 'CSR': 0 };
+                    const newDistrictEnrollment: { [key: string]: DistrictCSDemographic; } = {
+                        'CSB': { Total: 0, Female: 0 },
+                        'CSA': { Total: 0, Female: 0 },
+                        'CSR': { Total: 0, Female: 0 }
+                    };
                     schoolEnrollments.forEach((school) => {
 
                         // newDistrictEnrollment.CSB += parseInt(school['Student enrollment']);
                         PossibleCategories.forEach(({ key }) => {
-                            newDistrictEnrollment[key] += (parseInt(school[`${key} Total`]) || 0);
+                            newDistrictEnrollment[key].Total += (parseInt(school[`${key} Total`]) || 0);
+                            newDistrictEnrollment[key].Female += (parseInt(school[`${key} Female`]) || 0);
                         });
                     });
                     return {
@@ -122,10 +127,8 @@ const DistrictTable: FC = () => {
                         <FunctionCell />
                         <SortableHeader onClick={() => toggleSort('LEA Name')} headerName='Disctrict Name' isSorting={sortAttribute === 'LEA Name' && !sortUp} isSortUp={sortUp} />
                         <SortableHeader onClick={() => toggleSort('Total HS')} isSortUp={sortUp} headerName='Total Students' isSorting={sortAttribute === 'Total HS'} />
-                        {/* <SortableHeader onClick={() => toggleSort('Total Students')} isSortUp={sortUp} isSortPercentage={sortCSPercentage} /> */}
                         <SortableHeader isSorting={sortAttribute === 'Female'} onClick={() => toggleSort('Female')} isSortUp={sortUp} isSortPercentage={sortCSPercentage} headerName='Gender' />
                         <SortableHeader isSorting={sortAttribute === 'enrollment'} onClick={() => toggleSort('enrollment')} isSortUp={sortUp} headerName='CS Enrollment' isSortPercentage={sortCSPercentage} />
-                        {/* <TextCell>CS Enrollment</TextCell> */}
 
                     </TableRow>
                 </TableHead>
@@ -141,5 +144,4 @@ const DistrictTable: FC = () => {
     );
 };
 
-export default (DistrictTable);
-//  <SortableHeader headerName="School Name" isSorting={sortAttribute === 'School Name' && !sortUp} isSortUp={sortUp} onClick={() => toggleSort('School Name')} />
+export default observer(DistrictTable);

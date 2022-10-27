@@ -22,7 +22,7 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum }: Props) => {
         setTotalStudent(maleNum + femaleNum);
     }, [maleNum, femaleNum]);
 
-    const TextMargin = 2;
+    const TextMargin = 5;
     return (
         <ComponentSVG onClick={(e) => store.updateShowPercentage()}>
             <g>

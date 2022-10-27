@@ -91,11 +91,14 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
                                     alignmentBaseline='middle'
                                     fill={XDarkGray}
                                 >
-                                    <DialogTSpan x={dialogSVGWidth} dy='-0.8em'>
+                                    <DialogTSpan x={dialogSVGWidth} dy='-1.6em'>
                                         {d}
                                     </DialogTSpan>
                                     <DialogTSpan x={dialogSVGWidth} dy='1.5em' >
-                                        {outputObj[d]}, {format(',.2%')(outputObj[d] / totalStudent)}
+                                        {outputObj[d]}
+                                    </DialogTSpan>
+                                    <DialogTSpan x={dialogSVGWidth} dy='1.5em'>
+                                        {format(',.2%')(outputObj[d] / totalStudent)}
                                     </DialogTSpan>
 
                                 </text>
@@ -116,6 +119,7 @@ const SmallerText = styled.span({
 });
 const DialogTSpan = styled.tspan({
     textAnchor: 'end',
-    alignmentBaseline: 'middle'
+    alignmentBaseline: 'middle',
+    fontSize: 'small',
 });
 export default observer(RaceChart);
