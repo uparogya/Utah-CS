@@ -7,7 +7,7 @@ import { LightGray } from "../../Preset/Colors";
 import { CellSVGHeight, CellSVGWidth } from "../../Preset/Constants";
 
 type Props = {
-    actualVal: number;
+    actualVal: number | string;
     percentage: number;
     tooltip?: string;
 };
@@ -28,10 +28,20 @@ const PercentageChart: FC<Props> = ({ actualVal, percentage, tooltip }: Props) =
             <BarText x={CellSVGWidth / 2}
                 y={CellSVGHeight / 2}
                 textAnchor='middle'>
-                {actualVal === 0 ? '-' : store.showPercentage ? format(',.2%')(percentage) : actualVal}
+                {computeTextOutcome(actualVal, percentage, store.showPercentage)}
             </BarText>
         </SmallerComponentSVG>
     );
+};
+
+const computeTextOutcome = (input: string | number, percentage: number, showPercentage: boolean) => {
+    if (input === 0) {
+        return '-';
+    }
+    if (input === 'n<10') {
+        return input;
+    }
+    return showPercentage ? format(',.2%')(percentage) : input;
 };
 
 const BarText = styled.text`

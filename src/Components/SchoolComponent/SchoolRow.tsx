@@ -41,10 +41,7 @@ const SchoolRow: FC<Props> = ({ schoolEntry }: Props) => {
                 </TextCell>
                 {/* TODO fix the height here. */}
                 <TextCell>
-                    {(!totalCSEnrollment && findSpecialCase(schoolEntry['CSCourses'] as Enrollment)) ?
-                        'n<10'
-                        :
-                        <PercentageChart actualVal={totalCSEnrollment} percentage={totalCSEnrollment / parseInt(schoolEntry['Total Students'] as string)} />
+                    {<PercentageChart actualVal={(!totalCSEnrollment && findSpecialCase(schoolEntry['CSCourses'] as Enrollment)) ? 'n<10' : totalCSEnrollment} percentage={totalCSEnrollment / parseInt(schoolEntry['Total Students'] as string)} />
                     }
                 </TextCell>
             </TableRow>
