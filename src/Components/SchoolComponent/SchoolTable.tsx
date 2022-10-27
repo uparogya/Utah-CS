@@ -5,6 +5,8 @@ import { FC, useContext, useEffect, useState } from "react";
 import { EnrollmentDataContext } from "../../App";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import Store from "../../Interface/Store";
+import { CSDemographic, Enrollment } from "../../Interface/Types";
+import { DefaultEnrollment, PossibleCategories } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { FunctionCell, StickyTableContainer, TextCell } from "../GeneralComponents";
 import SchoolRow from "./SchoolRow";
@@ -14,7 +16,7 @@ type Props = {
 
 const SchoolTable: FC<Props> = ({ }: Props) => {
 
-    const [schoolDemographic, setSchoolDemographic] = useState<{ [key: string]: string | any[]; }[]>([]);
+    const [schoolDemographic, setSchoolDemographic] = useState<{ [key: string]: string | Enrollment; }[]>([]);
     const [schoolDataToShow, setSchoolDataToShow] = useState(schoolDemographic);
     const [sortAttribute, setSortAttribute] = useState('School Name');
     const [sortUp, setSortUp] = useState(true);
@@ -24,42 +26,42 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
     const store = useContext(Store);
     useEffect(() => {
         // shool offering
-        csv("/data/schoolOffer.csv")
-            .then((schoolCSOfferInput) => {
-                csv("/data/schoolDemo.csv").then((schoolDemo) => {
-                    const schoolDemoCopy = schoolDemo.filter(d => d['LEA TYPE'] === 'District').map((schoolEntry) => {
-                        const totalHS = parseInt(schoolEntry['Grade_9'] || '0') + parseInt(schoolEntry['Grade_10'] || '0') + parseInt(schoolEntry['Grade_11'] || '0') + parseInt(schoolEntry['Grade_12'] || '0');
 
-                        const csCourseOfferings = schoolCSOfferInput.filter(d => d['School Name'] === schoolEntry['School Name']);
-                        let csCourseEnrollment: {
-                            [key: string]: string;
-                        }[] = [];
-                        if (csCourseOfferings.length > 0) {
-                            const schoolID = csCourseOfferings[0]['School ID'];
-                            let findEnrollment = enrollmentData.filter((d) => d['school_id'] === schoolID);
-                            // console.log(findEnrollment);
-                            csCourseEnrollment = csCourseOfferings.map((course) => {
+        csv("/data/schoolDemo.csv").then((schoolDemo) => {
+            console.log(schoolDemo);
+            const schoolDemoCopy = schoolDemo.map((schoolEntry) => {
+                const totalHS = parseInt(schoolEntry['Grade_9'] || '0') + parseInt(schoolEntry['Grade_10'] || '0') + parseInt(schoolEntry['Grade_11'] || '0') + parseInt(schoolEntry['Grade_12'] || '0');
+                const enrollmentEntry = enrollmentData.filter(d => d['School Name'] === schoolEntry['School Name']);
+                if (enrollmentEntry.length && (parseInt(enrollmentEntry[0]['Total HS']) || enrollmentEntry[0]['Total HS'] === 'n<10')) {
+                    return {
+                        ...schoolEntry,
+                        'LEA Name': (schoolEntry['LEA Name'] || '').split(' ').slice(0, -1).join(' '),
+                        Female: `${parseInt(schoolEntry['Female'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
+                        Male: `${parseInt(schoolEntry['Male'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
+                        'Total Students': `${totalHS}`,
+                        CSCourses: {
+                            CSB: { Total: convertEntry(enrollmentEntry[0]['CSB Total']), Female: convertEntry(enrollmentEntry[0]['CSB Female']) },
+                            CSA: { Total: convertEntry(enrollmentEntry[0]['CSA Total']), Female: convertEntry(enrollmentEntry[0]['CSA Female']) },
+                            CSR: { Total: convertEntry(enrollmentEntry[0]['CSR Total']), Female: convertEntry(enrollmentEntry[0]['CSR Female']) }
+                        } as Enrollment
 
-                                // find enrollment data
-                                const allsections = findEnrollment.filter((d) => d['core_code'] === course['Course ID']);
+                    };
+                } else {
+                    return {
+                        ...schoolEntry,
+                        'LEA Name': (schoolEntry['LEA Name'] || '').split(' ').slice(0, -1).join(' '),
+                        Female: `${parseInt(schoolEntry['Female'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
+                        Male: `${parseInt(schoolEntry['Male'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
+                        'Total Students': `${totalHS}`,
+                        CSCourses: DefaultEnrollment
+                    };
+                }
 
-                                return { ...course, enrollment: `${allsections.reduce((a, b) => a + parseInt(b['Student enrollment']), 0)}` };
-                            });
-                        }
 
-                        return {
-                            ...schoolEntry,
-                            'LEA Name': (schoolEntry['LEA Name'] || '').split(' ').slice(0, -1).join(' '),
-                            Female: `${parseInt(schoolEntry['Female'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
-                            Male: `${parseInt(schoolEntry['Male'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
-                            'Total-HS': `${totalHS}`,
-                            CSCourses: csCourseEnrollment
-                        };
-
-                    }).filter(d => parseInt(d['Total-HS']) > 0);
-                    stateUpdateWrapperUseJSON(schoolDemographic, schoolDemoCopy, setSchoolDemographic);
-                });
-            });
+            }).filter(d => parseInt(d['Total Students']) > 0);
+            stateUpdateWrapperUseJSON(schoolDemographic, schoolDemoCopy, setSchoolDemographic);
+        });
+        console.log(schoolDemographic);
     }, [enrollmentData]);
 
     useEffect(() => {
@@ -68,11 +70,11 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
             //sorting by numbers
             if (sortAttribute !== 'School Name') {
                 if (sortAttribute === 'enrollment') {
-                    const aTotal = (a['CSCourses'] as any[]).reduce((sum, course) => sum + parseInt(course['enrollment']), 0);
-                    const bTotal = (b['CSCourses'] as any[]).reduce((sum, course) => sum + parseInt(course['enrollment']), 0);
+                    const aTotal = PossibleCategories.reduce((sum, category) => sum + (parseInt(`${(a['CSCourses'] as Enrollment)[category.key].Total}`) || 0), 0);
+                    const bTotal = PossibleCategories.reduce((sum, category) => sum + (parseInt(`${(b['CSCourses'] as Enrollment)[category.key].Total}`) || 0), 0);
                     if (sortCSPercentage) {
-                        const aPercentage = aTotal / parseInt(a['Total-HS'] as string);
-                        const bPercentage = bTotal / parseInt(b['Total-HS'] as string);
+                        const aPercentage = aTotal / parseInt(a['Total Students'] as string);
+                        const bPercentage = bTotal / parseInt(b['Total Students'] as string);
                         return sortUp ? aPercentage - bPercentage : bPercentage - aPercentage;
                     } return sortUp ? aTotal - bTotal : bTotal - aTotal;
                 }
@@ -137,7 +139,7 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
                 <TableRow>
                     <FunctionCell />
                     <SortableHeader headerName="School Name" isSorting={sortAttribute === 'School Name' && !sortUp} isSortUp={sortUp} onClick={() => toggleSort('School Name')} />
-                    <SortableHeader onClick={() => toggleSort('Total-HS')} headerName='Total Students' isSortUp={sortUp} isSorting={sortAttribute === 'Total-HS'} />
+                    <SortableHeader onClick={() => toggleSort('Total Students')} headerName='Total Students' isSortUp={sortUp} isSorting={sortAttribute === 'Total Students'} />
                     <SortableHeader onClick={() => toggleSort('enrollment')} headerName='CS Enrollment' isSortUp={sortUp} isSortPercentage={sortCSPercentage} isSorting={sortAttribute === 'enrollment'} />
                 </TableRow>
             </TableHead>
@@ -149,3 +151,10 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
 };
 
 export default observer(SchoolTable);
+
+const convertEntry = (input: string) => {
+    if (input === 'n<10') {
+        return 'n<10';
+    }
+    return parseInt(input) || 0;
+};

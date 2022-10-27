@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { Tooltip } from "@mui/material";
 import { format } from "d3-format";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";

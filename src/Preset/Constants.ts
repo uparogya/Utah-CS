@@ -2,7 +2,6 @@ export const CellSVGHeight = 40;
 export const CellSVGWidth = 100;
 
 
-
 export const PossibleCategories = [
     { name: 'CS-basic', key: 'CSB' },
     { name: 'CS-advanced', key: 'CSA' },
@@ -20,4 +19,8 @@ export const RaceDictionary: { [key: string]: string; } = {
     asian: 'Asian',
 };
 
-export type CSCategory = 'CS-related' | 'CS-advanced' | 'CS-basic';
+export const DefaultEnrollment = {
+    CSB: { Total: 0, Female: 0 },
+    CSA: { Total: 0, Female: 0 },
+    CSR: { Total: 0, Female: 0 }
+};

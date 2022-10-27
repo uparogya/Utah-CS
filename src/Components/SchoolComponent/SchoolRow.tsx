@@ -3,13 +3,15 @@ import { FC, useContext, useEffect, useState } from "react";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { CourseCategoryColor, DarkGray } from "../../Preset/Colors";
-import { format } from "d3-format";
 import { CategoryContext } from "../../App";
 import PercentageChart from "../CellComponents/PercentageChart";
 import { FunctionCell, NoBorderCell, TextCell } from "../GeneralComponents";
+import { Enrollment } from "../../Interface/Types";
+import { PossibleCategories } from "../../Preset/Constants";
+import { sum } from "d3-array";
 
 type Props = {
-    schoolEntry: { [key: string]: string | any[]; };
+    schoolEntry: { [key: string]: string | Enrollment; };
 };
 
 const SchoolRow: FC<Props> = ({ schoolEntry }: Props) => {
@@ -21,14 +23,9 @@ const SchoolRow: FC<Props> = ({ schoolEntry }: Props) => {
     const category = useContext(CategoryContext);
 
     useEffect(() => {
-        setEnrollment(schoolEntry['CSCourses'].length > 0 && typeof schoolEntry['CSCourses'] === 'object' ? schoolEntry['CSCourses'].reduce((sum, course) => sum + parseInt(course['enrollment']), 0) : 0);
+
+        setEnrollment(PossibleCategories.reduce((sum, category) => sum + (parseInt(`${(schoolEntry['CSCourses'] as Enrollment)[category.key].Total}`) || 0), 0));
     }, [schoolEntry]);
-
-
-    const findCourseCategoryColor = (csCourse: { [key: string]: string; }) => {
-        let categoryResult = category.filter((d) => d['core_code'] === csCourse['Course ID']);
-        return categoryResult.length > 0 ? CourseCategoryColor[categoryResult[0]['category']] : DarkGray;
-    };
 
     return (
         <>
@@ -37,40 +34,41 @@ const SchoolRow: FC<Props> = ({ schoolEntry }: Props) => {
                     {isExpanded ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
                 </FunctionCell>
                 <TextCell onClick={() => setIsExpanded(!isExpanded)}>
-                    {schoolEntry['School Name']}
+                    {(schoolEntry['School Name'] as string)}
                 </TextCell>
                 <TextCell onClick={() => setIsExpanded(!isExpanded)}>
-                    {schoolEntry['Total-HS']}
+                    {(schoolEntry['Total Students'] as string)}
                 </TextCell>
+                {/* TODO fix the height here. */}
                 <TextCell>
-                    <PercentageChart actualVal={totalCSEnrollment} percentage={totalCSEnrollment / parseInt(schoolEntry['Total-HS'] as string)} />
+                    {(!totalCSEnrollment && findSpecialCase(schoolEntry['CSCourses'] as Enrollment)) ?
+                        'n<10'
+                        :
+                        <PercentageChart actualVal={totalCSEnrollment} percentage={totalCSEnrollment / parseInt(schoolEntry['Total Students'] as string)} />
+                    }
                 </TextCell>
             </TableRow>
-            {isExpanded ?
-                (schoolEntry['CSCourses'].length > 0 && typeof schoolEntry['CSCourses'] === 'object') ?
-                    schoolEntry['CSCourses'].map((csCourse) => (
-                        <TableRow key={`${schoolEntry['School Name']}-${csCourse['Course ID']}`}>
-                            <NoBorderCell />
-                            <TableCell colSpan={2} style={{ color: findCourseCategoryColor(csCourse) }}>
-                                {csCourse['Course Name']}
-                            </TableCell>
-                            <TableCell style={{ color: DarkGray }}>
-                                {csCourse['enrollment']}
-                            </TableCell>
-                        </TableRow>
-                    )) :
-                    <TableRow>
-                        <TableCell />
-                        <TableCell colSpan={3} style={{ color: DarkGray }}>
-                            -- None Offered --
-                        </TableCell>
+            {isExpanded ? (
+                Object.keys(schoolEntry['CSCourses']).map((category) => (
+
+                    <TableRow key={`${schoolEntry['School Name']}-${category}`}>
+                        <NoBorderCell />
+                        <TextCell style={{ color: CourseCategoryColor[category] }} children={category} />
+                        <TextCell colSpan={2}>
+                            <PercentageChart actualVal={(schoolEntry['CSCourses'] as Enrollment)[category].Total as number} percentage={(schoolEntry['CSCourses'] as Enrollment)[category].Total as number / sum(Object.values(schoolEntry['CSCourses']).map(d => d.Total as number))} />
+                        </TextCell>
+
 
                     </TableRow>
-
-                : <></>}
+                ))
+            ) : <></>}
         </>
 
 
     );
 };
 export default SchoolRow;
+
+const findSpecialCase = (input: Enrollment) => {
+    return input.CSA.Total === 'n<10' || input.CSB.Total === 'n<10' || input.CSR.Total === 'n<10';
+};

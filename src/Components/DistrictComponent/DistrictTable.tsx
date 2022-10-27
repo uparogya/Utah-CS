@@ -5,12 +5,13 @@ import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import { CategoryContext, EnrollmentDataContext } from "../../App";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
-import { PossibleCategories } from "../../Preset/Constants";
+import { Enrollment } from "../../Interface/Types";
+import { DefaultEnrollment, PossibleCategories } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { FunctionCell, StickyTableContainer } from "../GeneralComponents";
 import DistrictRow from "./DistrictRow";
 
-export type DistrictCSDemographic = { Total: number, Female: number; };
+
 
 const DistrictTable: FC = () => {
 
@@ -32,19 +33,13 @@ const DistrictTable: FC = () => {
                     // console.log(districtEntry);
                     const schoolEnrollments = enrollmentData.filter(d => d['District Name'] === districtEntry['LEA Name']);
 
-                    console.log(schoolEnrollments);
 
-                    const newDistrictEnrollment: { [key: string]: DistrictCSDemographic; } = {
-                        'CSB': { Total: 0, Female: 0 },
-                        'CSA': { Total: 0, Female: 0 },
-                        'CSR': { Total: 0, Female: 0 }
-                    };
+                    const newDistrictEnrollment: Enrollment = JSON.parse(JSON.stringify(DefaultEnrollment));
+
                     schoolEnrollments.forEach((school) => {
-
-                        // newDistrictEnrollment.CSB += parseInt(school['Student enrollment']);
                         PossibleCategories.forEach(({ key }) => {
-                            newDistrictEnrollment[key].Total += (parseInt(school[`${key} Total`]) || 0);
-                            newDistrictEnrollment[key].Female += (parseInt(school[`${key} Female`]) || 0);
+                            (newDistrictEnrollment[key].Total as number) += (parseInt(school[`${key} Total`]) || 0);
+                            (newDistrictEnrollment[key].Female as number) += (parseInt(school[`${key} Female`]) || 0);
                         });
                     });
                     return {
