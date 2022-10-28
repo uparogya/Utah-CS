@@ -28,14 +28,15 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
         // shool offering
 
         csv("/data/schoolDemo.csv").then((schoolDemo) => {
-            console.log(schoolDemo);
             const schoolDemoCopy = schoolDemo.map((schoolEntry) => {
                 const totalHS = parseInt(schoolEntry['Grade_9'] || '0') + parseInt(schoolEntry['Grade_10'] || '0') + parseInt(schoolEntry['Grade_11'] || '0') + parseInt(schoolEntry['Grade_12'] || '0');
                 const enrollmentEntry = enrollmentData.filter(d => d['School Name'] === schoolEntry['School Name']);
+                if (schoolEntry['School Name'] === 'Renaissance Academy') console.log(schoolEntry);
                 if (enrollmentEntry.length && (parseInt(enrollmentEntry[0]['Total HS']) || enrollmentEntry[0]['Total HS'] === 'n<10')) {
+
                     return {
                         ...schoolEntry,
-                        'LEA Name': (schoolEntry['LEA Name'] || '').split(' ').slice(0, -1).join(' '),
+                        'LEA Name': (schoolEntry['LEA Name'] || ''),
                         Female: `${parseInt(schoolEntry['Female'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
                         Male: `${parseInt(schoolEntry['Male'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
                         'Total Students': `${totalHS}`,
@@ -49,19 +50,17 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
                 } else {
                     return {
                         ...schoolEntry,
-                        'LEA Name': (schoolEntry['LEA Name'] || '').split(' ').slice(0, -1).join(' '),
+                        'LEA Name': (schoolEntry['LEA Name'] || ''),
                         Female: `${parseInt(schoolEntry['Female'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
                         Male: `${parseInt(schoolEntry['Male'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
                         'Total Students': `${totalHS}`,
                         CSCourses: DefaultEnrollment
                     };
                 }
-
-
             }).filter(d => parseInt(d['Total Students']) > 0);
+            console.log(schoolDemoCopy);
             stateUpdateWrapperUseJSON(schoolDemographic, schoolDemoCopy, setSchoolDemographic);
         });
-        console.log(schoolDemographic);
     }, [enrollmentData]);
 
     useEffect(() => {
@@ -144,7 +143,7 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {schoolDataToShow.map((schoolEntry) => <SchoolRow key={(schoolEntry['School Name'] as string)} schoolEntry={schoolEntry} />)}
+                {schoolDataToShow.map((schoolEntry) => <SchoolRow key={`${schoolEntry['School Name']} - ${schoolEntry['LEA Name']}`} schoolEntry={schoolEntry} />)}
             </TableBody>
         </Table>
     </StickyTableContainer>;

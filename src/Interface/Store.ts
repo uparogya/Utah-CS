@@ -22,6 +22,7 @@ export class AppStore {
     }
 
     setSelectedDistricts(districtName: string) {
+        console.log(districtName);
         if (this.selectedDistricts.includes(districtName)) {
             this.selectedDistricts = this.selectedDistricts.filter(d => d !== districtName);
         } else {
