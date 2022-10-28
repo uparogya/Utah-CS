@@ -65,18 +65,19 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
         </TableRow>
         {isExpanded ? (
             Object.keys(csDistrictEnrollment).map((category) => (
-                <TableRow key={`${districtEntry['LEA Name']}-${category}`}>
-                    <NoBorderCell />
-                    <NoBorderCell />
-                    <TextCell style={{ color: CourseCategoryColor[category] }} children={category} />
-                    <TextCell colSpan={2}>
-                        <PercentageChart actualVal={csDistrictEnrollment[category].Total as number} percentage={csDistrictEnrollment[category].Total as number / sum(Object.values(csDistrictEnrollment).map(d => d.Total as number))} />
-                    </TextCell>
+                csDistrictEnrollment[category].Total ?
+                    <TableRow key={`${districtEntry['LEA Name']}-${category}`}>
+                        <NoBorderCell />
+                        <NoBorderCell />
+                        <TextCell style={{ color: CourseCategoryColor[category] }} children={category} />
+                        <TextCell colSpan={2}>
+                            <PercentageChart actualVal={csDistrictEnrollment[category].Total as number} percentage={csDistrictEnrollment[category].Total as number / sum(Object.values(csDistrictEnrollment).map(d => d.Total as number))} />
+                        </TextCell>
 
-                    <TextCell>
-                        <GenderRatioChart femaleNum={csDistrictEnrollment[category].Female as number} maleNum={csDistrictEnrollment[category].Total as number - (csDistrictEnrollment[category].Female as number)} />
-                    </TextCell>
-                </TableRow>
+                        <TextCell>
+                            <GenderRatioChart femaleNum={csDistrictEnrollment[category].Female as number} maleNum={csDistrictEnrollment[category].Total as number - (csDistrictEnrollment[category].Female as number)} />
+                        </TextCell>
+                    </TableRow> : <></>
             ))
         ) : <></>}
     </>);
