@@ -92,6 +92,7 @@ const DistrictTable: FC = () => {
             return sortUp ? (a[sortAttribute] as string).localeCompare((b[sortAttribute] as string)) : (b[sortAttribute] as string).localeCompare((a[sortAttribute] as string));
         });
         stateUpdateWrapperUseJSON(sortedData, newSortedData, setSortedData);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [districtDemographic, sortAttribute, sortUp]);
 
     const toggleSort = (inputName: string) => {
