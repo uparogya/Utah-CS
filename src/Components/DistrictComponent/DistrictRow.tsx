@@ -56,6 +56,8 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
                 <GenderRatioChart
                     femaleNum={parseInt(districtEntry['Female'] as string)}
                     maleNum={parseInt(districtEntry['Male'] as string)}
+                    compareFemaleNum={sum(Object.values(csDistrictEnrollment).map(d => parseInt(`${d.Female}`) || 0))}
+                    compareMaleNum={sum(Object.values(csDistrictEnrollment).map(d => parseInt(`${d.Total}`) || 0)) - sum(Object.values(csDistrictEnrollment).map(d => parseInt(`${d.Female}`) || 0))}
                 />
             </TextCell>
 

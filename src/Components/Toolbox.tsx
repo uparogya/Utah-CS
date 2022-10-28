@@ -31,32 +31,41 @@ const Toolbox: FC = () => {
 
     };
     return (
-        <Box style={{ maxWidth: '300px', padding: '5px' }}>
-            <Container>
-                Select courses to include for state total data.
-            </Container>
-            <Stack>
-                {PossibleCategories.map((category) => (
-                    <Container key={`${category.name}-chip`}>
+        <Box style={{ maxWidth: '300px', paddingBottom: '20px' }}>
+            <List>
+                <ListItem>
+                    Select courses to include for state total data.
+                </ListItem>
+            </List>
+            <ListItem>
+                <Stack>
+                    {PossibleCategories.map((category) => (
+                        <Container key={`${category.name}-chip`}>
 
-                        <Chip label={category.name}
-                            clickable
-                            onClick={() => chipClickHandler(category.key)}
-                            style={{
-                                margin: '5px',
-                                backgroundColor: store.selectedCategory.includes(category.key) ? CourseCategoryColor[category.key] : undefined,
-                                color: store.selectedCategory.includes(category.key) ? LightGray : undefined
-                            }}
-                        // color={store.selectedCategory.includes(chipName) ? 'primary' : 'default'}
-                        />
-                        <Tooltip title='See list of courses'>
-                            <IconButton onClick={() => setDialog(category.key)}>
-                                <InfoOutlinedIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Container>
-                ))}
-            </Stack>
+                            <Chip label={category.name}
+                                clickable
+                                onClick={() => chipClickHandler(category.key)}
+                                style={{
+                                    margin: '5px',
+                                    backgroundColor: store.selectedCategory.includes(category.key) ? CourseCategoryColor[category.key] : undefined,
+                                    color: store.selectedCategory.includes(category.key) ? LightGray : undefined
+                                }}
+                            // color={store.selectedCategory.includes(chipName) ? 'primary' : 'default'}
+                            />
+                            <Tooltip title='See list of courses'>
+                                <IconButton onClick={() => setDialog(category.key)}>
+                                    <InfoOutlinedIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Container>
+                    ))}
+                </Stack>
+            </ListItem>
+
+            <ListItem>
+                Charter / District filter?
+            </ListItem>
+
             <Dialog open={Boolean(openCategoryDialog)} onClose={() => setDialog('')}>
                 <DialogTitle>{openCategoryDialog} courses</DialogTitle>
                 <List>

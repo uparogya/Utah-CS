@@ -63,7 +63,7 @@ function App() {
                     </Toolbar>
                 </AppBar>
                 <Grid container spacing={1}>
-                    <Grid item id="state-view" style={{ maxWidth: '100vw', paddingBottom: "24px" }} xs={12}>
+                    <Grid item id="state-view" style={{ minWidth: '100vw', paddingBottom: '20px' }} xs={12}>
                         <StateTable />
                     </Grid>
 
