@@ -19,6 +19,7 @@ const Toolbox: FC = () => {
             stateUpdateWrapperUseJSON(courseCategorization, categorization, setCourseCategorization);
         });
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const [openCategoryDialog, setDialog] = useState('');

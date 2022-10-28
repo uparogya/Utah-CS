@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import './App.css';
-import { AppBar, Divider, Grid, IconButton, SwipeableDrawer, Toolbar, Typography, useTheme } from '@mui/material';
+import { AppBar, Grid, IconButton, SwipeableDrawer, Toolbar, Typography } from '@mui/material';
 import StateTable from './Components/StateTable';
 import DistrictTable from './Components/DistrictComponent/DistrictTable';
 import SchoolTable from './Components/SchoolComponent/SchoolTable';
@@ -34,6 +34,7 @@ function App() {
             stateUpdateWrapperUseJSON(enrollment, enrollmentData, setEnrollmentData);
             console.log(enrollmentData);
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const iOS =
