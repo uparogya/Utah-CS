@@ -1,4 +1,4 @@
-import { TableRow, TableCell, Checkbox } from "@mui/material";
+import { TableRow, Checkbox } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
 import GenderRatioChart from "../CellComponents/GenderRatioChart";
 import Store from "../../Interface/Store";

@@ -8,18 +8,18 @@ import RaceChart from "./CellComponents/RaceChart";
 import PercentageChart from "./CellComponents/PercentageChart";
 import Store from "../Interface/Store";
 import { format } from "d3-format";
+import { EnrollmentDataContext } from "../App";
 
-type Props = {
 
-};
 
-const StateTable: FC<Props> = ({ }: Props) => {
+const StateTable: FC = () => {
     const store = useContext(Store);
     const SCHOOL_YEAR = '2021-22';
     //data variables
 
     const [stateDemographic, setStateDemographic] = useState([]);
     const [stateCSDemographic, setStateCSDemographic] = useState([]);
+    const [csFemaleTotal, setCSFemaleTotal] = useState(0);
 
     const findCSDemographicAttribute = (attributeName: string) => {
         let returning = 0;
@@ -32,13 +32,13 @@ const StateTable: FC<Props> = ({ }: Props) => {
 
     };
 
+    const schoolEnrollmentData = useContext(EnrollmentDataContext);
 
 
 
     const [totalStudentNum, setTotalStudentNum] = useState(0);
 
     const [totalCSStudentNum, setTotalCSStudentNum] = useState(0);
-
 
     const findGeneralDemographicAttributeWithYear = (yearNum: string, attributeName: string) => {
         if (stateDemographic.length > 0) {
@@ -75,10 +75,18 @@ const StateTable: FC<Props> = ({ }: Props) => {
 
     useEffect(() => {
         setTotalCSStudentNum(findCSDemographicAttribute('Total'));
-    }, [store.selectedCategory]);
 
+        setCSFemaleTotal(
+            schoolEnrollmentData.reduce((sum, curSchool) => {
+                let total = 0;
+                store.selectedCategory.forEach((cat) => {
+                    total += (parseInt(curSchool[`${cat} Female`]) || 0);
+                });
+                return sum + total;
+            }, 0));
 
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [store.selectedCategory, schoolEnrollmentData]);
 
     return (<TableContainer component={Paper} >
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -151,8 +159,8 @@ const StateTable: FC<Props> = ({ }: Props) => {
                             tooltip={`${format(',.2%')(totalCSStudentNum / totalStudentNum)} out of all HS students`} /></TableCell>
                     <TableCell>
                         <GenderRatioChart
-                            maleNum={findCSDemographicAttribute('Male')}
-                            femaleNum={findCSDemographicAttribute('Female')} />
+                            maleNum={totalCSStudentNum - csFemaleTotal}
+                            femaleNum={csFemaleTotal} />
                     </TableCell>
                     <TableCell>
                         <RaceChart keyIdentity="CS"
