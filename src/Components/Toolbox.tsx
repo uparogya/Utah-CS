@@ -1,17 +1,25 @@
 import { Stack, Chip, Container, Box, Dialog, DialogTitle, List, ListItem, IconButton, Tooltip, Button, DialogActions } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Store from "../Interface/Store";
 import { PossibleCategories } from "../Preset/Constants";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { CategoryContext } from "../App";
 import { CourseCategoryColor, LightGray } from "../Preset/Colors";
+import { csv } from "d3-fetch";
+import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
 
 const Toolbox: FC = () => {
 
     const store = useContext(Store);
 
-    const categories = useContext(CategoryContext);
+    const [courseCategorization, setCourseCategorization] = useState([]);
+    useEffect(() => {
+        //category
+        csv("/data/courses.csv").then((categorization) => {
+            stateUpdateWrapperUseJSON(courseCategorization, categorization, setCourseCategorization);
+        });
+
+    }, []);
 
     const [openCategoryDialog, setDialog] = useState('');
     const chipClickHandler = (chipName: string) => {
@@ -20,6 +28,7 @@ const Toolbox: FC = () => {
         } else {
             store.setCategory(store.selectedCategory.concat([chipName]));
         }
+
     };
     return (
         <Box style={{ maxWidth: '300px', padding: '5px' }}>
@@ -41,7 +50,7 @@ const Toolbox: FC = () => {
                         // color={store.selectedCategory.includes(chipName) ? 'primary' : 'default'}
                         />
                         <Tooltip title='See list of courses'>
-                            <IconButton onClick={() => setDialog(category.name)}>
+                            <IconButton onClick={() => setDialog(category.key)}>
                                 <InfoOutlinedIcon />
                             </IconButton>
                         </Tooltip>
@@ -51,7 +60,7 @@ const Toolbox: FC = () => {
             <Dialog open={Boolean(openCategoryDialog)} onClose={() => setDialog('')}>
                 <DialogTitle>{openCategoryDialog} courses</DialogTitle>
                 <List>
-                    {categories.map((cate) => cate['category'] === openCategoryDialog ? <ListItem key={cate['core_code']}>{cate['core_short_desc']}</ListItem> : <></>
+                    {courseCategorization.map((cate) => cate['Initial Category'] === openCategoryDialog ? <ListItem key={cate['State Course Code']}>{cate['Course Name']}</ListItem> : <></>
                     )}
                 </List>
                 <DialogActions>

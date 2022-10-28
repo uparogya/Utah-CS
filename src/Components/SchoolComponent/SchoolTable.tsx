@@ -31,7 +31,6 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
             const schoolDemoCopy = schoolDemo.map((schoolEntry) => {
                 const totalHS = parseInt(schoolEntry['Grade_9'] || '0') + parseInt(schoolEntry['Grade_10'] || '0') + parseInt(schoolEntry['Grade_11'] || '0') + parseInt(schoolEntry['Grade_12'] || '0');
                 const enrollmentEntry = enrollmentData.filter(d => d['School Name'] === schoolEntry['School Name']);
-                if (schoolEntry['School Name'] === 'Renaissance Academy') console.log(schoolEntry);
                 if (enrollmentEntry.length && (parseInt(enrollmentEntry[0]['Total HS']) || enrollmentEntry[0]['Total HS'] === 'n<10')) {
 
                     return {

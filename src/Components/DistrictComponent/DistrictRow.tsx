@@ -7,7 +7,6 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { FunctionCell, NoBorderCell, TextCell } from "../GeneralComponents";
 import PercentageChart from "../CellComponents/PercentageChart";
-import { CategoryContext, EnrollmentDataContext } from "../../App";
 import { sum } from "d3-array";
 import RemoveIcon from '@mui/icons-material/Remove';
 import { CourseCategoryColor } from "../../Preset/Colors";

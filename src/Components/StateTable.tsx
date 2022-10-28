@@ -8,7 +8,6 @@ import RaceChart from "./CellComponents/RaceChart";
 import PercentageChart from "./CellComponents/PercentageChart";
 import Store from "../Interface/Store";
 import { format } from "d3-format";
-import { CategoryContext } from "../App";
 
 type Props = {
 

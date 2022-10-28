@@ -3,7 +3,7 @@ import { sum } from "d3-array";
 import { csv } from "d3-fetch";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
-import { CategoryContext, EnrollmentDataContext } from "../../App";
+import { EnrollmentDataContext } from "../../App";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import { Enrollment } from "../../Interface/Types";
 import { DefaultEnrollment, PossibleCategories } from "../../Preset/Constants";
@@ -20,7 +20,6 @@ const DistrictTable: FC = () => {
     const [sortUp, setSortUp] = useState(true);
     const enrollmentData = useContext(EnrollmentDataContext);
 
-    const courseCategory = useContext(CategoryContext);
 
     const [districtDemographic, setDistrictDemographic] = useState([]);
     const [sortedData, setSortedData] = useState(districtDemographic);
@@ -65,7 +64,7 @@ const DistrictTable: FC = () => {
             stateUpdateWrapperUseJSON(districtDemographic, cleanedDistrictTable, setDistrictDemographic);
         });
 
-    }, [courseCategory, enrollmentData]);
+    }, [enrollmentData]);
 
     useEffect(() => {
         let newSortedData = [...districtDemographic];
