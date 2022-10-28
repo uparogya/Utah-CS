@@ -24,26 +24,12 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
 
     const [csDistrictEnrollment, setCSEnrollment] = useState<{ [key: string]: CSDemographic; }>(districtEntry['enrollment'] as { [key: string]: CSDemographic; });
 
-    const enrollmentData = useContext(EnrollmentDataContext);
-
-    const courseCategory = useContext(CategoryContext);
-
     useEffect(() => {
         setCSEnrollment(districtEntry['enrollment'] as { [key: string]: CSDemographic; });
+
         setExpandable(districtEntry['expandable'] === 'true');
     }, [districtEntry]);
-    // useEffect(() => {
-    //     const courseEnrollment = enrollmentData.filter(d => d['LEA'] === districtEntry['LEA Name']);
-    //     setExpandable(courseEnrollment.length > 0);
-    //     const newDistrictEnrollment: { [key: string]: number; } = { "CS-related": 0, "CS-advanced": 0, "CS-basic": 0 };
-    //     courseEnrollment.forEach((course) => {
-    //         const filterResult = courseCategory.filter(c => c['core_code'] === course['core_code']);
-    //         const categoryResult = (filterResult.length > 0 ? filterResult[0][`category`] : 'CS-related');
-    //         newDistrictEnrollment[categoryResult] += parseInt(course['Student enrollment']);
-    //     });
-    //     setCSEnrollment(newDistrictEnrollment);
 
-    // }, [enrollmentData, courseCategory, districtEntry]);
 
 
 
@@ -66,7 +52,7 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
             </FunctionCell>
             <TextCell onClick={expansionToggle}>{districtEntry['LEA Name'] as string}</TextCell>
             <TextCell onClick={expansionToggle}>{districtEntry['Total HS'] as string}</TextCell>
-            <TextCell> <PercentageChart actualVal={sum(Object.values(csDistrictEnrollment).map(d => d.Total as number))} percentage={sum(Object.values(csDistrictEnrollment).map(d => d.Total as number)) / parseInt(districtEntry['Total HS'] as string)} /></TextCell>
+            <TextCell> <PercentageChart actualVal={getSum(csDistrictEnrollment)} percentage={sum(Object.values(csDistrictEnrollment).map(d => d.Total as number)) / parseInt(districtEntry['Total HS'] as string)} /></TextCell>
             <TextCell>
                 <GenderRatioChart
                     femaleNum={parseInt(districtEntry['Female'] as string)}
@@ -97,3 +83,16 @@ const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
 };
 
 export default observer(DistrictRow);
+
+const getSum = (districtEnrollment: { [key: string]: CSDemographic; }) => {
+    let hasSpecialCase = false;
+    const sumResult = sum(Object.values(districtEnrollment).map(d => {
+        hasSpecialCase = hasSpecialCase || d.Total === 'n<10';
+        return d.Total as number;
+    }));
+    if (!sumResult && hasSpecialCase) {
+
+    }
+    return (!sumResult && hasSpecialCase) ? 'n<10' : sumResult;
+
+};

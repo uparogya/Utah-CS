@@ -36,12 +36,24 @@ const DistrictTable: FC = () => {
 
                     const newDistrictEnrollment: Enrollment = JSON.parse(JSON.stringify(DefaultEnrollment));
 
-                    schoolEnrollments.forEach((school) => {
-                        PossibleCategories.forEach(({ key }) => {
+
+
+                    PossibleCategories.forEach(({ key }) => {
+                        let totalEnrollment = 0;
+                        let isSpecialCase = false;
+                        schoolEnrollments.forEach((school) => {
+                            isSpecialCase = isSpecialCase || school[`${key} Total`] === 'n<10';
                             (newDistrictEnrollment[key].Total as number) += (parseInt(school[`${key} Total`]) || 0);
+                            totalEnrollment += (parseInt(school[`${key} Total`]) || 0);
                             (newDistrictEnrollment[key].Female as number) += (parseInt(school[`${key} Female`]) || 0);
                         });
+                        if (!totalEnrollment && isSpecialCase) {
+                            newDistrictEnrollment[key].Total = 'n<10';
+                        }
                     });
+
+
+
                     return {
                         ...districtEntry,
                         expandable: (schoolEnrollments.length > 0).toString(),
