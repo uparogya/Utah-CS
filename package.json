@@ -1,6 +1,7 @@
 {
     "name": "utah-cs",
     "version": "0.1.0",
+    "homepage": "https://haihan-lin.github.io/Utah-CS",
     "private": true,
     "dependencies": {
         "@emotion/react": "^11.9.3",
@@ -18,6 +19,7 @@
         "d3-fetch": "^3.0.1",
         "d3-format": "^3.1.0",
         "d3-scale": "^4.0.2",
+        "gh-pages": "^4.0.0",
         "mobx": "^6.6.1",
         "mobx-react-lite": "^3.4.0",
         "react": "^18.2.0",
@@ -31,7 +33,9 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "predeploy": "yarn run build",
+        "deploy": "gh-pages -d build"
     },
     "eslintConfig": {
         "extends": [

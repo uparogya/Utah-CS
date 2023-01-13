@@ -24,4 +24,4 @@ yarn-error.log*
 
 /.vscode
 /public/data
-/public/updated_data
+# /public/updated_data
