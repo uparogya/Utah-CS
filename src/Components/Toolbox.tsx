@@ -23,14 +23,7 @@ const Toolbox: FC = () => {
     }, []);
 
     const [openCategoryDialog, setDialog] = useState('');
-    const chipClickHandler = (chipName: string) => {
-        if (store.selectedCategory.includes(chipName)) {
-            store.setCategory(store.selectedCategory.filter(d => d !== chipName));
-        } else {
-            store.setCategory(store.selectedCategory.concat([chipName]));
-        }
 
-    };
     return (
         <Box style={{ maxWidth: '300px', paddingBottom: '20px' }}>
             <List>
@@ -45,11 +38,11 @@ const Toolbox: FC = () => {
 
                             <Chip label={category.name}
                                 clickable
-                                onClick={() => chipClickHandler(category.key)}
+                                onClick={() => store.updateSelectedCategory(category.key)}
                                 style={{
                                     margin: '5px',
-                                    backgroundColor: store.selectedCategory.includes(category.key) ? CourseCategoryColor[category.key] : undefined,
-                                    color: store.selectedCategory.includes(category.key) ? LightGray : undefined
+                                    backgroundColor: store.currentShownCSType === category.key ? CourseCategoryColor[category.key] : undefined,
+                                    color: store.currentShownCSType === category.key ? LightGray : undefined
                                 }}
                             // color={store.selectedCategory.includes(chipName) ? 'primary' : 'default'}
                             />

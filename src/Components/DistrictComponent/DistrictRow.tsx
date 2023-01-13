@@ -13,75 +13,50 @@ import { CourseCategoryColor } from "../../Preset/Colors";
 import { CSDemographic } from "../../Interface/Types";
 
 type Props = {
-    districtEntry: { [key: string]: string | { [key: string]: CSDemographic; }; };
+    districtEntry: Array<string | number>;
+    titleEntry: string[];
 };
 
-const DistrictRow: FC<Props> = ({ districtEntry }: Props) => {
+const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
     const store = useContext(Store);
     const [isExpanded, setExpanded] = useState(false);
-    const [isExpandable, setExpandable] = useState(districtEntry.expandable === 'true');
-
-    const [csDistrictEnrollment, setCSEnrollment] = useState<{ [key: string]: CSDemographic; }>(districtEntry['enrollment'] as { [key: string]: CSDemographic; });
-
-    useEffect(() => {
-        setCSEnrollment(districtEntry['enrollment'] as { [key: string]: CSDemographic; });
-
-        setExpandable(districtEntry['expandable'] === 'true');
-    }, [districtEntry]);
 
 
 
 
-    const expansionToggle = () => {
-        if (isExpandable) {
-            setExpanded(!isExpanded);
-        }
+    const findAttribute = (attributeName: string) => {
+
+        return ((districtEntry[titleEntry.indexOf(attributeName)]) as number) || 0;
     };
 
+
+
     return (<>
-        <TableRow >
+        <TableRow>
             <FunctionCell>
-                <Checkbox checked={store.selectedDistricts.includes(districtEntry['LEA Name'] as string)}
-                    onChange={() => store.setSelectedDistricts(districtEntry['LEA Name'] as string)} />
+                <Checkbox checked={store.selectedDistricts.includes(districtEntry[0] as string)}
+                    onChange={() => store.setSelectedDistricts(districtEntry[0] as string)} />
             </FunctionCell>
 
-            <FunctionCell style={{ paddingTop: '5px' }}
-                onClick={expansionToggle}>
-                {isExpandable ? (isExpanded ? <ArrowDropDownIcon /> : <ArrowRightIcon />) : <RemoveIcon style={{ paddingLeft: '2px' }} fontSize="small" />}
-            </FunctionCell>
-            <TextCell onClick={expansionToggle}>{districtEntry['LEA Name'] as string}</TextCell>
-            <TextCell onClick={expansionToggle}>{districtEntry['Total HS'] as string}</TextCell>
-            <TextCell> <PercentageChart actualVal={getSum(csDistrictEnrollment)} percentage={sum(Object.values(csDistrictEnrollment).map(d => d.Total as number)) / parseInt(districtEntry['Total HS'] as string)} /></TextCell>
+            <TextCell>{findAttribute('District Name')}</TextCell>
+            <TextCell>{findAttribute('TOTAL: Total')}</TextCell>
+
+            <TextCell>
+                <PercentageChart
+                    actualVal={findAttribute(`${store.currentShownCSType}: Total`)}
+                    percentage={findAttribute(`${store.currentShownCSType}: Total`) / findAttribute('TOTAL: Total')} />
+            </TextCell>
             <TextCell>
                 <GenderRatioChart
-                    femaleNum={parseInt(districtEntry['Female'] as string)}
-                    maleNum={parseInt(districtEntry['Male'] as string)}
-                    compareFemaleNum={sum(Object.values(csDistrictEnrollment).map(d => parseInt(`${d.Female}`) || 0))}
-                    compareMaleNum={sum(Object.values(csDistrictEnrollment).map(d => parseInt(`${d.Total}`) || 0)) - sum(Object.values(csDistrictEnrollment).map(d => parseInt(`${d.Female}`) || 0))}
+                    femaleNum={findAttribute('TOTAL: Female')}
+                    maleNum={findAttribute('TOTAL: Male')}
+                    compareFemaleNum={findAttribute(`${store.currentShownCSType}: Female`)}
+                    compareMaleNum={findAttribute(`${store.currentShownCSType}: Male`)}
                 />
             </TextCell>
-
-
-
         </TableRow>
-        {isExpanded ? (
-            Object.keys(csDistrictEnrollment).map((category) => (
-                csDistrictEnrollment[category].Total ?
-                    <TableRow key={`${districtEntry['LEA Name']}-${category}`}>
-                        <NoBorderCell />
-                        <NoBorderCell />
-                        <TextCell style={{ color: CourseCategoryColor[category] }} children={category} />
-                        <TextCell colSpan={2}>
-                            <PercentageChart actualVal={csDistrictEnrollment[category].Total as number} percentage={csDistrictEnrollment[category].Total as number / sum(Object.values(csDistrictEnrollment).map(d => d.Total as number))} />
-                        </TextCell>
-
-                        <TextCell>
-                            <GenderRatioChart femaleNum={csDistrictEnrollment[category].Female as number} maleNum={csDistrictEnrollment[category].Total as number - (csDistrictEnrollment[category].Female as number)} />
-                        </TextCell>
-                    </TableRow> : <></>
-            ))
-        ) : <></>}
     </>);
+
 };
 
 export default observer(DistrictRow);

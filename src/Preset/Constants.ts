@@ -3,9 +3,11 @@ export const CellSVGWidth = 100;
 
 
 export const PossibleCategories = [
-    { name: 'CS-basic', key: 'CSB' },
-    { name: 'CS-advanced', key: 'CSA' },
-    { name: 'CS-related', key: 'CSR' }
+    { name: 'CS Basic', key: 'CSB' },
+    { name: 'CS Advanced', key: 'CSA' },
+    { name: 'CS Related', key: 'CSR' },
+    { name: 'CS Core (CSB SCR)', key: 'CSC' },
+    { name: 'All CS Courses', key: 'CS' }
 ];
 
 // Add a cut off for smallest student category to be shown

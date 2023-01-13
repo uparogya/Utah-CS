@@ -23,10 +23,10 @@ const SchoolRow: FC<Props> = ({ schoolEntry }: Props) => {
 
 
     useEffect(() => {
-        const enrollmentEntry = schoolEntry['CSCourses'] as Enrollment;
-        setEnrollment(PossibleCategories.reduce((sum, category) => sum + (parseInt(`${enrollmentEntry[category.key].Total}`) || 0), 0));
+        // const enrollmentEntry = schoolEntry['CSCourses'] as Enrollment;
+        // setEnrollment(PossibleCategories.reduce((sum, category) => sum + (parseInt(`${enrollmentEntry[category.key].Total}`) || 0), 0));
 
-        setIsExpandable(Boolean(enrollmentEntry.CSA.Total || enrollmentEntry.CSB.Total || enrollmentEntry.CSR.Total));
+        // setIsExpandable(Boolean(enrollmentEntry.CSA.Total || enrollmentEntry.CSB.Total || enrollmentEntry.CSR.Total));
     }, [schoolEntry]);
 
     return (

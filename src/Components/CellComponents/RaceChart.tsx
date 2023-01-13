@@ -19,10 +19,9 @@ type Props = {
     otherNum: number,
     hispaNum: number,
     keyIdentity: string,
-    otherTooltip?: string,
 };
 
-const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asianNum, otherNum, hispaNum, otherTooltip }: Props) => {
+const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asianNum, otherNum, hispaNum }: Props) => {
 
 
     const dialogSVGWidth = 300;

@@ -1,11 +1,14 @@
 import { Table, TableHead, TableRow, TableBody } from "@mui/material";
-import { sum } from "d3-array";
+import { sort, sum } from "d3-array";
 import { csv } from "d3-fetch";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
+import readXlsxFile from "read-excel-file";
 import { EnrollmentDataContext } from "../../App";
+import { findAttribute } from "../../Interface/AttributeFinder";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
-import { Enrollment } from "../../Interface/Types";
+import Store from "../../Interface/Store";
+import { CourseCategoryColor } from "../../Preset/Colors";
 import { DefaultEnrollment, PossibleCategories } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { FunctionCell, StickyTableContainer } from "../GeneralComponents";
@@ -15,114 +18,99 @@ import DistrictRow from "./DistrictRow";
 
 const DistrictTable: FC = () => {
 
-    const [sortAttribute, setSortAttribute] = useState('LEA Name');
+    const store = useContext(Store);
+
+    const [sortAttribute, setSortAttribute] = useState('District Name');
     const [sortCSPercentage, setSortPercentage] = useState(true);
     const [sortUp, setSortUp] = useState(true);
-    const enrollmentData = useContext(EnrollmentDataContext);
+    const [titleEntry, setTitleEntry] = useState<string[]>([]);
+
+    const districtAttributeFinder = (attributeName: string, selectedRow: (string | number)[]) =>
+        findAttribute(attributeName, districtData, titleEntry, store.schoolYearShowing, selectedRow);
 
 
-    const [districtDemographic, setDistrictDemographic] = useState([]);
-    const [sortedData, setSortedData] = useState(districtDemographic);
-
-    //import district data
+    const [districtData, setDistrictData] = useState<Array<number | string>[]>([]);
+    const [sortedData, setSortedData] = useState(districtData);
     useEffect(() => {
-        csv("/data/districtDemographic.csv").then((disDemo) => {
-            const cleanedDistrictTable = disDemo.filter(d => d["LEA TYPE"] === 'District')
-                .map((districtEntry) => {
-                    // console.log(districtEntry);
-                    const schoolEnrollments = enrollmentData.filter(d => d['District Name'] === districtEntry['LEA Name']);
-
-
-                    const newDistrictEnrollment: Enrollment = JSON.parse(JSON.stringify(DefaultEnrollment));
-
-
-
-                    PossibleCategories.forEach(({ key }) => {
-                        let totalEnrollment = 0;
-                        let isSpecialCase = false;
-                        schoolEnrollments.forEach((school) => {
-                            isSpecialCase = isSpecialCase || school[`${key} Total`] === 'n<10';
-                            (newDistrictEnrollment[key].Total as number) += (parseInt(school[`${key} Total`]) || 0);
-                            totalEnrollment += (parseInt(school[`${key} Total`]) || 0);
-                            (newDistrictEnrollment[key].Female as number) += (parseInt(school[`${key} Female`]) || 0);
-                        });
-                        if (!totalEnrollment && isSpecialCase) {
-                            newDistrictEnrollment[key].Total = 'n<10';
-                        }
-                    });
-
-
-
-                    return {
-                        ...districtEntry,
-                        expandable: (schoolEnrollments.length > 0).toString(),
-                        enrollment: newDistrictEnrollment,
-                        'LEA Name': districtEntry['LEA Name']
-                    };
-                }
-                );
-            stateUpdateWrapperUseJSON(districtDemographic, cleanedDistrictTable, setDistrictDemographic);
-        });
-
-    }, [enrollmentData]);
-
-    useEffect(() => {
-        let newSortedData = [...districtDemographic];
-        newSortedData.sort((a, b) => {
-            if (sortAttribute !== 'LEA Name') {
-                if (['enrollment', 'Female'].includes(sortAttribute)) {
-                    let aTotal, bTotal;
-                    if (typeof a[sortAttribute] === 'string') {
-                        aTotal = parseInt(a[sortAttribute]);
-                        bTotal = parseInt(b[sortAttribute]);
+        //read into LEA level
+        fetch('/updated_data/all_data.xlsx',)
+            .then(response => response.blob())
+            .then(blob =>
+                readXlsxFile(blob,
+                    { sheet: `LEA-Level Data SY ${store.schoolYearShowing.slice(0, 5)}20${store.schoolYearShowing.slice(5)}` }))
+            .then((data) => {
+                console.log(data.slice(2));
+                setTitleEntry(data[1] as string[]);
+                const charterRow = new Array(data[0].length).fill(0);
+                charterRow[0] = 'Charter';
+                const tempDistrictData: Array<number | string>[] = [];
+                //organize the data and add a row for charter
+                data.slice(2, -1).forEach((row) => {
+                    if ((row[0] as string).includes('District')) {
+                        tempDistrictData.push(row as Array<number | string>);
                     } else {
-                        aTotal = sum(Object.values(a[sortAttribute]));
-                        bTotal = sum(Object.values(b[sortAttribute]));
+                        row.forEach((dataItem, i) => {
+                            if (i > 2 && (typeof dataItem === 'number')) {
+                                charterRow[i] += dataItem;
+                            }
+                        });
                     }
-                    if (sortCSPercentage) {
-                        const aPercentage = aTotal / parseInt(a['Total HS'] as string);
-                        const bPercentage = bTotal / parseInt(b['Total HS'] as string);
-                        return sortUp ? aPercentage - bPercentage : bPercentage - aPercentage;
-                    }
-                    return sortUp ? aTotal - bTotal : bTotal - aTotal;
-                } else {
-                    return sortUp ? parseInt(a[sortAttribute] as string) - parseInt(b[sortAttribute] as string) : parseInt(b[sortAttribute] as string) - parseInt(a[sortAttribute] as string);
-                }
+                });
+                tempDistrictData.push(charterRow);
+                stateUpdateWrapperUseJSON(districtData, tempDistrictData, setDistrictData);
+                stateUpdateWrapperUseJSON(sortedData, tempDistrictData, setSortedData);
+            });
+    }, [store.schoolYearShowing]);
+
+    useEffect(() => {
+        let newSortedData = [...districtData];
+        newSortedData.sort((a, b) => {
+            if (sortAttribute === 'District Name') {
+                return sortUp ? (a[0] as string).localeCompare((b[0] as string)) : (b[0] as string).localeCompare((a[0] as string));
             }
-            return sortUp ? (a[sortAttribute] as string).localeCompare((b[sortAttribute] as string)) : (b[sortAttribute] as string).localeCompare((a[sortAttribute] as string));
+
+            let aTotal = +districtAttributeFinder(sortAttribute, a);
+            let bTotal = +districtAttributeFinder(sortAttribute, b);
+            console.log(aTotal, bTotal, sortAttribute);
+            if (sortCSPercentage) {
+                const aPercentage = aTotal / districtAttributeFinder('TOTAL: Total', a);
+                const bPercentage = bTotal / districtAttributeFinder('TOTAL: Total', b);
+                return sortUp ? aPercentage - bPercentage : bPercentage - aPercentage;
+            }
+            return sortUp ? aTotal - bTotal : bTotal - aTotal;
         });
         stateUpdateWrapperUseJSON(sortedData, newSortedData, setSortedData);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [districtDemographic, sortAttribute, sortUp]);
+    }, [districtData, sortAttribute, sortUp]);
 
     const toggleSort = (inputName: string) => {
         // if the sort attribute is already the same
         if (sortAttribute === inputName) {
             // if sort attribute is enrollment
-            if (sortAttribute === 'enrollment' || 'Female') {
-                if (sortCSPercentage && !sortUp) {
-                    setSortPercentage(false);
+            if (sortAttribute === 'District Name' || sortAttribute === 'TOTAL: Total') {
+                if (sortUp) setSortUp(false);
+                else resetSort();
+
+            } else {
+                if (!sortCSPercentage && !sortUp) {
+                    setSortPercentage(true);
                     setSortUp(true);
-                } else if (!sortUp && !sortCSPercentage) {
+                } else if (!sortUp && sortCSPercentage) {
                     resetSort();
                 } else {
                     setSortUp(false);
                 }
-            } else {
-                if (sortUp) setSortUp(false);
-                else resetSort();
             }
         } else {
-            setSortUp(true);
-            setSortPercentage(true);
+            resetSort();
             setSortAttribute(inputName);
         }
     };
 
     const resetSort = () => {
         setSortUp(true);
-        setSortPercentage(true);
-        setSortAttribute('LEA Name');
+        setSortPercentage(false);
+        setSortAttribute('District Name');
     };
 
     return (
@@ -131,19 +119,43 @@ const DistrictTable: FC = () => {
                 <TableHead>
                     <TableRow>
                         <FunctionCell />
-                        <FunctionCell />
-                        <SortableHeader onClick={() => toggleSort('LEA Name')} headerName='Disctrict Name' isSorting={sortAttribute === 'LEA Name' && !sortUp} isSortUp={sortUp} />
-                        <SortableHeader onClick={() => toggleSort('Total HS')} isSortUp={sortUp} headerName='Total Students' isSorting={sortAttribute === 'Total HS'} />
+                        <SortableHeader
+                            onClick={() => toggleSort('District Name')}
+                            headerName='District Name'
+                            isSorting={sortAttribute === 'District Name' && !sortUp}
+                            isSortUp={sortUp} />
+                        <SortableHeader
+                            onClick={() => toggleSort('TOTAL: Total')}
+                            isSortUp={sortUp}
+                            headerName='Total Students'
+                            isSorting={sortAttribute === 'TOTAL: Total'} />
 
-                        <SortableHeader isSorting={sortAttribute === 'enrollment'} onClick={() => toggleSort('enrollment')} isSortUp={sortUp} headerName='CS Enrollment' isSortPercentage={sortCSPercentage} />
-                        <SortableHeader isSorting={sortAttribute === 'Female'} onClick={() => toggleSort('Female')} isSortUp={sortUp} isSortPercentage={sortCSPercentage} headerName='Gender' />
+                        <SortableHeader
+                            additionalStyle={{
+                                textDecorationLine: 'underline',
+                                textDecorationColor: CourseCategoryColor[store.currentShownCSType]
+                            }}
+                            isSorting={sortAttribute === `${store.currentShownCSType}: Total`}
+                            onClick={() => toggleSort(`${store.currentShownCSType}: Total`)}
+                            isSortUp={sortUp}
+                            headerName={`${store.currentShownCSType} Enrollment`}
+                            isSortPercentage={sortCSPercentage} />
+                        <SortableHeader
+                            isSorting={sortAttribute === `${store.currentShownCSType}: Female`}
+                            onClick={() => toggleSort(`${store.currentShownCSType}: Female`)}
+                            isSortUp={sortUp}
+                            isSortPercentage={sortCSPercentage}
+                            headerName='Gender' />
 
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {sortedData.map((districtEntry) => {
                         return (
-                            <DistrictRow districtEntry={districtEntry} key={districtEntry['LEA Name']} />
+                            <DistrictRow
+                                titleEntry={titleEntry}
+                                districtEntry={districtEntry}
+                                key={districtEntry[0]} />
                         );
                     })}
                 </TableBody>
