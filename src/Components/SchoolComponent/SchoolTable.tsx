@@ -1,23 +1,17 @@
-import { TableContainer, Container, Table, TableHead, TableRow, TableCell, TableBody, Checkbox, Paper } from "@mui/material";
-import { csv } from "d3-fetch";
+import { Table, TableHead, TableRow, TableBody } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import readXlsxFile from "read-excel-file";
-import { EnrollmentDataContext } from "../../App";
 import { findAttribute } from "../../Interface/AttributeFinder";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import Store from "../../Interface/Store";
-import { CSDemographic, Enrollment } from "../../Interface/Types";
 import { CourseCategoryColor } from "../../Preset/Colors";
-import { DefaultEnrollment, PossibleCategories } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
-import { FunctionCell, StickyTableContainer, TextCell } from "../GeneralComponents";
+import { StickyTableContainer } from "../GeneralComponents";
 import SchoolRow from "./SchoolRow";
-type Props = {
 
-};
 
-const SchoolTable: FC<Props> = ({ }: Props) => {
+const SchoolTable: FC = () => {
 
     const [schoolData, setSchoolData] = useState<Array<number | string>[]>([]);
     const [schoolDataToShow, setSchoolDataToShow] = useState(schoolData);

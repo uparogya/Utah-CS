@@ -1,12 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import './App.css';
 import { AppBar, Grid, IconButton, SwipeableDrawer, Toolbar, Typography } from '@mui/material';
 import StateTable from './Components/StateTable';
 import DistrictTable from './Components/DistrictComponent/DistrictTable';
 import SchoolTable from './Components/SchoolComponent/SchoolTable';
 import Toolbox from './Components/Toolbox';
-import { csv } from 'd3-fetch';
-import { stateUpdateWrapperUseJSON } from './Interface/StateChecker';
 import styled from '@emotion/styled';
 import MenuIcon from '@mui/icons-material/Menu';
 import PercentIcon from '@mui/icons-material/Percent';
@@ -21,7 +19,6 @@ export const EnrollmentDataContext = createContext<{ [key: string]: string; }[]>
 function App() {
 
 
-    const [enrollment, setEnrollmentData] = useState([]);
 
     const store = useContext(Store);
 
