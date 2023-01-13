@@ -75,7 +75,7 @@ const StateTable: FC = () => {
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                     <TableCell component="th" scope="row">
-                        Total Student Population
+                        Total 9-12 Student Population
                     </TableCell>
                     <TableCell> <PercentageChart
                         actualVal={totalStudentNum}
