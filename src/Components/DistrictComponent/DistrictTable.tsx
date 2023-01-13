@@ -9,7 +9,7 @@ import { findAttribute } from "../../Interface/AttributeFinder";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import Store from "../../Interface/Store";
 import { CourseCategoryColor } from "../../Preset/Colors";
-import { DefaultEnrollment, PossibleCategories } from "../../Preset/Constants";
+import { DefaultEnrollment, linkToData, PossibleCategories } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { FunctionCell, StickyTableContainer } from "../GeneralComponents";
 import DistrictRow from "./DistrictRow";
@@ -33,7 +33,7 @@ const DistrictTable: FC = () => {
     const [sortedData, setSortedData] = useState(districtData);
     useEffect(() => {
         //read into LEA level
-        fetch('/updated_data/all_data.xlsx',)
+        fetch(linkToData,)
             .then(response => response.blob())
             .then(blob =>
                 readXlsxFile(blob,

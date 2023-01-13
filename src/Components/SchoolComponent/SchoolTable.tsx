@@ -6,6 +6,7 @@ import { findAttribute } from "../../Interface/AttributeFinder";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import Store from "../../Interface/Store";
 import { CourseCategoryColor } from "../../Preset/Colors";
+import { linkToData } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { StickyTableContainer } from "../GeneralComponents";
 import SchoolRow from "./SchoolRow";
@@ -24,7 +25,7 @@ const SchoolTable: FC = () => {
     const store = useContext(Store);
 
     useEffect(() => {
-        fetch('/updated_data/all_data.xlsx',)
+        fetch(linkToData,)
             .then(response => response.blob())
             .then(blob =>
                 readXlsxFile(blob,

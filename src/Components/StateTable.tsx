@@ -10,6 +10,7 @@ import { format } from "d3-format";
 import readXlsxFile from "read-excel-file";
 import { CourseCategoryColor } from "../Preset/Colors";
 import { findAttribute } from "../Interface/AttributeFinder";
+import { linkToData } from "../Preset/Constants";
 
 
 
@@ -26,7 +27,7 @@ const StateTable: FC = () => {
     // };
 
     useEffect(() => {
-        fetch('/updated_data/all_data.xlsx',).then(response => response.blob())
+        fetch(linkToData,).then(response => response.blob())
             .then(blob => readXlsxFile(blob, { sheet: 'State-Level Data By Year' }))
             .then(data => stateUpdateWrapperUseJSON(stateData, data as Array<number | string>[], setStateData));
         // eslint-disable-next-line react-hooks/exhaustive-deps

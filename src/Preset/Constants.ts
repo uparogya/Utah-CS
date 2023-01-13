@@ -30,3 +30,6 @@ export const DefaultEnrollment = {
 export const PossibleSchoolYears = [
     '2021-22', '2020-21', '2019-20'
 ];
+
+
+export const linkToData = 'https://github.com/haihan-lin/Utah-CS/blob/main/public/updated_data/all_data.xlsx';
