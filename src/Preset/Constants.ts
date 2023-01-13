@@ -32,4 +32,4 @@ export const PossibleSchoolYears = [
 ];
 
 
-export const linkToData = ' https://haihan-lin.github.io/Utah-CS/public/updated_data/all_data.xlsx';
+export const linkToData = 'https://haihan-lin.github.io/Utah-CS/updated_data/all_data.xlsx';
