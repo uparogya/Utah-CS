@@ -25,8 +25,11 @@ export class AppStore {
         this.currentShownCSType = newSelection;
     }
 
+    updateSchoolYEar(newYearEntry: string) {
+        this.schoolYearShowing = newYearEntry;
+    }
+
     setSelectedDistricts(districtName: string) {
-        console.log(districtName);
         if (this.selectedDistricts.includes(districtName)) {
             this.selectedDistricts = this.selectedDistricts.filter(d => d !== districtName);
         } else {

@@ -2,7 +2,7 @@ import { Stack, Chip, Container, Box, Dialog, DialogTitle, List, ListItem, IconB
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import Store from "../Interface/Store";
-import { PossibleCategories } from "../Preset/Constants";
+import { PossibleCategories, PossibleSchoolYears } from "../Preset/Constants";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { CourseCategoryColor, LightGray } from "../Preset/Colors";
 import { csv } from "d3-fetch";
@@ -18,7 +18,6 @@ const Toolbox: FC = () => {
         csv("/data/courses.csv").then((categorization) => {
             stateUpdateWrapperUseJSON(courseCategorization, categorization, setCourseCategorization);
         });
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -57,8 +56,24 @@ const Toolbox: FC = () => {
             </ListItem>
 
             <ListItem>
-                Charter / District filter?
+                School Year
             </ListItem>
+            <Stack>
+                {PossibleSchoolYears.map((yearEntry) => (
+                    <Container key={yearEntry}>
+                        <Chip
+                            label={yearEntry}
+                            clickable
+                            onClick={() => store.updateSchoolYEar(yearEntry)}
+                            style={{
+                                margin: '5px',
+                                backgroundColor: store.schoolYearShowing === yearEntry ? 'darkblue' : undefined,
+                                color: store.schoolYearShowing === yearEntry ? LightGray : undefined
+                            }}
+                        />
+                    </Container>
+                ))}
+            </Stack>
 
             <Dialog open={Boolean(openCategoryDialog)} onClose={() => setDialog('')}>
                 <DialogTitle>{openCategoryDialog} courses</DialogTitle>

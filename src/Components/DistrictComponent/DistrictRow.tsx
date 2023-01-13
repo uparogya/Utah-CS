@@ -11,6 +11,7 @@ import { sum } from "d3-array";
 import RemoveIcon from '@mui/icons-material/Remove';
 import { CourseCategoryColor } from "../../Preset/Colors";
 import { CSDemographic } from "../../Interface/Types";
+import { findAttribute } from "../../Interface/AttributeFinder";
 
 type Props = {
     districtEntry: Array<string | number>;
@@ -24,10 +25,13 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
 
 
 
-    const findAttribute = (attributeName: string) => {
+    // const findAttribute = (attributeName: string) => {
 
-        return ((districtEntry[titleEntry.indexOf(attributeName)]) as number) || 0;
-    };
+    //     return ((districtEntry[titleEntry.indexOf(attributeName)]) as number) || 0;
+    // };
+
+    const districtAttributeFinder = (attributeName: string) =>
+        findAttribute(attributeName, titleEntry, districtEntry);
 
 
 
@@ -38,20 +42,20 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
                     onChange={() => store.setSelectedDistricts(districtEntry[0] as string)} />
             </FunctionCell>
 
-            <TextCell>{findAttribute('District Name')}</TextCell>
-            <TextCell>{findAttribute('TOTAL: Total')}</TextCell>
+            <TextCell>{districtAttributeFinder('District Name')}</TextCell>
+            <TextCell>{districtAttributeFinder('TOTAL: Total')}</TextCell>
 
             <TextCell>
                 <PercentageChart
-                    actualVal={findAttribute(`${store.currentShownCSType}: Total`)}
-                    percentage={findAttribute(`${store.currentShownCSType}: Total`) / findAttribute('TOTAL: Total')} />
+                    actualVal={districtAttributeFinder(`${store.currentShownCSType}: Total`)}
+                    percentage={districtAttributeFinder(`${store.currentShownCSType}: Total`) / districtAttributeFinder('TOTAL: Total')} />
             </TextCell>
             <TextCell>
                 <GenderRatioChart
-                    femaleNum={findAttribute('TOTAL: Female')}
-                    maleNum={findAttribute('TOTAL: Male')}
-                    compareFemaleNum={findAttribute(`${store.currentShownCSType}: Female`)}
-                    compareMaleNum={findAttribute(`${store.currentShownCSType}: Male`)}
+                    femaleNum={districtAttributeFinder('TOTAL: Female')}
+                    maleNum={districtAttributeFinder('TOTAL: Male')}
+                    compareFemaleNum={districtAttributeFinder(`${store.currentShownCSType}: Female`)}
+                    compareMaleNum={districtAttributeFinder(`${store.currentShownCSType}: Male`)}
                 />
             </TextCell>
         </TableRow>

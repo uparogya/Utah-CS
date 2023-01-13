@@ -26,3 +26,7 @@ export const DefaultEnrollment = {
     CSA: { Total: 0, Female: 0 },
     CSR: { Total: 0, Female: 0 }
 };
+
+export const PossibleSchoolYears = [
+    '2021-22', '2020-21', '2019-20'
+];

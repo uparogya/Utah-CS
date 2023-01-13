@@ -1,14 +1,12 @@
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import GenderRatioChart from "./CellComponents/GenderRatioChart";
-import { blob, csv } from 'd3-fetch';
 import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
 import RaceChart from "./CellComponents/RaceChart";
 import PercentageChart from "./CellComponents/PercentageChart";
 import Store from "../Interface/Store";
 import { format } from "d3-format";
-import { EnrollmentDataContext } from "../App";
 import readXlsxFile from "read-excel-file";
 import { CourseCategoryColor } from "../Preset/Colors";
 import { findAttribute } from "../Interface/AttributeFinder";
@@ -31,10 +29,15 @@ const StateTable: FC = () => {
         fetch('/updated_data/all_data.xlsx',).then(response => response.blob())
             .then(blob => readXlsxFile(blob, { sheet: 'State-Level Data By Year' }))
             .then(data => stateUpdateWrapperUseJSON(stateData, data as Array<number | string>[], setStateData));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const stateAttributeFinder = (attributeName: string) => findAttribute(attributeName, stateData, stateData[1], store.schoolYearShowing);
 
+    // const stateAttributeFinder = (attributeName: string) => findAttribute(attributeName, stateData[1], stateData.filter(row => row[0] === store.schoolYearShowing)[0]);
+
+    const stateAttributeFinder = useCallback((attributeName: string) =>
+        findAttribute(attributeName, stateData[1], stateData.filter(row => row[0] === store.schoolYearShowing)[0])
+        , [store.schoolYearShowing, stateData]);
 
 
 
@@ -48,24 +51,8 @@ const StateTable: FC = () => {
         setTotalStudentNum(stateAttributeFinder('TOTAL: Total'));
         setTotalCSStudentNum(stateAttributeFinder(`${store.currentShownCSType}: Total`));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [stateData, store.currentShownCSType]);
+    }, [stateData, store.currentShownCSType, store.schoolYearShowing]);
 
-
-
-    // useEffect(() => {
-    //     setTotalCSStudentNum(findCSDemographicAttribute('Total'));
-
-    //     setCSFemaleTotal(
-    //         schoolEnrollmentData.reduce((sum, curSchool) => {
-    //             let total = 0;
-    //             store.selectedCategory.forEach((cat) => {
-    //                 total += (parseInt(curSchool[`${cat} Female`]) || 0);
-    //             });
-    //             return sum + total;
-    //         }, 0));
-
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [store.selectedCategory, schoolEnrollmentData]);
 
     return (<TableContainer component={Paper} >
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

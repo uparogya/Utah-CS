@@ -2,10 +2,13 @@ import { TableContainer, Container, Table, TableHead, TableRow, TableCell, Table
 import { csv } from "d3-fetch";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
+import readXlsxFile from "read-excel-file";
 import { EnrollmentDataContext } from "../../App";
+import { findAttribute } from "../../Interface/AttributeFinder";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import Store from "../../Interface/Store";
 import { CSDemographic, Enrollment } from "../../Interface/Types";
+import { CourseCategoryColor } from "../../Preset/Colors";
 import { DefaultEnrollment, PossibleCategories } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { FunctionCell, StickyTableContainer, TextCell } from "../GeneralComponents";
@@ -16,117 +19,91 @@ type Props = {
 
 const SchoolTable: FC<Props> = ({ }: Props) => {
 
-    const [schoolDemographic, setSchoolDemographic] = useState<{ [key: string]: string | Enrollment; }[]>([]);
-    const [schoolDataToShow, setSchoolDataToShow] = useState(schoolDemographic);
+    const [schoolData, setSchoolData] = useState<Array<number | string>[]>([]);
+    const [schoolDataToShow, setSchoolDataToShow] = useState(schoolData);
     const [sortAttribute, setSortAttribute] = useState('School Name');
     const [sortUp, setSortUp] = useState(true);
     const [sortCSPercentage, setSortPercentage] = useState(true);
+    const [titleEntry, setTitleEntry] = useState<string[]>([]);
 
-    const enrollmentData = useContext(EnrollmentDataContext);
+
     const store = useContext(Store);
-    useEffect(() => {
-        // shool offering
-
-        csv("/data/schoolDemo.csv").then((schoolDemo) => {
-            const schoolDemoCopy = schoolDemo.map((schoolEntry) => {
-                const totalHS = parseInt(schoolEntry['Grade_9'] || '0') + parseInt(schoolEntry['Grade_10'] || '0') + parseInt(schoolEntry['Grade_11'] || '0') + parseInt(schoolEntry['Grade_12'] || '0');
-                const enrollmentEntry = enrollmentData.filter(d => d['School Name'] === schoolEntry['School Name']);
-                if (enrollmentEntry.length && (parseInt(enrollmentEntry[0]['Total HS']) || enrollmentEntry[0]['Total HS'] === 'n<10')) {
-
-                    return {
-                        ...schoolEntry,
-                        'LEA Name': (schoolEntry['LEA Name'] || ''),
-                        Female: `${parseInt(schoolEntry['Female'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
-                        Male: `${parseInt(schoolEntry['Male'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
-                        'Total Students': `${totalHS}`,
-                        CSCourses: {
-                            CSB: { Total: convertEntry(enrollmentEntry[0]['CSB Total']), Female: convertEntry(enrollmentEntry[0]['CSB Female']) },
-                            CSA: { Total: convertEntry(enrollmentEntry[0]['CSA Total']), Female: convertEntry(enrollmentEntry[0]['CSA Female']) },
-                            CSR: { Total: convertEntry(enrollmentEntry[0]['CSR Total']), Female: convertEntry(enrollmentEntry[0]['CSR Female']) }
-                        } as Enrollment
-
-                    };
-                } else {
-                    return {
-                        ...schoolEntry,
-                        'LEA Name': (schoolEntry['LEA Name'] || ''),
-                        Female: `${parseInt(schoolEntry['Female'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
-                        Male: `${parseInt(schoolEntry['Male'] || '0') / parseInt(schoolEntry['Total K-12'] || '0') * totalHS}`,
-                        'Total Students': `${totalHS}`,
-                        CSCourses: DefaultEnrollment
-                    };
-                }
-            }).filter(d => parseInt(d['Total Students']) > 0);
-            console.log(schoolDemoCopy);
-            stateUpdateWrapperUseJSON(schoolDemographic, schoolDemoCopy, setSchoolDemographic);
-        });
-    }, [enrollmentData]);
 
     useEffect(() => {
-        let newSchoolData = [...schoolDemographic];
-        newSchoolData.sort((a, b) => {
-            //sorting by numbers
-            if (sortAttribute !== 'School Name') {
-                if (sortAttribute === 'enrollment') {
-                    const aTotal = PossibleCategories.reduce((sum, category) => sum + (parseInt(`${(a['CSCourses'] as Enrollment)[category.key].Total}`) || 0), 0);
-                    const bTotal = PossibleCategories.reduce((sum, category) => sum + (parseInt(`${(b['CSCourses'] as Enrollment)[category.key].Total}`) || 0), 0);
-                    if (sortCSPercentage) {
-                        const aPercentage = aTotal / parseInt(a['Total Students'] as string);
-                        const bPercentage = bTotal / parseInt(b['Total Students'] as string);
-                        return sortUp ? aPercentage - bPercentage : bPercentage - aPercentage;
-                    } return sortUp ? aTotal - bTotal : bTotal - aTotal;
-                }
-                else {
-                    return sortUp ? parseInt(a[sortAttribute] as string) - parseInt(b[sortAttribute] as string) : parseInt(b[sortAttribute] as string) - parseInt(a[sortAttribute] as string);
-                }
+        fetch('/updated_data/all_data.xlsx',)
+            .then(response => response.blob())
+            .then(blob =>
+                readXlsxFile(blob,
+                    { sheet: `School-Level Data SY ${store.schoolYearShowing.slice(0, 5)}20${store.schoolYearShowing.slice(5)}` }))
+            .then((data) => {
+                setTitleEntry(data[1] as string[]);
+                stateUpdateWrapperUseJSON(schoolData, data.slice(2), setSchoolData);
+            });
+    }, [store.schoolYearShowing]);
+
+    const schoolAttributeFinder = (attributeName: string, entry: (number | string)[]) => findAttribute(attributeName, titleEntry, entry);
+
+    useEffect(() => {
+        let newSortedSchool = [...schoolData];
+        newSortedSchool.sort((a, b) => {
+            if (sortAttribute === 'School Name') {
+                return sortUp ? (a[1] as string).localeCompare((b[1] as string)) : (b[1] as string).localeCompare((a[1] as string));
             }
-            return sortUp ? (a[sortAttribute] as string).localeCompare((b[sortAttribute] as string)) : (b[sortAttribute] as string).localeCompare((a[sortAttribute] as string));
+
+            let aTotal = (schoolAttributeFinder(sortAttribute, a) as string | number === 'n<10' ? 0.1 : +schoolAttributeFinder(sortAttribute, a));
+            let bTotal = (schoolAttributeFinder(sortAttribute, b) as string | number === 'n<10' ? 0.1 : +schoolAttributeFinder(sortAttribute, b));
+            if (sortCSPercentage) {
+                const aPercentage = aTotal / +schoolAttributeFinder('TOTAL: Total', a);
+                const bPercentage = bTotal / +schoolAttributeFinder('TOTAL: Total', b);
+                return sortUp ? aPercentage - bPercentage : bPercentage - aPercentage;
+            }
+            return sortUp ? aTotal - bTotal : bTotal - aTotal;
         });
 
-        stateUpdateWrapperUseJSON(schoolDataToShow, newSchoolData, setSchoolDataToShow);
+        stateUpdateWrapperUseJSON(schoolData, newSortedSchool, setSchoolData);
 
-    }, [sortUp, sortAttribute, sortCSPercentage, schoolDemographic]);
+    }, [sortUp, sortAttribute, sortCSPercentage]);
 
     useEffect(() => {
         if (store.selectedDistricts.length > 0) {
-            stateUpdateWrapperUseJSON(
-                schoolDataToShow,
-                schoolDemographic
-                    .filter(d => store.selectedDistricts.includes((d['LEA Name'] as string))),
-                setSchoolDataToShow
-            );
+            let filteredDistrict = schoolData
+                .filter(d => store.selectedDistricts.includes(d[6] as string));
+            if (store.selectedDistricts.includes('Charter')) {
+                filteredDistrict = filteredDistrict.concat(schoolData.filter(d => !((d[6] as string).includes('District'))));
+            }
+            stateUpdateWrapperUseJSON(schoolDataToShow, filteredDistrict, setSchoolDataToShow);
         } else {
-            stateUpdateWrapperUseJSON(schoolDataToShow, schoolDemographic, setSchoolDataToShow);
+            stateUpdateWrapperUseJSON(schoolDataToShow, schoolData, setSchoolDataToShow);
         }
-    }, [store.selectedDistricts, schoolDemographic]);
+    }, [store.selectedDistricts, schoolData]);
 
     const toggleSort = (inputName: string) => {
         // if the sort attribute is already the same
         if (sortAttribute === inputName) {
             // if sort attribute is enrollment
-            if (sortAttribute === 'enrollment') {
-                if (sortCSPercentage && !sortUp) {
-                    setSortPercentage(false);
+            if (sortAttribute === 'School Name' || sortAttribute === 'TOTAL: Total') {
+                if (sortUp) setSortUp(false);
+                else resetSort();
+
+            } else {
+                if (!sortCSPercentage && !sortUp) {
+                    setSortPercentage(true);
                     setSortUp(true);
-                } else if (!sortUp && !sortCSPercentage) {
+                } else if (!sortUp && sortCSPercentage) {
                     resetSort();
                 } else {
                     setSortUp(false);
                 }
-            } else {
-                if (sortUp) setSortUp(false);
-                else resetSort();
             }
         } else {
-            setSortUp(true);
-            setSortPercentage(true);
+            resetSort();
             setSortAttribute(inputName);
         }
     };
 
     const resetSort = () => {
         setSortUp(true);
-        setSortPercentage(true);
+        setSortPercentage(false);
         setSortAttribute('School Name');
     };
 
@@ -135,14 +112,31 @@ const SchoolTable: FC<Props> = ({ }: Props) => {
         <Table stickyHeader sx={{ minWidth: '50vw' }} aria-label="sticky table">
             <TableHead>
                 <TableRow>
-                    <FunctionCell />
-                    <SortableHeader headerName="School Name" isSorting={sortAttribute === 'School Name' && !sortUp} isSortUp={sortUp} onClick={() => toggleSort('School Name')} />
-                    <SortableHeader onClick={() => toggleSort('Total Students')} headerName='Total Students' isSortUp={sortUp} isSorting={sortAttribute === 'Total Students'} />
-                    <SortableHeader onClick={() => toggleSort('enrollment')} headerName='CS Enrollment' isSortUp={sortUp} isSortPercentage={sortCSPercentage} isSorting={sortAttribute === 'enrollment'} />
+
+                    <SortableHeader
+                        headerName="School Name"
+                        isSorting={sortAttribute === 'School Name' && !sortUp}
+                        isSortUp={sortUp}
+                        onClick={() => toggleSort('School Name')} />
+                    <SortableHeader
+                        onClick={() => toggleSort('TOTAL: Total')}
+                        headerName='Total Students'
+                        isSortUp={sortUp}
+                        isSorting={sortAttribute === 'TOTAL: Total'} />
+                    <SortableHeader
+                        additionalStyle={{
+                            textDecorationLine: 'underline',
+                            textDecorationColor: CourseCategoryColor[store.currentShownCSType]
+                        }}
+                        isSorting={sortAttribute === `${store.currentShownCSType}: Total`}
+                        onClick={() => toggleSort(`${store.currentShownCSType}: Total`)}
+                        isSortUp={sortUp}
+                        headerName={`${store.currentShownCSType} Enrollment`}
+                        isSortPercentage={sortCSPercentage} />
                 </TableRow>
             </TableHead>
             <TableBody>
-                {schoolDataToShow.map((schoolEntry) => <SchoolRow key={`${schoolEntry['School Name']} - ${schoolEntry['LEA Name']}`} schoolEntry={schoolEntry} />)}
+                {schoolDataToShow.map((schoolEntry) => <SchoolRow key={`${schoolEntry[3]} `} titleEntry={titleEntry} schoolEntry={schoolEntry} />)}
             </TableBody>
         </Table>
     </StickyTableContainer>;

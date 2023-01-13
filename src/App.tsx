@@ -27,16 +27,6 @@ function App() {
 
 
 
-    useEffect(() => {
-
-        // enrollment
-        csv("/data/school-cs-2021-22.csv").then((enrollmentData) => {
-            stateUpdateWrapperUseJSON(enrollment, enrollmentData, setEnrollmentData);
-            console.log(enrollmentData);
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const iOS =
         typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
@@ -44,8 +34,8 @@ function App() {
 
 
     return (
-        <EnrollmentDataContext.Provider value={enrollment}>
 
+        <>
             <SwipeableDrawer onClose={() => setDrawer(false)}
                 onOpen={() => setDrawer(true)} disableBackdropTransition={!iOS} disableDiscovery={iOS} open={drawerOpen} >
                 <Toolbox />
@@ -56,7 +46,7 @@ function App() {
                     <Toolbar>
                         <AppBarButton children={<MenuIcon />} onClick={() => setDrawer(!drawerOpen)} />
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            Utah CS, 2021-22 Academic Year
+                            Utah CS, {store.schoolYearShowing} Academic Year
                         </Typography>
                         {/* <Button color="inherit">Login</Button> */}
                         <AppBarButton onClick={() => store.updateShowPercentage()}
@@ -84,8 +74,7 @@ function App() {
                     </BasicGrid>
                 </Grid>
             </div>
-
-        </EnrollmentDataContext.Provider>
+        </>
     );
 }
 

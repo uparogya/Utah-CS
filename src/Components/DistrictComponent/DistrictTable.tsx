@@ -26,7 +26,7 @@ const DistrictTable: FC = () => {
     const [titleEntry, setTitleEntry] = useState<string[]>([]);
 
     const districtAttributeFinder = (attributeName: string, selectedRow: (string | number)[]) =>
-        findAttribute(attributeName, districtData, titleEntry, store.schoolYearShowing, selectedRow);
+        findAttribute(attributeName, titleEntry, selectedRow);
 
 
     const [districtData, setDistrictData] = useState<Array<number | string>[]>([]);
@@ -39,7 +39,6 @@ const DistrictTable: FC = () => {
                 readXlsxFile(blob,
                     { sheet: `LEA-Level Data SY ${store.schoolYearShowing.slice(0, 5)}20${store.schoolYearShowing.slice(5)}` }))
             .then((data) => {
-                console.log(data.slice(2));
                 setTitleEntry(data[1] as string[]);
                 const charterRow = new Array(data[0].length).fill(0);
                 charterRow[0] = 'Charter';
@@ -60,6 +59,7 @@ const DistrictTable: FC = () => {
                 stateUpdateWrapperUseJSON(districtData, tempDistrictData, setDistrictData);
                 stateUpdateWrapperUseJSON(sortedData, tempDistrictData, setSortedData);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [store.schoolYearShowing]);
 
     useEffect(() => {
@@ -69,9 +69,8 @@ const DistrictTable: FC = () => {
                 return sortUp ? (a[0] as string).localeCompare((b[0] as string)) : (b[0] as string).localeCompare((a[0] as string));
             }
 
-            let aTotal = +districtAttributeFinder(sortAttribute, a);
-            let bTotal = +districtAttributeFinder(sortAttribute, b);
-            console.log(aTotal, bTotal, sortAttribute);
+            let aTotal = (districtAttributeFinder(sortAttribute, a) as string | number === 'n<10' ? 0.1 : +districtAttributeFinder(sortAttribute, a));
+            let bTotal = (districtAttributeFinder(sortAttribute, b) as string | number === 'n<10' ? 0.1 : +districtAttributeFinder(sortAttribute, b));
             if (sortCSPercentage) {
                 const aPercentage = aTotal / districtAttributeFinder('TOTAL: Total', a);
                 const bPercentage = bTotal / districtAttributeFinder('TOTAL: Total', b);
