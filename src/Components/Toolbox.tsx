@@ -2,24 +2,46 @@ import { Stack, Chip, Container, Box, Dialog, DialogTitle, List, ListItem, IconB
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import Store from "../Interface/Store";
-import { PossibleCategories, PossibleSchoolYears } from "../Preset/Constants";
+import { linkToData, PossibleCategories, PossibleSchoolYears } from "../Preset/Constants";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { CourseCategoryColor, LightGray } from "../Preset/Colors";
 import { csv } from "d3-fetch";
 import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
+import readXlsxFile from "read-excel-file";
 
 const Toolbox: FC = () => {
 
     const store = useContext(Store);
 
     const [courseCategorization, setCourseCategorization] = useState([]);
+
+
     useEffect(() => {
-        //category
-        csv("/data/courses.csv").then((categorization) => {
-            stateUpdateWrapperUseJSON(courseCategorization, categorization, setCourseCategorization);
-        });
+        fetch(linkToData,).then(response => response.blob())
+            .then(blob => readXlsxFile(blob, { sheet: 'CS Courses' }))
+            .then(data => {
+                const cateList: any = { 'CS - Basic': 'CSB', 'CS - Advanced': 'CSA', 'CS - Related': 'CSR' };
+                data = (data as Array<number | string>[]).map(d => Object.keys(cateList).includes(d[3] as any) ? ([d[0], d[2], cateList[d[3] as any]]) : ([]));
+                data = data.filter(d => d.length > 0);
+                console.log(data);
+                stateUpdateWrapperUseJSON(courseCategorization, data, setCourseCategorization);
+            });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const generateList = () => {
+        // if (openCategoryDialog === '')
+        let includedCateList = [openCategoryDialog];
+        if (openCategoryDialog === 'CS') {
+            includedCateList = ['CSA', 'CSR', 'CSB'];
+        } else if (openCategoryDialog === 'CSC') {
+            includedCateList = ['CSA', 'CSB'];
+        }
+
+        return courseCategorization.map(courseInfo =>
+            includedCateList.includes(courseInfo[2]) ? <ListItem key={courseInfo[0]}>{courseInfo[1]}</ListItem> : <></>
+        );
+    };
 
     const [openCategoryDialog, setDialog] = useState('');
 
@@ -78,8 +100,9 @@ const Toolbox: FC = () => {
             <Dialog open={Boolean(openCategoryDialog)} onClose={() => setDialog('')}>
                 <DialogTitle>{openCategoryDialog} courses</DialogTitle>
                 <List>
-                    {courseCategorization.map((cate) => cate['Initial Category'] === openCategoryDialog ? <ListItem key={cate['State Course Code']}>{cate['Course Name']}</ListItem> : <></>
-                    )}
+                    {/* {courseCategorization.map((cate) => cate['Initial Category'] === openCategoryDialog ? <ListItem key={cate['State Course Code']}>{cate['Course Name']}</ListItem> : <></>
+                    )} */}
+                    {generateList()}
                 </List>
                 <DialogActions>
                     <Button onClick={() => setDialog('')}>close</Button>

@@ -6,7 +6,7 @@ export const PossibleCategories = [
     { name: 'CS Basic', key: 'CSB' },
     { name: 'CS Advanced', key: 'CSA' },
     { name: 'CS Related', key: 'CSR' },
-    { name: 'CS Core (CSB SCR)', key: 'CSC' },
+    { name: 'CS Core (CSB SCA)', key: 'CSC' },
     { name: 'All CS Courses', key: 'CS' }
 ];
 
