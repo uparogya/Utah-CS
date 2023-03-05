@@ -114,10 +114,10 @@ const DistrictTable: FC = () => {
 
     return (
         <StickyTableContainer>
-            <Table stickyHeader sx={{ minWidth: '50vw' }} aria-label="sticky table">
+            <Table style={{ paddingLeft: '10px', paddingRight: '10px' }} stickyHeader sx={{ minWidth: '50vw' }} aria-label="sticky table">
                 <TableHead>
                     <TableRow>
-                        <FunctionCell />
+
                         <SortableHeader
                             onClick={() => toggleSort('District Name')}
                             headerName='District Name'

@@ -1,4 +1,4 @@
-import { TableRow, Checkbox } from "@mui/material";
+import { TableRow, Checkbox, FormControl, FormControlLabel } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
 import GenderRatioChart from "../CellComponents/GenderRatioChart";
 import Store from "../../Interface/Store";
@@ -20,7 +20,7 @@ type Props = {
 
 const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
     const store = useContext(Store);
-    const [isExpanded, setExpanded] = useState(false);
+    // const [isExpanded, setExpanded] = useState(false);
 
 
 
@@ -35,31 +35,37 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
 
 
 
-    return (<>
-        <TableRow>
-            <FunctionCell>
-                <Checkbox checked={store.selectedDistricts.includes(districtEntry[0] as string)}
-                    onChange={() => store.setSelectedDistricts(districtEntry[0] as string)} />
-            </FunctionCell>
+    return <TableRow>
 
-            <TextCell>{districtAttributeFinder('District Name')}</TextCell>
-            <TextCell>{districtAttributeFinder('TOTAL: Total')}</TextCell>
+        <TextCell style={{ textAlign: 'left' }}>
+            <FormControl>
 
-            <TextCell>
-                <PercentageChart
-                    actualVal={districtAttributeFinder(`${store.currentShownCSType}: Total`)}
-                    percentage={districtAttributeFinder(`${store.currentShownCSType}: Total`) / districtAttributeFinder('TOTAL: Total')} />
-            </TextCell>
-            <TextCell>
-                <GenderRatioChart
-                    femaleNum={districtAttributeFinder('TOTAL: Female')}
-                    maleNum={districtAttributeFinder('TOTAL: Male')}
-                    compareFemaleNum={districtAttributeFinder(`${store.currentShownCSType}: Female`)}
-                    compareMaleNum={districtAttributeFinder(`${store.currentShownCSType}: Male`)}
-                />
-            </TextCell>
-        </TableRow>
-    </>);
+                <FormControlLabel
+                    control={<Checkbox
+                        checked={store.selectedDistricts.includes(districtEntry[0] as string)}
+                        onChange={() => store.setSelectedDistricts(districtEntry[0] as string)}
+                    />} label={districtAttributeFinder('District Name')} />
+            </FormControl>
+
+
+        </TextCell>
+        <TextCell>{districtAttributeFinder('TOTAL: Total')}</TextCell>
+
+        <TextCell>
+            <PercentageChart
+                actualVal={districtAttributeFinder(`${store.currentShownCSType}: Total`)}
+                percentage={districtAttributeFinder(`${store.currentShownCSType}: Total`) / districtAttributeFinder('TOTAL: Total')} />
+        </TextCell>
+        <TextCell>
+            <GenderRatioChart
+                femaleNum={districtAttributeFinder('TOTAL: Female')}
+                maleNum={districtAttributeFinder('TOTAL: Male')}
+                compareFemaleNum={districtAttributeFinder(`${store.currentShownCSType}: Female`)}
+                compareMaleNum={districtAttributeFinder(`${store.currentShownCSType}: Male`)}
+            />
+        </TextCell>
+    </TableRow>
+        ;
 
 };
 
