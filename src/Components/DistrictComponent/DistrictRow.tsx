@@ -67,15 +67,15 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
 
 export default observer(DistrictRow);
 
-const getSum = (districtEnrollment: { [key: string]: CSDemographic; }) => {
-    let hasSpecialCase = false;
-    const sumResult = sum(Object.values(districtEnrollment).map(d => {
-        hasSpecialCase = hasSpecialCase || d.Total === 'n<10';
-        return d.Total as number;
-    }));
-    if (!sumResult && hasSpecialCase) {
+// const getSum = (districtEnrollment: { [key: string]: CSDemographic; }) => {
+//     let hasSpecialCase = false;
+//     const sumResult = sum(Object.values(districtEnrollment).map(d => {
+//         hasSpecialCase = hasSpecialCase || d.Total === 'n<10';
+//         return d.Total as number;
+//     }));
+//     if (!sumResult && hasSpecialCase) {
 
-    }
-    return (!sumResult && hasSpecialCase) ? 'n<10' : sumResult;
+//     }
+//     return (!sumResult && hasSpecialCase) ? 'n<10' : sumResult;
 
-};
+// };

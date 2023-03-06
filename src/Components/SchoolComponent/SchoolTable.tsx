@@ -34,6 +34,7 @@ const SchoolTable: FC = () => {
                 setTitleEntry(data[1] as string[]);
                 stateUpdateWrapperUseJSON(schoolData, data.slice(2), setSchoolData);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [store.schoolYearShowing]);
 
     const schoolAttributeFinder = (attributeName: string, entry: (number | string)[]) => findAttribute(attributeName, titleEntry, entry);
@@ -57,6 +58,7 @@ const SchoolTable: FC = () => {
 
         stateUpdateWrapperUseJSON(schoolData, newSortedSchool, setSchoolData);
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sortUp, sortAttribute, sortCSPercentage]);
 
     useEffect(() => {
@@ -70,6 +72,7 @@ const SchoolTable: FC = () => {
         } else {
             stateUpdateWrapperUseJSON(schoolDataToShow, schoolData, setSchoolDataToShow);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [store.selectedDistricts, schoolData]);
 
     const toggleSort = (inputName: string) => {
