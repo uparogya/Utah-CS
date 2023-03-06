@@ -5,8 +5,6 @@ import Store from "../../Interface/Store";
 import { observer } from "mobx-react-lite";
 import { TextCell } from "../GeneralComponents";
 import PercentageChart from "../CellComponents/PercentageChart";
-import { sum } from "d3-array";
-import { CSDemographic } from "../../Interface/Types";
 import { findAttribute } from "../../Interface/AttributeFinder";
 
 type Props = {
