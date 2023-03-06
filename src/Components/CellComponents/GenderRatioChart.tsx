@@ -35,7 +35,7 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum, compareFemaleNum, com
 
     const TextMargin = 5;
     return (totalStudent ?
-        <ComponentSVG onClick={(e) => store.updateShowPercentage()}>
+        <ComponentSVG onClick={(e) => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
             <g>
                 <rect
                     x={0}

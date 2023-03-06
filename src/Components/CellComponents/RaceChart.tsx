@@ -64,7 +64,7 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
 
     return (
         <div>
-            <div onClick={() => setDialogVisibility(true)}>
+            <div onClick={() => setDialogVisibility(true)} style={{ cursor: 'pointer' }}>
                 {topThreeRace.map((race) => (
                     <span key={`${keyIdentity}-${race}`}>
                         <SmallerText children={

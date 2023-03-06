@@ -14,15 +14,6 @@ type Props = {
 
 const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
     const store = useContext(Store);
-    // const [isExpanded, setExpanded] = useState(false);
-
-
-
-
-    // const findAttribute = (attributeName: string) => {
-
-    //     return ((districtEntry[titleEntry.indexOf(attributeName)]) as number) || 0;
-    // };
 
     const districtAttributeFinder = (attributeName: string) =>
         findAttribute(attributeName, titleEntry, districtEntry);
