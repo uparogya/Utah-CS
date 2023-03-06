@@ -1,15 +1,11 @@
 import { TableRow, Checkbox, FormControl, FormControlLabel } from "@mui/material";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext } from "react";
 import GenderRatioChart from "../CellComponents/GenderRatioChart";
 import Store from "../../Interface/Store";
 import { observer } from "mobx-react-lite";
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { FunctionCell, NoBorderCell, TextCell } from "../GeneralComponents";
+import { TextCell } from "../GeneralComponents";
 import PercentageChart from "../CellComponents/PercentageChart";
 import { sum } from "d3-array";
-import RemoveIcon from '@mui/icons-material/Remove';
-import { CourseCategoryColor } from "../../Preset/Colors";
 import { CSDemographic } from "../../Interface/Types";
 import { findAttribute } from "../../Interface/AttributeFinder";
 

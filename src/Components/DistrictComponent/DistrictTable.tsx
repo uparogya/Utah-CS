@@ -1,17 +1,14 @@
 import { Table, TableHead, TableRow, TableBody } from "@mui/material";
-import { sort, sum } from "d3-array";
-import { csv } from "d3-fetch";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import readXlsxFile from "read-excel-file";
-import { EnrollmentDataContext } from "../../App";
 import { findAttribute } from "../../Interface/AttributeFinder";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import Store from "../../Interface/Store";
 import { CourseCategoryColor } from "../../Preset/Colors";
-import { DefaultEnrollment, linkToData, PossibleCategories } from "../../Preset/Constants";
+import { linkToData } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
-import { FunctionCell, StickyTableContainer } from "../GeneralComponents";
+import { StickyTableContainer } from "../GeneralComponents";
 import DistrictRow from "./DistrictRow";
 
 

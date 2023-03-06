@@ -5,7 +5,6 @@ import Store from "../Interface/Store";
 import { linkToData, PossibleCategories, PossibleSchoolYears } from "../Preset/Constants";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { CourseCategoryColor, LightGray } from "../Preset/Colors";
-import { csv } from "d3-fetch";
 import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
 import readXlsxFile from "read-excel-file";
 

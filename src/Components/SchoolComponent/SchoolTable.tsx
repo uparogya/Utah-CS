@@ -139,9 +139,4 @@ const SchoolTable: FC = () => {
 
 export default observer(SchoolTable);
 
-const convertEntry = (input: string) => {
-    if (input === 'n<10') {
-        return 'n<10';
-    }
-    return parseInt(input) || 0;
-};
+
