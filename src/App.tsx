@@ -6,7 +6,7 @@ import DistrictTable from './Components/DistrictComponent/DistrictTable';
 import SchoolTable from './Components/SchoolComponent/SchoolTable';
 import Toolbox from './Components/Toolbox';
 import styled from '@emotion/styled';
-import MenuIcon from '@mui/icons-material/Menu';
+import SettingsIcon from '@mui/icons-material/Settings';
 import PercentIcon from '@mui/icons-material/Percent';
 import Store from './Interface/Store';
 import NumbersIcon from '@mui/icons-material/Numbers';
@@ -41,7 +41,11 @@ function App() {
             <div className="App">
                 <AppBar position="static">
                     <Toolbar>
-                        <AppBarButton children={<MenuIcon />} onClick={() => setDrawer(!drawerOpen)} />
+
+                        <AppBarButton children={<>
+                            <SettingsIcon />
+                            <span style={{ fontSize: '20px' }}>Settings</span>
+                        </>} onClick={() => setDrawer(!drawerOpen)} />
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             Utah CS, {store.schoolYearShowing} Academic Year
                         </Typography>
