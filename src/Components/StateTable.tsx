@@ -61,7 +61,7 @@ const StateTable: FC = () => {
                 <TableRow>
                     <TableCell>Student Type</TableCell>
                     <TableCell ># of Students</TableCell>
-                    <TableCell >Sex</TableCell>
+                    <TableCell >Gender</TableCell>
                     <TableCell >Race</TableCell>
                     <TableCell >Disability</TableCell>
                     <TableCell >Econ Disadvantaged</TableCell>
