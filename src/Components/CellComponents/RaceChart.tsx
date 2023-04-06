@@ -114,7 +114,8 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
 };
 
 const SmallerText = styled.span({
-    fontSize: 'smaller'
+    fontSize: 'smaller',
+    textDecoration: 'underline'
 });
 const DialogTSpan = styled.tspan({
     textAnchor: 'end',
