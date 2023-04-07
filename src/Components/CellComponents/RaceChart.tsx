@@ -1,12 +1,7 @@
 import { FC, useEffect, useState, useContext } from "react";
-import { ComponentSVG } from "../GeneralComponents";
-import { range } from 'd3-array';
-import { CellSVGHeight, CellSVGWidth, RaceDictionary } from "../../Preset/Constants";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Tooltip } from "@mui/material";
+import { RaceDictionary } from "../../Preset/Constants";
 import { format } from "d3-format";
-import { XDarkGray, RaceColor } from "../../Preset/Colors";
 import styled from "@emotion/styled";
-import { scaleBand, scaleLinear } from "d3-scale";
 import { observer } from "mobx-react-lite";
 import Store from "../../Interface/Store";
 
@@ -19,13 +14,12 @@ type Props = {
     otherNum: number,
     hispaNum: number,
     keyIdentity: string,
+
 };
 
 const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asianNum, otherNum, hispaNum }: Props) => {
 
 
-    const dialogSVGWidth = 300;
-    const dialogSVGHeight = 500;
 
     const store = useContext(Store);
 
@@ -56,15 +50,12 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
 
     const totalStudent = whiteNum + nativeNum + blackNum + asianNum + otherNum + hispaNum;
 
-    const [openDialog, setDialogVisibility] = useState(false);
 
-    const barChartScale = scaleLinear().domain([0, 1]).range([0, dialogSVGWidth]);
-    const barChartHeightScale = scaleBand().domain(Object.keys(outputObj)).range([0, dialogSVGHeight]).padding(0.3);
 
 
     return (
         <div>
-            <div onClick={() => setDialogVisibility(true)} style={{ cursor: 'pointer' }}>
+            <div style={{ cursor: 'pointer' }}>
                 {topThreeRace.map((race) => (
                     <span key={`${keyIdentity}-${race}`}>
                         <SmallerText children={
@@ -73,42 +64,7 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
                     </span>
                 ))}
             </div>
-            <Dialog open={openDialog} onClose={() => setDialogVisibility(false)}>
-                <DialogTitle children={`${keyIdentity} Race Breakdown`} />
-                <DialogContent>
-                    <svg width={dialogSVGWidth} height={dialogSVGHeight}>
-                        {Object.keys(outputObj).map((d) => (
-                            <g key={`${keyIdentity}${d}`}>
-                                <rect x={0}
-                                    fill={RaceColor[d]}
-                                    height={barChartHeightScale.bandwidth()}
-                                    y={barChartHeightScale(d)}
-                                    width={barChartScale(outputObj[d] / totalStudent)} />
-                                <text
-                                    x={dialogSVGWidth}
-                                    y={(barChartHeightScale(d) || 0) + 0.5 * barChartHeightScale.bandwidth()}
-                                    alignmentBaseline='middle'
-                                    fill={XDarkGray}
-                                >
-                                    <DialogTSpan x={dialogSVGWidth} dy='-1.6em'>
-                                        {d}
-                                    </DialogTSpan>
-                                    <DialogTSpan x={dialogSVGWidth} dy='1.5em' >
-                                        {outputObj[d]}
-                                    </DialogTSpan>
-                                    <DialogTSpan x={dialogSVGWidth} dy='1.5em'>
-                                        {format(',.2%')(outputObj[d] / totalStudent)}
-                                    </DialogTSpan>
 
-                                </text>
-                            </g>
-                        ))}
-                    </svg>
-                    <DialogActions>
-                        <Button children='Close' onClick={() => setDialogVisibility(false)} />
-                    </DialogActions>
-                </DialogContent>
-            </Dialog>
         </div>
     );
 };
@@ -117,9 +73,5 @@ const SmallerText = styled.span({
     fontSize: 'smaller',
     textDecoration: 'underline'
 });
-const DialogTSpan = styled.tspan({
-    textAnchor: 'end',
-    alignmentBaseline: 'middle',
-    fontSize: 'small',
-});
+
 export default observer(RaceChart);

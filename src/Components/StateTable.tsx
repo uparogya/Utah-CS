@@ -11,6 +11,7 @@ import readXlsxFile from "read-excel-file";
 import { CourseCategoryColor } from "../Preset/Colors";
 import { findAttribute } from "../Interface/AttributeFinder";
 import { linkToData } from "../Preset/Constants";
+import RaceDialog from "./CellComponents/RaceDialog";
 
 
 
@@ -21,10 +22,6 @@ const StateTable: FC = () => {
 
     const [stateData, setStateData] = useState<Array<number | string>[]>([]);
 
-    // const findAttribute = (attributeName: string, dataSet: Array<number | string> [],titleEntry:string[]) => {
-    //     const selectedRow = stateData.filter(row => row[0] === store.schoolYearShowing)[0];
-    //     return stateData.length ? ((selectedRow[stateData[1].indexOf(attributeName)]) as number) : 0;
-    // };
 
     useEffect(() => {
         fetch(linkToData,).then(response => response.blob())
@@ -40,7 +37,7 @@ const StateTable: FC = () => {
         findAttribute(attributeName, stateData[1], stateData.filter(row => row[0] === store.schoolYearShowing)[0])
         , [store.schoolYearShowing, stateData]);
 
-
+    const [openRaceDialog, setOpenRaceDialog] = useState(false);
 
 
     const [totalStudentNum, setTotalStudentNum] = useState(0);
@@ -86,7 +83,7 @@ const StateTable: FC = () => {
                             femaleNum={stateAttributeFinder('TOTAL: Female')}
                         />
                     </TableCell>
-                    <TableCell>
+                    <TableCell onClick={() => setOpenRaceDialog(true)}>
                         <RaceChart keyIdentity="State Total"
                             whiteNum={stateAttributeFinder('TOTAL: White')}
                             asianNum={stateAttributeFinder('TOTAL: Asian') + stateAttributeFinder('TOTAL: Native Hawaiian or Pacific Islander')}
@@ -133,7 +130,7 @@ const StateTable: FC = () => {
                             maleNum={stateAttributeFinder(`${store.currentShownCSType}: Male`)}
                             femaleNum={stateAttributeFinder(`${store.currentShownCSType}: Female`)} />
                     </TableCell>
-                    <TableCell>
+                    <TableCell onClick={() => setOpenRaceDialog(true)}>
                         <RaceChart keyIdentity="CS"
                             whiteNum={stateAttributeFinder(`${store.currentShownCSType}: White`)}
                             asianNum={stateAttributeFinder(`${store.currentShownCSType}: Asian`) + stateAttributeFinder(`${store.currentShownCSType}: Native Hawaiian or Pacific Islander`)}
@@ -165,6 +162,26 @@ const StateTable: FC = () => {
 
             </TableBody>
         </Table>
+
+
+        <RaceDialog openDialog={openRaceDialog}
+            setDialogVisibility={(bol: boolean) => setOpenRaceDialog(bol)}
+            CSRaceOutput={{
+                white: stateAttributeFinder(`${store.currentShownCSType}: White`),
+                hispanic: stateAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`),
+                asian: stateAttributeFinder(`${store.currentShownCSType}: Asian`),
+                black: stateAttributeFinder(`${store.currentShownCSType}: Black or African American`),
+                native: stateAttributeFinder(`${store.currentShownCSType}: American Indian or Alaska Native`),
+                other: stateAttributeFinder(`${store.currentShownCSType}: Native Hawaiian or Pacific Islander`) + stateAttributeFinder(`${store.currentShownCSType}: Two or more races`),
+            }}
+            stateRaceOutput={{
+                white: stateAttributeFinder('TOTAL: White'),
+                hispanic: stateAttributeFinder('TOTAL: Hispanic or Latino'),
+                asian: stateAttributeFinder('TOTAL: Asian'),
+                black: stateAttributeFinder('TOTAL: Black or African American'),
+                native: stateAttributeFinder("TOTAL: American Indian or Alaska Native"),
+                other: stateAttributeFinder('TOTAL: Native Hawaiian or Pacific Islander') + stateAttributeFinder('TOTAL: Two or more races')
+            }} />
     </TableContainer>);
 };
 
