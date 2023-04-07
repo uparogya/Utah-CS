@@ -7,6 +7,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { CourseCategoryColor, LightGray } from "../Preset/Colors";
 import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
 import readXlsxFile from "read-excel-file";
+import styled from "@emotion/styled";
 
 const Toolbox: FC = () => {
 
@@ -51,30 +52,26 @@ const Toolbox: FC = () => {
                     Select courses to include for state total data.
                 </ListItem>
             </List>
-            <ListItem>
-                <Stack>
-                    {PossibleCategories.map((category) => (
-                        <Container key={`${category.name}-chip`}>
-
-                            <Chip label={category.name}
-                                clickable
-                                onClick={() => store.updateSelectedCategory(category.key)}
-                                style={{
-                                    margin: '5px',
-                                    backgroundColor: store.currentShownCSType === category.key ? CourseCategoryColor[category.key] : undefined,
-                                    color: store.currentShownCSType === category.key ? LightGray : undefined
-                                }}
-                            // color={store.selectedCategory.includes(chipName) ? 'primary' : 'default'}
-                            />
-                            <Tooltip title='See list of courses'>
-                                <IconButton onClick={() => setDialog(category.key)}>
-                                    <InfoOutlinedIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Container>
-                    ))}
-                </Stack>
-            </ListItem>
+            <Stack>
+                {PossibleCategories.map((category) => (
+                    <Container key={`${category.name}-chip`}>
+                        <ChipComp label={category.name}
+                            clickable
+                            onClick={() => store.updateSelectedCategory(category.key)}
+                            style={{
+                                backgroundColor: store.currentShownCSType === category.key ? CourseCategoryColor[category.key] : undefined,
+                                color: store.currentShownCSType === category.key ? LightGray : undefined
+                            }}
+                        // color={store.selectedCategory.includes(chipName) ? 'primary' : 'default'}
+                        />
+                        <Tooltip title='See list of courses'>
+                            <IconButton onClick={() => setDialog(category.key)} size="small">
+                                <InfoOutlinedIcon fontSize="inherit" />
+                            </IconButton>
+                        </Tooltip>
+                    </Container>
+                ))}
+            </Stack>
 
             <ListItem>
                 School Year
@@ -82,12 +79,11 @@ const Toolbox: FC = () => {
             <Stack>
                 {PossibleSchoolYears.map((yearEntry) => (
                     <Container key={yearEntry}>
-                        <Chip
+                        <ChipComp
                             label={yearEntry}
                             clickable
                             onClick={() => store.updateSchoolYEar(yearEntry)}
                             style={{
-                                margin: '5px',
                                 backgroundColor: store.schoolYearShowing === yearEntry ? 'darkblue' : undefined,
                                 color: store.schoolYearShowing === yearEntry ? LightGray : undefined
                             }}
@@ -96,6 +92,29 @@ const Toolbox: FC = () => {
                 ))}
             </Stack>
 
+            <ListItem>
+                Percentage / Number Mode
+            </ListItem>
+            <Stack>
+                <Container>
+                    <ChipComp label={`Number #`}
+                        clickable={store.showPercentage}
+                        style={{
+                            backgroundColor: !store.showPercentage ? 'darkblue' : undefined,
+                            color: !store.showPercentage ? LightGray : undefined
+                        }}
+                        onClick={() => store.updateShowPercentage()} />
+                </Container>
+                <Container>
+                    <ChipComp label={`Percentage %`}
+                        style={{
+                            backgroundColor: store.showPercentage ? 'darkblue' : undefined,
+                            color: store.showPercentage ? LightGray : undefined
+                        }}
+                        clickable={!store.showPercentage}
+                        onClick={() => store.updateShowPercentage()} />
+                </Container>
+            </Stack>
             <Dialog open={Boolean(openCategoryDialog)} onClose={() => setDialog('')}>
                 <DialogTitle>{openCategoryDialog} courses</DialogTitle>
                 <List>
@@ -112,3 +131,7 @@ const Toolbox: FC = () => {
 };
 
 export default observer(Toolbox);
+
+const ChipComp = styled(Chip)`
+margin: '5px'
+`;
