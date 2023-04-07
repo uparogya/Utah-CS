@@ -12,6 +12,7 @@ import { CourseCategoryColor } from "../Preset/Colors";
 import { findAttribute } from "../Interface/AttributeFinder";
 import { linkToData } from "../Preset/Constants";
 import RaceDialog from "./CellComponents/RaceDialog";
+import styled from "@emotion/styled";
 
 
 
@@ -58,7 +59,11 @@ const StateTable: FC = () => {
                 <TableRow>
                     <TableCell>Student Type</TableCell>
                     <TableCell ># of Students</TableCell>
-                    <TableCell >Gender</TableCell>
+                    <TableCell >
+                        {/* <GenderHeaderSVG > */}
+                        <text>Gender</text>
+                        {/* </GenderHeaderSVG> */}
+                    </TableCell>
                     <TableCell >Race</TableCell>
                     <TableCell >Disability</TableCell>
                     <TableCell >Econ Disadvantaged</TableCell>
@@ -66,11 +71,7 @@ const StateTable: FC = () => {
                 </TableRow>
             </TableHead>
             <TableBody>
-
-
-                <TableRow
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
+                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell component="th" scope="row">
                         Total 9-12 Student Population
                     </TableCell>
@@ -109,9 +110,7 @@ const StateTable: FC = () => {
                     </TableCell>
                 </TableRow>
 
-                <TableRow
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
+                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell component="th"
                         scope="row"
                         style={{
@@ -139,7 +138,6 @@ const StateTable: FC = () => {
                             blackNum={stateAttributeFinder(`${store.currentShownCSType}: Black or African American`)}
                             otherNum={stateAttributeFinder(`${store.currentShownCSType}: Two or more races`)}
                         />
-
                     </TableCell>
                     <TableCell>
                         <PercentageChart
@@ -157,13 +155,8 @@ const StateTable: FC = () => {
                         />
                     </TableCell>
                 </TableRow>
-
-
-
             </TableBody>
         </Table>
-
-
         <RaceDialog openDialog={openRaceDialog}
             setDialogVisibility={(bol: boolean) => setOpenRaceDialog(bol)}
             CSRaceOutput={{
@@ -184,5 +177,12 @@ const StateTable: FC = () => {
             }} />
     </TableContainer>);
 };
+
+// const GenderHeaderSVG = styled.svg`
+// width:0;
+//     min-width:100%;
+//     min-height:100%;
+//     display: block;
+// `;
 
 export default observer(StateTable);

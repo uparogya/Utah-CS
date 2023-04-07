@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import { TextCell } from "../GeneralComponents";
 import PercentageChart from "../CellComponents/PercentageChart";
 import { findAttribute } from "../../Interface/AttributeFinder";
+import styled from "@emotion/styled";
 
 type Props = {
     districtEntry: Array<string | number>;
@@ -29,7 +30,8 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
                     control={<Checkbox
                         checked={store.selectedDistricts.includes(districtEntry[0] as string)}
                         onChange={() => store.setSelectedDistricts(districtEntry[0] as string)}
-                    />} label={districtAttributeFinder('District Name')} />
+
+                    />} label={<Label>{districtAttributeFinder('District Name')}</Label>} />
             </FormControl>
 
 
@@ -56,15 +58,7 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
 
 export default observer(DistrictRow);
 
-// const getSum = (districtEnrollment: { [key: string]: CSDemographic; }) => {
-//     let hasSpecialCase = false;
-//     const sumResult = sum(Object.values(districtEnrollment).map(d => {
-//         hasSpecialCase = hasSpecialCase || d.Total === 'n<10';
-//         return d.Total as number;
-//     }));
-//     if (!sumResult && hasSpecialCase) {
 
-//     }
-//     return (!sumResult && hasSpecialCase) ? 'n<10' : sumResult;
-
-// };
+const Label = styled.span({
+    fontSize: '0.875rem'
+});

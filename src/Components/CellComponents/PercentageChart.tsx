@@ -42,7 +42,7 @@ const PercentageChart: FC<Props> = ({ actualVal, percentage, tooltip }: Props) =
     );
 };
 
-const computeTextOutcome = (input: string | number, percentage: number, showPercentage: boolean) => {
+export const computeTextOutcome = (input: string | number, percentage: number, showPercentage: boolean) => {
     if (input === 0) {
         return '0';
     }

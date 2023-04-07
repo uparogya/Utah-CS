@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
-import { format } from "d3-format";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import Store from "../../Interface/Store";
 import { GenderColor, XDarkGray } from "../../Preset/Colors";
 import { CellSVGHeight, CellSVGWidth } from "../../Preset/Constants";
 import { ComponentSVG } from "../GeneralComponents";
+import { computeTextOutcome } from "./PercentageChart";
 type Props = {
     maleNum: number,
     femaleNum: number,
@@ -24,14 +24,14 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum, compareFemaleNum, com
 
     useEffect(() => {
         setHasComparison(Boolean(compareFemaleNum || compareMaleNum));
-        setCompareTotalStudent((compareFemaleNum || 0) + (compareMaleNum || 0));
+        setCompareTotalStudent((+(compareFemaleNum || 0) || 0) + (+(compareMaleNum || 0) || 0));
     }, [compareFemaleNum, compareMaleNum]);
 
 
     useEffect(() => {
         setTotalStudent(maleNum + femaleNum);
-
     }, [maleNum, femaleNum]);
+
 
     const TextMargin = 5;
     return (totalStudent ?
@@ -49,8 +49,9 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum, compareFemaleNum, com
                     height={(hasComparison ? 0.5 : 1) * CellSVGHeight}
                     width={CellSVGWidth * (femaleNum / totalStudent) || 0}
                     fill={GenderColor.female} />
-                <OnChartText children={store.showPercentage ? format('.0%')(maleNum / totalStudent) : maleNum} x={TextMargin} y={CellSVGHeight * (hasComparison ? 0.5 : 1) * 0.5} alignmentBaseline='middle' textAnchor='start' />
-                <OnChartText children={store.showPercentage ? format('.0%')(femaleNum / totalStudent) : femaleNum} x={CellSVGWidth - TextMargin} y={CellSVGHeight * (compareMaleNum ? 0.5 : 1) * 0.5} fill={XDarkGray} alignmentBaseline='middle' textAnchor='end' />
+
+                <OnChartText children={computeTextOutcome(maleNum, maleNum / totalStudent, store.showPercentage)} x={TextMargin} y={CellSVGHeight * (hasComparison ? 0.5 : 1) * 0.5} alignmentBaseline='middle' textAnchor='start' />
+                <OnChartText children={computeTextOutcome(femaleNum, femaleNum / totalStudent, store.showPercentage)} x={CellSVGWidth - TextMargin} y={CellSVGHeight * (compareMaleNum ? 0.5 : 1) * 0.5} fill={XDarkGray} alignmentBaseline='middle' textAnchor='end' />
             </g>
             {
                 hasComparison ? <g>
@@ -66,8 +67,9 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum, compareFemaleNum, com
                         height={0.5 * CellSVGHeight}
                         width={CellSVGWidth * ((compareFemaleNum || 0) / compareTotalStudent) || 0}
                         fill={GenderColor.female} />
-                    <OnChartText children={store.showPercentage ? format('.0%')((compareMaleNum || 0) / compareTotalStudent) : (compareMaleNum || 0)} x={TextMargin} y={CellSVGHeight * 0.75} alignmentBaseline='middle' textAnchor='start' />
-                    <OnChartText children={store.showPercentage ? format('.0%')((compareFemaleNum || 0) / compareTotalStudent) : (compareFemaleNum || 0)} x={CellSVGWidth - TextMargin} y={CellSVGHeight * 0.75} fill={XDarkGray} alignmentBaseline='middle' textAnchor='end' />
+
+                    <OnChartText children={computeTextOutcome(compareMaleNum || 0, (compareMaleNum || 0) / compareTotalStudent, store.showPercentage)} x={TextMargin} y={CellSVGHeight * 0.75} alignmentBaseline='middle' textAnchor='start' />
+                    <OnChartText children={computeTextOutcome(compareFemaleNum || 0, (compareFemaleNum || 0) / compareTotalStudent, store.showPercentage)} x={CellSVGWidth - TextMargin} y={CellSVGHeight * 0.75} fill={XDarkGray} alignmentBaseline='middle' textAnchor='end' />
                 </g> : <></>
             }
 
