@@ -19,6 +19,7 @@ export const RaceDictionary: { [key: string]: string; } = {
     native: 'Native American',
     other: 'Other/Multiple Races',
     asian: 'Asian',
+    pacific: 'Pacific Islander'
 };
 
 export const DefaultEnrollment = {

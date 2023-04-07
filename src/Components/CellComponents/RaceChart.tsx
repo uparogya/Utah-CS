@@ -1,57 +1,45 @@
 import { FC, useEffect, useState, useContext } from "react";
 import { RaceDictionary } from "../../Preset/Constants";
-import { format } from "d3-format";
 import styled from "@emotion/styled";
 import { observer } from "mobx-react-lite";
 import Store from "../../Interface/Store";
+import { computeTextOutcome } from "./PercentageChart";
+import { sum } from "d3-array";
 
 type Props = {
-    whiteNum: number,
-    nativeNum: number,
-    blackNum: number,
-    //asian / pacific islander
-    asianNum: number,
-    otherNum: number,
-    hispaNum: number,
+    outputObj: {
+        white: number,
+        hispanic: number,
+        asian: number,
+        black: number,
+        native: number,
+        other: number,
+        pacific: number,
+        [key: string]: number;
+    };
     keyIdentity: string,
 
 };
 
-const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asianNum, otherNum, hispaNum }: Props) => {
+const RaceChart: FC<Props> = ({ keyIdentity, outputObj }: Props) => {
 
 
 
     const store = useContext(Store);
 
-    const [outputObj, setOutput] = useState<{ [key: string]: number; }>({
-        white: whiteNum,
-        hispanic: hispaNum,
-        asian: asianNum,
-        black: blackNum,
-        native: nativeNum,
-        other: otherNum
-    });
+    const [totalStudent, setTotal] = useState(0);
+
+
 
     const [topThreeRace, setTopThree] = useState(['black', 'asian', 'hispanic']);
     useEffect(() => {
-        const output: { [key: string]: number; } = {
-            white: whiteNum,
-            hispanic: hispaNum,
-            asian: asianNum,
-            black: blackNum,
-            native: nativeNum,
-            other: otherNum
-        };
 
-        const topThree = Object.keys(output).sort((a, b) => output[b] - output[a]).filter(r => r !== 'white')!.slice(0, 3);
-        setOutput(output);
+
+        const topThree = Object.keys(outputObj).sort((a, b) => outputObj[b] - outputObj[a]).filter(r => r !== 'white' && (outputObj[r] as any) !== 'n<10')!.slice(0, 3);
+        // setOutput(output);
         setTopThree(topThree);
-    }, [whiteNum, nativeNum, blackNum, asianNum, otherNum, hispaNum]);
-
-    const totalStudent = whiteNum + nativeNum + blackNum + asianNum + otherNum + hispaNum;
-
-
-
+        setTotal(sum(Object.values(outputObj)));
+    }, [outputObj]);
 
     return (
         <div>
@@ -59,7 +47,7 @@ const RaceChart: FC<Props> = ({ keyIdentity, whiteNum, nativeNum, blackNum, asia
                 {topThreeRace.map((race) => (
                     <span key={`${keyIdentity}-${race}`}>
                         <SmallerText children={
-                            `${RaceDictionary[race]}: ${store.showPercentage ? format(',.2%')(outputObj[race] / totalStudent) : outputObj[race]}`
+                            `${RaceDictionary[race]}: ${computeTextOutcome(outputObj[race], outputObj[race] / totalStudent, store.showPercentage)}`
                         } /><br />
                     </span>
                 ))}

@@ -13,13 +13,20 @@ import Store from './Interface/Store';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import { observer } from 'mobx-react-lite';
 import { LightGray } from './Preset/Colors';
+import CSMenu from './Components/CSMenu';
 
 
 
 export const EnrollmentDataContext = createContext<{ [key: string]: string; }[]>([]);
 function App() {
 
-
+    const [CSMenuAnchorEl, setCSMenuAnchorEl] = useState<null | HTMLElement>(null);
+    const handleCSMenuClose = () => {
+        setCSMenuAnchorEl(null);
+    };
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setCSMenuAnchorEl(event.currentTarget);
+    };
 
     const store = useContext(Store);
 
@@ -67,7 +74,7 @@ function App() {
                     },
                 }}>
                     <Grid id="state-view" style={{ minWidth: '100vw', paddingBottom: '20px' }} xs={12}>
-                        <StateTable />
+                        <StateTable csClickHandler={handleClick} />
                     </Grid>
 
 
@@ -86,6 +93,7 @@ function App() {
                         <SchoolTable />
                     </BasicGrid>
                 </Grid>
+                <CSMenu anchorEl={CSMenuAnchorEl} handleClose={handleCSMenuClose} />
             </div>
         </>
     );

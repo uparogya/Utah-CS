@@ -14,7 +14,7 @@ export const RaceColor: { [key: string]: string; } = {
     native: '#e8800c',
     hispanic: '#fff07c',
     other: '#a799b7',
-
+    pacific: '#e377c2'
 };
 
 export const LightGray = '#ededed';

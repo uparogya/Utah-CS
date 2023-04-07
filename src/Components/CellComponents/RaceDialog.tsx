@@ -7,6 +7,7 @@ import { FC, useContext, } from "react";
 import { RaceColor } from "../../Preset/Colors";
 import styled from "@emotion/styled";
 import Store from "../../Interface/Store";
+import { RaceDictionary } from "../../Preset/Constants";
 
 type Props = {
     openDialog: boolean,
@@ -48,31 +49,28 @@ const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, stateRaceOutpu
                             width={barChartScale(CSRaceOutput[d] / sum(Object.values(CSRaceOutput))) - leftPadding} />
                         <g>
                             <DialogText x={0}
-                                textAnchor='start'
                                 y={(barChartHeightScale(d) || 0) + 0.25 * barChartHeightScale.bandwidth()}
                             >
                                 State
                             </DialogText>
                             <DialogText x={0}
-                                textAnchor='start'
                                 y={(barChartHeightScale(d) || 0) + 0.75 * barChartHeightScale.bandwidth()}
                             >
                                 CS
                             </DialogText>
                             <DialogText x={0}
-                                textAnchor='start'
-                                y={(barChartHeightScale(d) || 0) - 14} fontWeight='bold'>
-                                {d.charAt(0).toUpperCase() + d.slice(1)}
+                                y={(barChartHeightScale(d) || 0) - 12} fontWeight='bold'>
+                                {RaceDictionary[d]}
                             </DialogText>
                         </g>
 
                         <g>
-                            <DialogText x={dialogSVGWidth} textAnchor='end' y={(barChartHeightScale(d) || 0) + 0.25 * barChartHeightScale.bandwidth()}>
+                            <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + 0.45 * 0.5 * barChartHeightScale.bandwidth()}>
                                 {`${stateRaceOutput[d]}, ${format(',.2%')(stateRaceOutput[d] / sum(Object.values(stateRaceOutput)))}`}
-                            </DialogText>
-                            <DialogText x={dialogSVGWidth} textAnchor='end' y={(barChartHeightScale(d) || 0) + 0.75 * barChartHeightScale.bandwidth()}>
+                            </NumberLabText>
+                            <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + 0.75 * barChartHeightScale.bandwidth()}>
                                 {`${CSRaceOutput[d]}, ${format(',.2%')(CSRaceOutput[d] / sum(Object.values(CSRaceOutput)))}`}
-                            </DialogText>
+                            </NumberLabText>
                         </g>
                     </g>
                 ))}
@@ -87,7 +85,13 @@ const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, stateRaceOutpu
 export default observer(RaceDialog);
 
 const DialogText = styled.text({
-
     fontSize: 'small',
     alignmentBaseline: 'central',
+    textAnchor: 'start'
+});
+
+const NumberLabText = styled.text({
+    fontSize: 'x-small',
+    alignmentBaseline: 'central',
+    textAnchor: 'end'
 });

@@ -12,11 +12,13 @@ import { CourseCategoryColor } from "../Preset/Colors";
 import { findAttribute } from "../Interface/AttributeFinder";
 import { linkToData } from "../Preset/Constants";
 import RaceDialog from "./CellComponents/RaceDialog";
-import styled from "@emotion/styled";
+
+type Prop = {
+    csClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
+};
 
 
-
-const StateTable: FC = () => {
+const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
     const store = useContext(Store);
 
     //data variables
@@ -86,12 +88,15 @@ const StateTable: FC = () => {
                     </TableCell>
                     <TableCell onClick={() => setOpenRaceDialog(true)}>
                         <RaceChart keyIdentity="State Total"
-                            whiteNum={stateAttributeFinder('TOTAL: White')}
-                            asianNum={stateAttributeFinder('TOTAL: Asian') + stateAttributeFinder('TOTAL: Native Hawaiian or Pacific Islander')}
-                            hispaNum={stateAttributeFinder('TOTAL: Hispanic or Latino')}
-                            nativeNum={stateAttributeFinder("TOTAL: American Indian or Alaska Native")}
-                            blackNum={stateAttributeFinder('TOTAL: Black or African American')}
-                            otherNum={stateAttributeFinder('TOTAL: Two or more races')} />
+                            outputObj={{
+                                white: stateAttributeFinder('TOTAL: White'),
+                                hispanic: stateAttributeFinder('TOTAL: Hispanic or Latino'),
+                                asian: stateAttributeFinder('TOTAL: Asian'),
+                                black: stateAttributeFinder('TOTAL: Black or African American'),
+                                native: stateAttributeFinder("TOTAL: American Indian or Alaska Native"),
+                                other: stateAttributeFinder('TOTAL: Two or more races'),
+                                pacific: stateAttributeFinder('TOTAL: Native Hawaiian or Pacific Islander')
+                            }} />
                     </TableCell>
                     <TableCell>
                         <PercentageChart
@@ -117,7 +122,9 @@ const StateTable: FC = () => {
                             textDecorationLine: 'underline',
                             textDecorationColor: CourseCategoryColor[store.currentShownCSType]
                         }}>
-                        Computer Science ({store.currentShownCSType})
+                        <span onClick={csClickHandler} style={{ cursor: 'pointer' }}>
+                            Computer Science ({store.currentShownCSType})
+                        </span>
                     </TableCell>
                     <TableCell>
                         <PercentageChart
@@ -131,12 +138,15 @@ const StateTable: FC = () => {
                     </TableCell>
                     <TableCell onClick={() => setOpenRaceDialog(true)}>
                         <RaceChart keyIdentity="CS"
-                            whiteNum={stateAttributeFinder(`${store.currentShownCSType}: White`)}
-                            asianNum={stateAttributeFinder(`${store.currentShownCSType}: Asian`) + stateAttributeFinder(`${store.currentShownCSType}: Native Hawaiian or Pacific Islander`)}
-                            hispaNum={stateAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`)}
-                            nativeNum={stateAttributeFinder(`${store.currentShownCSType}: American Indian or Alaska Native`)}
-                            blackNum={stateAttributeFinder(`${store.currentShownCSType}: Black or African American`)}
-                            otherNum={stateAttributeFinder(`${store.currentShownCSType}: Two or more races`)}
+                            outputObj={{
+                                white: stateAttributeFinder(`${store.currentShownCSType}: White`),
+                                hispanic: stateAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`),
+                                asian: stateAttributeFinder(`${store.currentShownCSType}: Asian`),
+                                black: stateAttributeFinder(`${store.currentShownCSType}: Black or African American`),
+                                native: stateAttributeFinder(`${store.currentShownCSType}: American Indian or Alaska Native`),
+                                other: stateAttributeFinder(`${store.currentShownCSType}: Two or more races`),
+                                pacific: stateAttributeFinder(`${store.currentShownCSType}: Native Hawaiian or Pacific Islander`),
+                            }}
                         />
                     </TableCell>
                     <TableCell>
@@ -165,7 +175,7 @@ const StateTable: FC = () => {
                 asian: stateAttributeFinder(`${store.currentShownCSType}: Asian`),
                 black: stateAttributeFinder(`${store.currentShownCSType}: Black or African American`),
                 native: stateAttributeFinder(`${store.currentShownCSType}: American Indian or Alaska Native`),
-                other: stateAttributeFinder(`${store.currentShownCSType}: Native Hawaiian or Pacific Islander`) + stateAttributeFinder(`${store.currentShownCSType}: Two or more races`),
+                pacific: stateAttributeFinder(`${store.currentShownCSType}: Native Hawaiian or Pacific Islander`), other: stateAttributeFinder(`${store.currentShownCSType}: Two or more races`),
             }}
             stateRaceOutput={{
                 white: stateAttributeFinder('TOTAL: White'),
@@ -173,7 +183,8 @@ const StateTable: FC = () => {
                 asian: stateAttributeFinder('TOTAL: Asian'),
                 black: stateAttributeFinder('TOTAL: Black or African American'),
                 native: stateAttributeFinder("TOTAL: American Indian or Alaska Native"),
-                other: stateAttributeFinder('TOTAL: Native Hawaiian or Pacific Islander') + stateAttributeFinder('TOTAL: Two or more races')
+                pacific: stateAttributeFinder('TOTAL: Native Hawaiian or Pacific Islander'),
+                other: stateAttributeFinder('TOTAL: Two or more races')
             }} />
     </TableContainer>);
 };
