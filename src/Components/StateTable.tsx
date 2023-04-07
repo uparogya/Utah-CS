@@ -1,4 +1,4 @@
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import GenderRatioChart from "./CellComponents/GenderRatioChart";

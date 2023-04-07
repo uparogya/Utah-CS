@@ -127,10 +127,6 @@ const DistrictTable: FC = () => {
                             isSorting={sortAttribute === 'TOTAL: Total'} />
 
                         <SortableHeader
-                            additionalStyle={{
-                                textDecorationLine: 'underline',
-                                textDecorationColor: CourseCategoryColor[store.currentShownCSType]
-                            }}
                             isSorting={sortAttribute === `${store.currentShownCSType}: Total`}
                             onClick={() => toggleSort(`${store.currentShownCSType}: Total`)}
                             isSortUp={sortUp}
