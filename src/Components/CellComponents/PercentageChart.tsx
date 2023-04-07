@@ -44,7 +44,7 @@ const PercentageChart: FC<Props> = ({ actualVal, percentage, tooltip }: Props) =
 
 const computeTextOutcome = (input: string | number, percentage: number, showPercentage: boolean) => {
     if (input === 0) {
-        return '-';
+        return '0';
     }
     if (input === 'n<10') {
         return input;

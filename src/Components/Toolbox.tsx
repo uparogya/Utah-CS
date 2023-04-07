@@ -22,7 +22,7 @@ const Toolbox: FC = () => {
                 const cateList: any = { 'CS - Basic': 'CSB', 'CS - Advanced': 'CSA', 'CS - Related': 'CSR' };
                 data = (data as Array<number | string>[]).map(d => Object.keys(cateList).includes(d[3] as any) ? ([d[0], d[2], cateList[d[3] as any]]) : ([]));
                 data = data.filter(d => d.length > 0);
-                console.log(data);
+                // console.log(data);
                 stateUpdateWrapperUseJSON(courseCategorization, data, setCourseCategorization);
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps

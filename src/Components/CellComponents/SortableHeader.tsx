@@ -1,5 +1,5 @@
 import { TableSortLabel } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { XDarkGray } from "../../Preset/Colors";
 import { TextCell } from "../GeneralComponents";
 
