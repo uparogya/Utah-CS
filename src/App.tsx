@@ -39,12 +39,10 @@ function App() {
 
 
     return (
-
         <>
             <SwipeableDrawer onClose={() => setDrawer(false)}
                 onOpen={() => setDrawer(true)} disableBackdropTransition={!iOS} disableDiscovery={iOS} open={drawerOpen} >
                 <Toolbox />
-
             </SwipeableDrawer>
             <div className="App" style={{ overflow: 'hidden' }}>
                 <AppBar position="static">
@@ -76,20 +74,13 @@ function App() {
                     <Grid id="state-view" style={{ minWidth: '100vw', paddingBottom: '20px' }} xs={12}>
                         <StateTable csClickHandler={handleClick} />
                     </Grid>
-
-
-
-                    {/* <Grid item xs={2}>
-                            <Toolbox />
-                        </Grid> */}
                     <BasicGrid xs={6} >
-                        <TableTitle color={'primary'} children='District Table' />
+                        <TableTitle color={'primary'} children='District List' />
 
                         <DistrictTable />
                     </BasicGrid>
-                    {/* <Divider orientation="vertical" flexItem variant="middle" /> */}
                     <BasicGrid xs={6} >
-                        <TableTitle color={'primary'} children='School Table' />
+                        <TableTitle color={'primary'} children='Schools in Selected Districts' />
                         <SchoolTable />
                     </BasicGrid>
                 </Grid>
