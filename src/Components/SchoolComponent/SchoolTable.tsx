@@ -62,16 +62,13 @@ const SchoolTable: FC = () => {
     }, [sortUp, sortAttribute, sortCSPercentage]);
 
     useEffect(() => {
-        if (store.selectedDistricts.length > 0) {
-            let filteredDistrict = schoolData
-                .filter(d => store.selectedDistricts.includes(d[6] as string));
-            if (store.selectedDistricts.includes('Charter')) {
-                filteredDistrict = filteredDistrict.concat(schoolData.filter(d => !((d[6] as string).includes('District'))));
-            }
-            stateUpdateWrapperUseJSON(schoolDataToShow, filteredDistrict, setSchoolDataToShow);
-        } else {
-            stateUpdateWrapperUseJSON(schoolDataToShow, schoolData, setSchoolDataToShow);
+        let filteredDistrict = schoolData
+            .filter(d => store.selectedDistricts.includes(d[6] as string));
+        if (store.selectedDistricts.includes('Charter')) {
+            filteredDistrict = filteredDistrict.concat(schoolData.filter(d => !((d[6] as string).includes('District'))));
         }
+        stateUpdateWrapperUseJSON(schoolDataToShow, filteredDistrict, setSchoolDataToShow);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [store.selectedDistricts, schoolData]);
 
@@ -107,13 +104,13 @@ const SchoolTable: FC = () => {
 
 
     return <StickyTableContainer>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label="sticky table" style={{ paddingLeft: '10px', paddingRight: '10px', paddingTop: '10px' }}>
             <TableHead>
                 <TableRow>
 
                     <SortableHeader
                         headerName="School Name"
-                        isSorting={sortAttribute === 'School Name' && !sortUp}
+                        isSorting={sortAttribute === 'School Name'}
                         isSortUp={sortUp}
                         onClick={() => toggleSort('School Name')} />
                     <SortableHeader
@@ -122,10 +119,6 @@ const SchoolTable: FC = () => {
                         isSortUp={sortUp}
                         isSorting={sortAttribute === 'TOTAL: Total'} />
                     <SortableHeader
-                        additionalStyle={{
-                            textDecorationLine: 'underline',
-                            textDecorationColor: CourseCategoryColor[store.currentShownCSType]
-                        }}
                         isSorting={sortAttribute === `${store.currentShownCSType}: Total`}
                         onClick={() => toggleSort(`${store.currentShownCSType}: Total`)}
                         isSortUp={sortUp}

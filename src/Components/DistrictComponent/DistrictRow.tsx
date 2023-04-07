@@ -1,9 +1,9 @@
-import { TableRow, Checkbox, FormControl, FormControlLabel } from "@mui/material";
+import { TableRow, Checkbox } from "@mui/material";
 import { FC, useContext } from "react";
 import GenderRatioChart from "../CellComponents/GenderRatioChart";
 import Store from "../../Interface/Store";
 import { observer } from "mobx-react-lite";
-import { TextCell } from "../GeneralComponents";
+import { FunctionCell, TextCell } from "../GeneralComponents";
 import PercentageChart from "../CellComponents/PercentageChart";
 import { findAttribute } from "../../Interface/AttributeFinder";
 import styled from "@emotion/styled";
@@ -23,19 +23,16 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
 
     return <TableRow>
 
-        <TextCell style={{ textAlign: 'left' }}>
-            <FormControl>
+        <FunctionCell >
+            <Checkbox
+                checked={store.selectedDistricts.includes(districtEntry[0] as string)}
+                onChange={() => store.updateSelectedDistrict(districtEntry[0] as string)}
 
-                <FormControlLabel
-                    control={<Checkbox
-                        checked={store.selectedDistricts.includes(districtEntry[0] as string)}
-                        onChange={() => store.setSelectedDistricts(districtEntry[0] as string)}
+            />
 
-                    />} label={<Label>{districtAttributeFinder('District Name')}</Label>} />
-            </FormControl>
+        </FunctionCell>
 
-
-        </TextCell>
+        <TextCell>{districtAttributeFinder('District Name')}</TextCell>
         <TextCell>{districtAttributeFinder('TOTAL: Total')}</TextCell>
 
         <TextCell>

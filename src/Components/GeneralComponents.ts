@@ -20,7 +20,7 @@ export const TextCell = styled(TableCell)({
 
 
 export const FunctionCell = styled(TableCell)({
-    padding: '0px'
+    padding: '0px',
 });
 
 export const NoBorderCell = styled(FunctionCell)({

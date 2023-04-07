@@ -1,4 +1,4 @@
-import { Table, TableHead, TableRow, TableBody } from "@mui/material";
+import { Table, TableHead, TableRow, TableBody, Checkbox } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import readXlsxFile from "read-excel-file";
@@ -8,7 +8,7 @@ import Store from "../../Interface/Store";
 import { CourseCategoryColor } from "../../Preset/Colors";
 import { linkToData } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
-import { StickyTableContainer } from "../GeneralComponents";
+import { FunctionCell, StickyTableContainer } from "../GeneralComponents";
 import DistrictRow from "./DistrictRow";
 
 
@@ -53,6 +53,8 @@ const DistrictTable: FC = () => {
                     }
                 });
                 tempDistrictData.push(charterRow);
+                console.log(tempDistrictData);
+                store.setSelectedDistrict(tempDistrictData.map(d => d[0] as string));
                 stateUpdateWrapperUseJSON(districtData, tempDistrictData, setDistrictData);
                 stateUpdateWrapperUseJSON(sortedData, tempDistrictData, setSortedData);
             });
@@ -66,8 +68,8 @@ const DistrictTable: FC = () => {
                 return sortUp ? (a[0] as string).localeCompare((b[0] as string)) : (b[0] as string).localeCompare((a[0] as string));
             }
 
-            let aTotal = (districtAttributeFinder(sortAttribute, a) as string | number === 'n<10' ? 0.1 : +districtAttributeFinder(sortAttribute, a));
-            let bTotal = (districtAttributeFinder(sortAttribute, b) as string | number === 'n<10' ? 0.1 : +districtAttributeFinder(sortAttribute, b));
+            let aTotal = (districtAttributeFinder(sortAttribute, a) as string | number === 'n<10' ? 0.00001 : +districtAttributeFinder(sortAttribute, a));
+            let bTotal = (districtAttributeFinder(sortAttribute, b) as string | number === 'n<10' ? 0.00001 : +districtAttributeFinder(sortAttribute, b));
             if (sortCSPercentage) {
                 const aPercentage = aTotal / districtAttributeFinder('TOTAL: Total', a);
                 const bPercentage = bTotal / districtAttributeFinder('TOTAL: Total', b);
@@ -109,16 +111,36 @@ const DistrictTable: FC = () => {
         setSortAttribute('District Name');
     };
 
+    const onSelectAllClick = () => {
+        if (store.selectedDistricts.length === sortedData.length) {
+            store.setSelectedDistrict([]);
+        } else {
+            store.setSelectedDistrict(sortedData.map(d => d[0] as string));
+        }
+    };
+
     return (
         <StickyTableContainer>
-            <Table style={{ paddingLeft: '10px', paddingRight: '10px' }} stickyHeader aria-label="sticky table">
+            <Table style={{ paddingLeft: '10px', paddingRight: '10px', paddingTop: '10px' }} stickyHeader aria-label="sticky table">
                 <TableHead>
                     <TableRow>
+                        <FunctionCell>
+                            <Checkbox
+                                color="primary"
+                                indeterminate={store.selectedDistricts.length > 0 && store.selectedDistricts.length < sortedData.length}
+                                checked={sortedData.length > 0 && store.selectedDistricts.length === sortedData.length}
+                                onChange={onSelectAllClick}
+                                inputProps={{
+                                    'aria-label': 'select all desserts',
+                                }}
+                            />
+
+                        </FunctionCell>
 
                         <SortableHeader
                             onClick={() => toggleSort('District Name')}
                             headerName='District Name'
-                            isSorting={sortAttribute === 'District Name' && !sortUp}
+                            isSorting={sortAttribute === 'District Name'}
                             isSortUp={sortUp} />
                         <SortableHeader
                             onClick={() => toggleSort('TOTAL: Total')}

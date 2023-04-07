@@ -29,7 +29,12 @@ export class AppStore {
         this.schoolYearShowing = newYearEntry;
     }
 
-    setSelectedDistricts(districtName: string) {
+    setSelectedDistrict(districtArray: string[]) {
+        this.selectedDistricts = districtArray;
+    }
+
+
+    updateSelectedDistrict(districtName: string) {
         if (this.selectedDistricts.includes(districtName)) {
             this.selectedDistricts = this.selectedDistricts.filter(d => d !== districtName);
         } else {

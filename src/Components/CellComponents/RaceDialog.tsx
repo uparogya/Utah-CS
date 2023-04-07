@@ -56,7 +56,7 @@ const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, stateRaceOutpu
                             <DialogText x={0}
                                 y={(barChartHeightScale(d) || 0) + 0.75 * barChartHeightScale.bandwidth()}
                             >
-                                CS
+                                {store.currentShownCSType}
                             </DialogText>
                             <DialogText x={0}
                                 y={(barChartHeightScale(d) || 0) - 12} fontWeight='bold'>
