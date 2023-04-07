@@ -107,7 +107,7 @@ const SchoolTable: FC = () => {
 
 
     return <StickyTableContainer>
-        <Table stickyHeader sx={{ minWidth: '50vw' }} aria-label="sticky table">
+        <Table stickyHeader aria-label="sticky table">
             <TableHead>
                 <TableRow>
 

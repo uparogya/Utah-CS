@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 import './App.css';
-import { AppBar, Grid, IconButton, SwipeableDrawer, Toolbar, Typography } from '@mui/material';
+import { AppBar, Divider, IconButton, SwipeableDrawer, Toolbar, Typography } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import StateTable from './Components/StateTable';
 import DistrictTable from './Components/DistrictComponent/DistrictTable';
 import SchoolTable from './Components/SchoolComponent/SchoolTable';
@@ -38,7 +39,7 @@ function App() {
                 <Toolbox />
 
             </SwipeableDrawer>
-            <div className="App">
+            <div className="App" style={{ overflow: 'hidden' }}>
                 <AppBar position="static">
                     <Toolbar>
 
@@ -54,8 +55,18 @@ function App() {
                             children={store.showPercentage ? <NumbersIcon /> : <PercentIcon />} />
                     </Toolbar>
                 </AppBar>
-                <Grid container spacing={1}>
-                    <Grid item id="state-view" style={{ minWidth: '100vw', paddingBottom: '20px' }} xs={12}>
+                <Grid container spacing={1} sx={{
+                    '--Grid-borderWidth': '1px',
+                    borderTop: 'var(--Grid-borderWidth) solid',
+                    borderLeft: 'var(--Grid-borderWidth) solid',
+                    borderColor: 'divider',
+                    '& > div': {
+                        borderRight: 'var(--Grid-borderWidth) solid',
+                        borderBottom: 'var(--Grid-borderWidth) solid',
+                        borderColor: 'divider',
+                    },
+                }}>
+                    <Grid id="state-view" style={{ minWidth: '100vw', paddingBottom: '20px' }} xs={12}>
                         <StateTable />
                     </Grid>
 
@@ -64,12 +75,13 @@ function App() {
                     {/* <Grid item xs={2}>
                             <Toolbox />
                         </Grid> */}
-                    <BasicGrid item xs={6} >
+                    <BasicGrid xs={6} >
                         <TableTitle color={'primary'} children='District Table' />
 
                         <DistrictTable />
                     </BasicGrid>
-                    <BasicGrid item xs={6} >
+                    {/* <Divider orientation="vertical" flexItem variant="middle" /> */}
+                    <BasicGrid xs={6} >
                         <TableTitle color={'primary'} children='School Table' />
                         <SchoolTable />
                     </BasicGrid>
@@ -84,7 +96,6 @@ export default observer(App);
 const BasicGrid = styled(Grid)`
 max-height: 58vh;
 overflow: hidden;
-padding:0px!important;
 `;
 
 const AppBarButton = styled(IconButton)({

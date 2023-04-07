@@ -52,7 +52,7 @@ const StateTable: FC = () => {
     }, [stateData, store.currentShownCSType, store.schoolYearShowing]);
 
 
-    return (<TableContainer component={Paper} >
+    return (<TableContainer  >
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
                 <TableRow>

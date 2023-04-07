@@ -111,7 +111,7 @@ const DistrictTable: FC = () => {
 
     return (
         <StickyTableContainer>
-            <Table style={{ paddingLeft: '10px', paddingRight: '10px' }} stickyHeader sx={{ minWidth: '50vw' }} aria-label="sticky table">
+            <Table style={{ paddingLeft: '10px', paddingRight: '10px' }} stickyHeader aria-label="sticky table">
                 <TableHead>
                     <TableRow>
 
