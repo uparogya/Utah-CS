@@ -115,6 +115,7 @@ const Toolbox: FC = () => {
                         onClick={() => store.updateShowPercentage()} />
                 </Container>
             </Stack>
+            {/* TODO make title into actual full title */}
             <Dialog open={Boolean(openCategoryDialog)} onClose={() => setDialog('')}>
                 <DialogTitle>{openCategoryDialog} courses</DialogTitle>
                 <List>

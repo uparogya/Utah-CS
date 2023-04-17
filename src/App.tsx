@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 import './App.css';
-import { AppBar, Divider, IconButton, SwipeableDrawer, Toolbar, Typography } from '@mui/material';
+import { AppBar, Divider, IconButton, SwipeableDrawer, Tab, Tabs, Toolbar, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import StateTable from './Components/StateTable';
 import DistrictTable from './Components/DistrictComponent/DistrictTable';
@@ -15,7 +15,28 @@ import { observer } from 'mobx-react-lite';
 import { LightGray } from './Preset/Colors';
 import CSMenu from './Components/CSMenu';
 
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
 
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            style={{ minWidth: '100vw' }}
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <>{children}</>}
+        </div>
+    );
+}
 
 export const EnrollmentDataContext = createContext<{ [key: string]: string; }[]>([]);
 function App() {
@@ -29,6 +50,12 @@ function App() {
     };
 
     const store = useContext(Store);
+
+    const [tabVal, setTabVal] = useState(0);
+
+    const tabChange = (event: React.SyntheticEvent, newValue: number) => {
+        setTabVal(newValue);
+    };
 
 
 
@@ -46,6 +73,7 @@ function App() {
             </SwipeableDrawer>
             <div className="App" style={{ overflow: 'hidden' }}>
                 <AppBar position="static">
+                    {/* add dropdown to change academic year and course list  */}
                     <Toolbar>
 
                         <AppBarButton children={<>
@@ -71,18 +99,30 @@ function App() {
                         borderColor: 'divider',
                     },
                 }}>
-                    <Grid id="state-view" style={{ minWidth: '100vw', paddingBottom: '20px' }} xs={12}>
+                    <Grid id="state-view" style={{ minWidth: '100vw', paddingBottom: '5px' }} xs={12}>
                         <StateTable csClickHandler={handleClick} />
                     </Grid>
-                    <BasicGrid xs={6} >
-                        <TableTitle color={'primary'} children='District List' />
+                    <Tabs value={tabVal} onChange={tabChange} style={{ minWidth: '100vw' }}>
+                        <Tab label='Overview' />
+                        <Tab label='District & School Table' />
+                        <Tab label='Course Table' />
+                        <Tab label='Trends' />
+                    </Tabs>
 
-                        <DistrictTable />
-                    </BasicGrid>
-                    <BasicGrid xs={6} >
-                        <TableTitle color={'primary'} children='Schools in Selected Districts' />
-                        <SchoolTable />
-                    </BasicGrid>
+                    <TabPanel value={tabVal} index={0}>
+                        <Grid container>
+                            <BasicGrid xs={6} >
+                                <TableTitle color={'primary'} children='District List' />
+                                <DistrictTable />
+                            </BasicGrid>
+                            <BasicGrid xs={6} >
+                                <TableTitle color={'primary'} children='Schools in Selected Districts' />
+                                <SchoolTable />
+                            </BasicGrid>
+                        </Grid>
+                    </TabPanel>
+
+
                 </Grid>
                 <CSMenu anchorEl={CSMenuAnchorEl} handleClose={handleCSMenuClose} />
             </div>
@@ -91,9 +131,9 @@ function App() {
 }
 
 export default observer(App);
-
+// max-height: 55vh;
 const BasicGrid = styled(Grid)`
-max-height: 58vh;
+
 overflow: hidden;
 `;
 
@@ -106,3 +146,4 @@ const TableTitle = styled(Typography)({
     textAlign: 'start',
     paddingLeft: '12px!important'
 });
+

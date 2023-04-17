@@ -17,7 +17,7 @@ export const RaceDictionary: { [key: string]: string; } = {
     black: 'Black',
     hispanic: 'Hispanic',
     native: 'Native American',
-    other: 'Other/Multiple Races',
+    other: 'Other/Multiple',
     asian: 'Asian',
     pacific: 'Pacific Islander'
 };

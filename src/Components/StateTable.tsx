@@ -12,6 +12,7 @@ import { CourseCategoryColor } from "../Preset/Colors";
 import { findAttribute } from "../Interface/AttributeFinder";
 import { linkToData } from "../Preset/Constants";
 import RaceDialog from "./CellComponents/RaceDialog";
+import styled from "@emotion/styled";
 
 type Prop = {
     csClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
@@ -59,34 +60,34 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
-                    <TableCell>Student Type</TableCell>
-                    <TableCell ># of Students</TableCell>
-                    <TableCell >
+                    <HeaderCell>Student Type</HeaderCell>
+                    <HeaderCell># of Students</HeaderCell>
+                    <HeaderCell >
                         {/* <GenderHeaderSVG > */}
-                        <text>Gender</text>
+                        Gender
                         {/* </GenderHeaderSVG> */}
-                    </TableCell>
-                    <TableCell >Race</TableCell>
-                    <TableCell >Disability</TableCell>
-                    <TableCell >Econ Disadvantaged</TableCell>
-                    <TableCell>ESL</TableCell>
+                    </HeaderCell>
+                    <HeaderCell>Race</HeaderCell>
+                    <HeaderCell>Disability</HeaderCell>
+                    <HeaderCell >Econ Disadvantaged</HeaderCell>
+                    <HeaderCell>ESL</HeaderCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                    <TableCell component="th" scope="row">
+                    <StateTableCell component="th" scope="row">
                         Total 9-12 Student Population
-                    </TableCell>
-                    <TableCell> <PercentageChart
+                    </StateTableCell>
+                    <StateTableCell> <PercentageChart
                         actualVal={totalStudentNum}
-                        percentage={1} /></TableCell>
-                    <TableCell>
+                        percentage={1} /></StateTableCell>
+                    <StateTableCell>
                         <GenderRatioChart
                             maleNum={stateAttributeFinder('TOTAL: Male')}
                             femaleNum={stateAttributeFinder('TOTAL: Female')}
                         />
-                    </TableCell>
-                    <TableCell onClick={() => setOpenRaceDialog(true)}>
+                    </StateTableCell>
+                    <StateTableCell onClick={() => setOpenRaceDialog(true)}>
                         <RaceChart keyIdentity="State Total"
                             outputObj={{
                                 white: stateAttributeFinder('TOTAL: White'),
@@ -97,26 +98,26 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
                                 other: stateAttributeFinder('TOTAL: Two or more races'),
                                 pacific: stateAttributeFinder('TOTAL: Native Hawaiian or Pacific Islander')
                             }} />
-                    </TableCell>
-                    <TableCell>
+                    </StateTableCell>
+                    <StateTableCell>
                         <PercentageChart
                             actualVal={stateAttributeFinder('TOTAL: Disability')}
-                            percentage={stateAttributeFinder('TOTAL: Disability') / totalStudentNum} /> </TableCell>
-                    <TableCell>
+                            percentage={stateAttributeFinder('TOTAL: Disability') / totalStudentNum} /> </StateTableCell>
+                    <StateTableCell>
                         <PercentageChart
                             actualVal={stateAttributeFinder('TOTAL: Eco. Dis.')}
                             percentage={stateAttributeFinder('TOTAL: Eco. Dis.') / totalStudentNum} />
-                    </TableCell>
-                    <TableCell>
+                    </StateTableCell>
+                    <StateTableCell>
                         <PercentageChart
                             actualVal={stateAttributeFinder('TOTAL: Eng. Learners')}
                             percentage={stateAttributeFinder('TOTAL: Eng. Learners') / totalStudentNum}
                         />
-                    </TableCell>
+                    </StateTableCell>
                 </TableRow>
 
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                    <TableCell component="th"
+                    <StateTableCell component="th"
                         scope="row"
                         style={{
                             textDecorationLine: 'underline',
@@ -125,18 +126,18 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
                         <span onClick={csClickHandler} style={{ cursor: 'pointer' }}>
                             Computer Science ({store.currentShownCSType})
                         </span>
-                    </TableCell>
-                    <TableCell>
+                    </StateTableCell>
+                    <StateTableCell>
                         <PercentageChart
                             actualVal={totalCSStudentNum}
                             percentage={totalCSStudentNum / totalStudentNum}
-                            tooltip={`${format(',.2%')(totalCSStudentNum / totalStudentNum)} out of all HS students`} /></TableCell>
-                    <TableCell>
+                            tooltip={`${format(',.2%')(totalCSStudentNum / totalStudentNum)} out of all HS students`} /></StateTableCell>
+                    <StateTableCell>
                         <GenderRatioChart
                             maleNum={stateAttributeFinder(`${store.currentShownCSType}: Male`)}
                             femaleNum={stateAttributeFinder(`${store.currentShownCSType}: Female`)} />
-                    </TableCell>
-                    <TableCell onClick={() => setOpenRaceDialog(true)}>
+                    </StateTableCell>
+                    <StateTableCell onClick={() => setOpenRaceDialog(true)}>
                         <RaceChart keyIdentity="CS"
                             outputObj={{
                                 white: stateAttributeFinder(`${store.currentShownCSType}: White`),
@@ -148,22 +149,22 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
                                 pacific: stateAttributeFinder(`${store.currentShownCSType}: Native Hawaiian or Pacific Islander`),
                             }}
                         />
-                    </TableCell>
-                    <TableCell>
+                    </StateTableCell>
+                    <StateTableCell>
                         <PercentageChart
                             actualVal={stateAttributeFinder(`${store.currentShownCSType}: Disability`)}
-                            percentage={stateAttributeFinder(`${store.currentShownCSType}: Disability`) / totalCSStudentNum} /> </TableCell>
-                    <TableCell>
+                            percentage={stateAttributeFinder(`${store.currentShownCSType}: Disability`) / totalCSStudentNum} /> </StateTableCell>
+                    <StateTableCell>
                         <PercentageChart
                             actualVal={stateAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)}
                             percentage={stateAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`) / totalCSStudentNum} />
-                    </TableCell>
-                    <TableCell>
+                    </StateTableCell>
+                    <StateTableCell>
                         <PercentageChart
                             actualVal={stateAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)}
                             percentage={stateAttributeFinder(`${store.currentShownCSType}: Eng. Learners`) / totalCSStudentNum}
                         />
-                    </TableCell>
+                    </StateTableCell>
                 </TableRow>
             </TableBody>
         </Table>
@@ -197,3 +198,12 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
 // `;
 
 export default observer(StateTable);
+
+const HeaderCell = styled(TableCell)({
+    fontWeight: 'bold'
+});
+
+const StateTableCell = styled(TableCell)({
+    paddingTop: '5px',
+    paddingBottom: '5px'
+});
