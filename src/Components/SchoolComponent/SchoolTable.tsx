@@ -1,46 +1,31 @@
 import { Table, TableHead, TableRow, TableBody } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
-import readXlsxFile from "read-excel-file";
 import { findAttribute } from "../../Interface/AttributeFinder";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import Store from "../../Interface/Store";
-import { CourseCategoryColor } from "../../Preset/Colors";
-import { linkToData } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { StickyTableContainer } from "../GeneralComponents";
 import SchoolRow from "./SchoolRow";
+import { DataContext } from "../../App";
 
 
 const SchoolTable: FC = () => {
 
-    const [schoolData, setSchoolData] = useState<Array<number | string>[]>([]);
-    const [schoolDataToShow, setSchoolDataToShow] = useState(schoolData);
+    const store = useContext(Store);
+    const schoolData = useContext(DataContext).school;
+
+
     const [sortAttribute, setSortAttribute] = useState('School Name');
     const [sortUp, setSortUp] = useState(true);
     const [sortCSPercentage, setSortPercentage] = useState(true);
-    const [titleEntry, setTitleEntry] = useState<string[]>([]);
 
+    const [schoolDataToShow, setSchoolDataToShow] = useState(schoolData);
 
-    const store = useContext(Store);
-
-    useEffect(() => {
-        fetch(linkToData,)
-            .then(response => response.blob())
-            .then(blob =>
-                readXlsxFile(blob,
-                    { sheet: `School-Level Data SY ${store.schoolYearShowing.slice(0, 5)}20${store.schoolYearShowing.slice(5)}` }))
-            .then((data) => {
-                setTitleEntry(data[1] as string[]);
-                stateUpdateWrapperUseJSON(schoolData, data.slice(2), setSchoolData);
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [store.schoolYearShowing]);
-
-    const schoolAttributeFinder = (attributeName: string, entry: (number | string)[]) => findAttribute(attributeName, titleEntry, entry);
+    const schoolAttributeFinder = (attributeName: string, entry: (number | string)[]) => findAttribute(attributeName, schoolData[1], entry);
 
     useEffect(() => {
-        let newSortedSchool = [...schoolData];
+        let newSortedSchool = [...schoolData.slice(2)];
         newSortedSchool.sort((a, b) => {
             if (sortAttribute === 'School Name') {
                 return sortUp ? (a[1] as string).localeCompare((b[1] as string)) : (b[1] as string).localeCompare((a[1] as string));
@@ -56,21 +41,17 @@ const SchoolTable: FC = () => {
             return sortUp ? aTotal - bTotal : bTotal - aTotal;
         });
 
-        stateUpdateWrapperUseJSON(schoolData, newSortedSchool, setSchoolData);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sortUp, sortAttribute, sortCSPercentage]);
-
-    useEffect(() => {
-        let filteredDistrict = schoolData
+        let filteredDistrict = newSortedSchool
             .filter(d => store.selectedDistricts.includes(d[6] as string));
         if (store.selectedDistricts.includes('Charter')) {
-            filteredDistrict = filteredDistrict.concat(schoolData.filter(d => !((d[6] as string).includes('District'))));
+            filteredDistrict = filteredDistrict.concat(newSortedSchool.filter(d => !((d[6] as string).includes('District'))));
         }
+
         stateUpdateWrapperUseJSON(schoolDataToShow, filteredDistrict, setSchoolDataToShow);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [store.selectedDistricts, schoolData]);
+    }, [sortUp, sortAttribute, sortCSPercentage, store.selectedDistricts, schoolData]);
+
 
     const toggleSort = (inputName: string) => {
         // if the sort attribute is already the same
@@ -127,7 +108,7 @@ const SchoolTable: FC = () => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {schoolDataToShow.map((schoolEntry) => <SchoolRow key={`${schoolEntry[3]} `} titleEntry={titleEntry} schoolEntry={schoolEntry} />)}
+                {schoolDataToShow.map((schoolEntry) => <SchoolRow key={`${schoolEntry[3]} `} titleEntry={schoolData[1] as string[]} schoolEntry={schoolEntry} />)}
             </TableBody>
         </Table>
     </StickyTableContainer>;

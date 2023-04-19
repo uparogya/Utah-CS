@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import './App.css';
 import { AppBar, Divider, IconButton, SwipeableDrawer, Tab, Tabs, Toolbar, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
@@ -14,6 +14,9 @@ import NumbersIcon from '@mui/icons-material/Numbers';
 import { observer } from 'mobx-react-lite';
 import { LightGray } from './Preset/Colors';
 import CSMenu from './Components/CSMenu';
+import readXlsxFile from 'read-excel-file';
+import { stateUpdateWrapperUseJSON } from './Interface/StateChecker';
+import { linkToData } from './Preset/Constants';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -38,6 +41,8 @@ function TabPanel(props: TabPanelProps) {
     );
 }
 
+export const DataContext = createContext<{ [key: string]: Array<number | string>[]; }>({ state: [], district: [], course: [], school: [] });
+
 export const EnrollmentDataContext = createContext<{ [key: string]: string; }[]>([]);
 function App() {
 
@@ -58,6 +63,33 @@ function App() {
     };
 
 
+    const [stateData, setStateData] = useState<Array<number | string>[]>([]);
+
+
+    useEffect(() => {
+        // fetch state data
+        fetch(linkToData,).then(response => response.blob())
+            .then(blob => readXlsxFile(blob, { sheet: 'State-Level Data By Year' }))
+            .then(data => stateUpdateWrapperUseJSON(stateData, data as Array<number | string>[], setStateData));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Fetch school and district data
+
+    const [schoolData, setSchoolData] = useState<Array<number | string>[]>([]);
+
+    useEffect(() => {
+        fetch(linkToData,)
+            .then(response => response.blob())
+            .then(blob =>
+                readXlsxFile(blob,
+                    { sheet: `School-Level Data SY ${store.schoolYearShowing.slice(0, 5)}20${store.schoolYearShowing.slice(5)}` }))
+            .then((data) => {
+                stateUpdateWrapperUseJSON(schoolData, data, setSchoolData);
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [store.schoolYearShowing]);
+
 
     const iOS =
         typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -66,7 +98,7 @@ function App() {
 
 
     return (
-        <>
+        <DataContext.Provider value={{ state: stateData, school: schoolData }}>
             <SwipeableDrawer onClose={() => setDrawer(false)}
                 onOpen={() => setDrawer(true)} disableBackdropTransition={!iOS} disableDiscovery={iOS} open={drawerOpen} >
                 <Toolbox />
@@ -126,7 +158,7 @@ function App() {
                 </Grid>
                 <CSMenu anchorEl={CSMenuAnchorEl} handleClose={handleCSMenuClose} />
             </div>
-        </>
+        </DataContext.Provider>
     );
 }
 

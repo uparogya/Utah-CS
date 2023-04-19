@@ -13,29 +13,16 @@ import { findAttribute } from "../Interface/AttributeFinder";
 import { linkToData } from "../Preset/Constants";
 import RaceDialog from "./CellComponents/RaceDialog";
 import styled from "@emotion/styled";
+import { DataContext } from "../App";
 
 type Prop = {
     csClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
 };
 
-
 const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
     const store = useContext(Store);
 
-    //data variables
-
-    const [stateData, setStateData] = useState<Array<number | string>[]>([]);
-
-
-    useEffect(() => {
-        fetch(linkToData,).then(response => response.blob())
-            .then(blob => readXlsxFile(blob, { sheet: 'State-Level Data By Year' }))
-            .then(data => stateUpdateWrapperUseJSON(stateData, data as Array<number | string>[], setStateData));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-
-    // const stateAttributeFinder = (attributeName: string) => findAttribute(attributeName, stateData[1], stateData.filter(row => row[0] === store.schoolYearShowing)[0]);
+    const stateData = useContext(DataContext).state;
 
     const stateAttributeFinder = useCallback((attributeName: string) =>
         findAttribute(attributeName, stateData[1], stateData.filter(row => row[0] === store.schoolYearShowing)[0])
@@ -56,7 +43,7 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
     }, [stateData, store.currentShownCSType, store.schoolYearShowing]);
 
 
-    return (<TableContainer  >
+    return (<TableContainer>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
