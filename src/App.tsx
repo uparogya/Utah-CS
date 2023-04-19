@@ -77,6 +77,7 @@ function App() {
     // Fetch school and district data
 
     const [schoolData, setSchoolData] = useState<Array<number | string>[]>([]);
+    const [districtData, setDistrictData] = useState<Array<number | string>[]>([]);
 
     useEffect(() => {
         fetch(linkToData,)
@@ -86,6 +87,35 @@ function App() {
                     { sheet: `School-Level Data SY ${store.schoolYearShowing.slice(0, 5)}20${store.schoolYearShowing.slice(5)}` }))
             .then((data) => {
                 stateUpdateWrapperUseJSON(schoolData, data, setSchoolData);
+            });
+
+
+        fetch(linkToData,)
+            .then(response => response.blob())
+            .then(blob =>
+                readXlsxFile(blob,
+                    { sheet: `LEA-Level Data SY ${store.schoolYearShowing.slice(0, 5)}20${store.schoolYearShowing.slice(5)}` }))
+            .then((data) => {
+                const districtTitleEntry = [data[1]];
+                const charterRow = new Array(data[0].length).fill(0);
+                charterRow[0] = 'Charter';
+                const tempDistrictData: Array<number | string>[] = [];
+                //organize the data and add a row for charter
+                data.slice(2, -1).forEach((row) => {
+                    if ((row[0] as string).includes('District')) {
+                        tempDistrictData.push(row as Array<number | string>);
+                    } else {
+                        row.forEach((dataItem, i) => {
+                            if (i > 2 && (typeof dataItem === 'number')) {
+                                charterRow[i] += dataItem;
+                            }
+                        });
+                    }
+                });
+                tempDistrictData.push(charterRow);
+                console.log(tempDistrictData);
+                store.setSelectedDistrict(tempDistrictData.map(d => d[0] as string));
+                stateUpdateWrapperUseJSON(districtData, districtTitleEntry.concat(tempDistrictData), setDistrictData);
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [store.schoolYearShowing]);
@@ -98,7 +128,7 @@ function App() {
 
 
     return (
-        <DataContext.Provider value={{ state: stateData, school: schoolData }}>
+        <DataContext.Provider value={{ state: stateData, school: schoolData, district: districtData }}>
             <SwipeableDrawer onClose={() => setDrawer(false)}
                 onOpen={() => setDrawer(true)} disableBackdropTransition={!iOS} disableDiscovery={iOS} open={drawerOpen} >
                 <Toolbox />

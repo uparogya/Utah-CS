@@ -10,59 +10,28 @@ import { linkToData } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { FunctionCell, StickyTableContainer } from "../GeneralComponents";
 import DistrictRow from "./DistrictRow";
+import { DataContext } from "../../App";
 
 
 
 const DistrictTable: FC = () => {
+
+
+    const districtData = useContext(DataContext).district;
 
     const store = useContext(Store);
 
     const [sortAttribute, setSortAttribute] = useState('District Name');
     const [sortCSPercentage, setSortPercentage] = useState(true);
     const [sortUp, setSortUp] = useState(true);
-    const [titleEntry, setTitleEntry] = useState<string[]>([]);
+    // const [titleEntry, setTitleEntry] = useState<string[]>([]);
+    const [sortedData, setSortedData] = useState(districtData);
 
     const districtAttributeFinder = (attributeName: string, selectedRow: (string | number)[]) =>
-        findAttribute(attributeName, titleEntry, selectedRow);
-
-
-    const [districtData, setDistrictData] = useState<Array<number | string>[]>([]);
-    const [sortedData, setSortedData] = useState(districtData);
-    useEffect(() => {
-        //read into LEA level
-        fetch(linkToData,)
-            .then(response => response.blob())
-            .then(blob =>
-                readXlsxFile(blob,
-                    { sheet: `LEA-Level Data SY ${store.schoolYearShowing.slice(0, 5)}20${store.schoolYearShowing.slice(5)}` }))
-            .then((data) => {
-                setTitleEntry(data[1] as string[]);
-                const charterRow = new Array(data[0].length).fill(0);
-                charterRow[0] = 'Charter';
-                const tempDistrictData: Array<number | string>[] = [];
-                //organize the data and add a row for charter
-                data.slice(2, -1).forEach((row) => {
-                    if ((row[0] as string).includes('District')) {
-                        tempDistrictData.push(row as Array<number | string>);
-                    } else {
-                        row.forEach((dataItem, i) => {
-                            if (i > 2 && (typeof dataItem === 'number')) {
-                                charterRow[i] += dataItem;
-                            }
-                        });
-                    }
-                });
-                tempDistrictData.push(charterRow);
-                console.log(tempDistrictData);
-                store.setSelectedDistrict(tempDistrictData.map(d => d[0] as string));
-                stateUpdateWrapperUseJSON(districtData, tempDistrictData, setDistrictData);
-                stateUpdateWrapperUseJSON(sortedData, tempDistrictData, setSortedData);
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [store.schoolYearShowing]);
+        findAttribute(attributeName, districtData[0], selectedRow);
 
     useEffect(() => {
-        let newSortedData = [...districtData];
+        let newSortedData = [...districtData.slice(1)];
         newSortedData.sort((a, b) => {
             if (sortAttribute === 'District Name') {
                 return sortUp ? (a[0] as string).localeCompare((b[0] as string)) : (b[0] as string).localeCompare((a[0] as string));
@@ -167,7 +136,7 @@ const DistrictTable: FC = () => {
                     {sortedData.map((districtEntry) => {
                         return (
                             <DistrictRow
-                                titleEntry={titleEntry}
+                                titleEntry={districtData[0] as string[]}
                                 districtEntry={districtEntry}
                                 key={districtEntry[0]} />
                         );
