@@ -2,15 +2,12 @@ import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from
 import { observer } from "mobx-react-lite";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import GenderRatioChart from "./CellComponents/GenderRatioChart";
-import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
 import RaceChart from "./CellComponents/RaceChart";
 import PercentageChart from "./CellComponents/PercentageChart";
 import Store from "../Interface/Store";
 import { format } from "d3-format";
-import readXlsxFile from "read-excel-file";
 import { CourseCategoryColor } from "../Preset/Colors";
 import { findAttribute } from "../Interface/AttributeFinder";
-import { linkToData } from "../Preset/Constants";
 import RaceDialog from "./CellComponents/RaceDialog";
 import styled from "@emotion/styled";
 import { DataContext } from "../App";
