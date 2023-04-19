@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import './App.css';
-import { AppBar, Divider, IconButton, SwipeableDrawer, Tab, Tabs, Toolbar, Typography } from '@mui/material';
+import { AppBar, IconButton, SwipeableDrawer, Tab, Tabs, Toolbar, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import StateTable from './Components/StateTable';
 import DistrictTable from './Components/DistrictComponent/DistrictTable';

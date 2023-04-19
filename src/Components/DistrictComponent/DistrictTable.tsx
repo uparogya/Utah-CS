@@ -1,12 +1,9 @@
 import { Table, TableHead, TableRow, TableBody, Checkbox } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
-import readXlsxFile from "read-excel-file";
 import { findAttribute } from "../../Interface/AttributeFinder";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import Store from "../../Interface/Store";
-import { CourseCategoryColor } from "../../Preset/Colors";
-import { linkToData } from "../../Preset/Constants";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { FunctionCell, StickyTableContainer } from "../GeneralComponents";
 import DistrictRow from "./DistrictRow";
@@ -24,7 +21,6 @@ const DistrictTable: FC = () => {
     const [sortAttribute, setSortAttribute] = useState('District Name');
     const [sortCSPercentage, setSortPercentage] = useState(true);
     const [sortUp, setSortUp] = useState(true);
-    // const [titleEntry, setTitleEntry] = useState<string[]>([]);
     const [sortedData, setSortedData] = useState(districtData);
 
     const districtAttributeFinder = (attributeName: string, selectedRow: (string | number)[]) =>

@@ -2,7 +2,6 @@ import { TableRow } from "@mui/material";
 import { FC, useContext, useState } from "react";
 import PercentageChart from "../CellComponents/PercentageChart";
 import { TextCell } from "../GeneralComponents";
-import { Enrollment } from "../../Interface/Types";
 import { findAttribute } from "../../Interface/AttributeFinder";
 import Store from "../../Interface/Store";
 
@@ -40,6 +39,6 @@ const SchoolRow: FC<Props> = ({ schoolEntry, titleEntry }: Props) => {
 };
 export default SchoolRow;
 
-const findSpecialCase = (input: Enrollment) => {
-    return input.CSA.Total === 'n<10' || input.CSB.Total === 'n<10' || input.CSR.Total === 'n<10';
-};
+// const findSpecialCase = (input: Enrollment) => {
+//     return input.CSA.Total === 'n<10' || input.CSB.Total === 'n<10' || input.CSR.Total === 'n<10';
+// };
