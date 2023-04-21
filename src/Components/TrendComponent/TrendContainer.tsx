@@ -56,7 +56,6 @@ const TrendContainer: FC = () => {
                     }
                 });
             });
-            console.log(convertData);
 
             // PossibleSchoolYears.map((y) = stateData.filter(row => row[0] === store.schoolYearShowing)[0])
             const studentEnrollmentAxis = scaleLinear()
@@ -87,8 +86,8 @@ const TrendContainer: FC = () => {
                 .attr('stroke', d => CourseCategoryColor[d])
                 .datum(d => convertData[d])
                 .attr('d', line()
-                    .x((d: any) => { console.log((yearScale(d.year) || 0)); return (yearScale(d.year) || 0); })
-                    .y((d: any) => { console.log(studentEnrollmentAxis(d.student) || 0); return (studentEnrollmentAxis(d.student) || 0); }) as any
+                    .x((d: any) => (yearScale(d.year) || 0))
+                    .y((d: any) => (studentEnrollmentAxis(d.student) || 0)) as any
                 )
                 .attr("stroke-width", 2)
                 .attr("fill", "none");

@@ -2,7 +2,7 @@ import { Stack, Chip, Container, Box, Dialog, DialogTitle, List, ListItem, IconB
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import Store from "../Interface/Store";
-import { linkToData, PossibleCategories, PossibleSchoolYears } from "../Preset/Constants";
+import { PossibleCategories, PossibleSchoolYears } from "../Preset/Constants";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { CourseCategoryColor, LightGray } from "../Preset/Colors";
 import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
