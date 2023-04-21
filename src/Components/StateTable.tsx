@@ -44,17 +44,17 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
-                    <HeaderCell>Student Type</HeaderCell>
-                    <HeaderCell># of Students</HeaderCell>
-                    <HeaderCell >
+                    <BoldHeaderCell>Student Type</BoldHeaderCell>
+                    <BoldHeaderCell># of Students</BoldHeaderCell>
+                    <BoldHeaderCell >
                         {/* <GenderHeaderSVG > */}
                         Gender
                         {/* </GenderHeaderSVG> */}
-                    </HeaderCell>
-                    <HeaderCell>Race</HeaderCell>
-                    <HeaderCell>Disability</HeaderCell>
-                    <HeaderCell >Econ Disadvantaged</HeaderCell>
-                    <HeaderCell>ESL</HeaderCell>
+                    </BoldHeaderCell>
+                    <BoldHeaderCell>Race</BoldHeaderCell>
+                    <BoldHeaderCell>Disability</BoldHeaderCell>
+                    <BoldHeaderCell >Econ Disadvantaged</BoldHeaderCell>
+                    <BoldHeaderCell>ESL</BoldHeaderCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -183,7 +183,7 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
 
 export default observer(StateTable);
 
-const HeaderCell = styled(TableCell)({
+export const BoldHeaderCell = styled(TableCell)({
     fontWeight: 'bold'
 });
 

@@ -49,6 +49,9 @@ export const computeTextOutcome = (input: string | number, percentage: number, s
     if (input === 'n<10') {
         return input;
     }
+    if (Number.isNaN(percentage)) {
+        return input;
+    }
     return showPercentage ? format(',.2%')(percentage) : input;
 };
 

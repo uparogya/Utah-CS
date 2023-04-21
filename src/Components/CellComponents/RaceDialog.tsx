@@ -12,10 +12,10 @@ import { RaceDictionary } from "../../Preset/Constants";
 type Props = {
     openDialog: boolean,
     setDialogVisibility: (value: boolean) => void,
-    stateRaceOutput: { [key: string]: number; },
+    stateRaceOutput?: { [key: string]: number; },
     CSRaceOutput: { [key: string]: number; };
 };
-const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, stateRaceOutput, CSRaceOutput }) => {
+const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, CSRaceOutput, stateRaceOutput }) => {
 
 
 
@@ -27,7 +27,7 @@ const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, stateRaceOutpu
 
 
     const barChartScale = scaleLinear().domain([0, 1]).range([leftPadding, dialogSVGWidth]);
-    const barChartHeightScale = scaleBand().domain(Object.keys(stateRaceOutput)).range([0, dialogSVGHeight]).padding(0.3);
+    const barChartHeightScale = scaleBand().domain(Object.keys(CSRaceOutput)).range([0, dialogSVGHeight]).padding(0.3);
 
 
 
@@ -35,26 +35,29 @@ const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, stateRaceOutpu
         <DialogTitle children={`${store.currentShownCSType} Race Breakdown`} />
         <DialogContent>
             <svg width={dialogSVGWidth} height={dialogSVGHeight}>
-                {Object.keys(stateRaceOutput).map((d) => (
+                {Object.keys(CSRaceOutput).map((d) => (
                     <g key={`${d}`}>
-                        <rect x={leftPadding}
+                        {stateRaceOutput ? <rect x={leftPadding}
                             fill={RaceColor[d]}
                             height={barChartHeightScale.bandwidth() * 0.45}
                             y={barChartHeightScale(d)}
-                            width={barChartScale(stateRaceOutput[d] / sum(Object.values(stateRaceOutput))) - leftPadding} />
+                            width={barChartScale(stateRaceOutput[d] / sum(Object.values(stateRaceOutput))) - leftPadding} /> : <></>}
+
                         <rect x={leftPadding}
                             fill={RaceColor[d]}
                             height={barChartHeightScale.bandwidth() * 0.45}
-                            y={(barChartHeightScale(d) || 0) + barChartHeightScale.bandwidth() * 0.55}
+                            y={(barChartHeightScale(d) || 0) + barChartHeightScale.bandwidth() * (0.55 - (stateRaceOutput ? 0 : 0.25))}
                             width={barChartScale(CSRaceOutput[d] / sum(Object.values(CSRaceOutput))) - leftPadding} />
+
                         <g>
-                            <DialogText x={0}
+                            {stateRaceOutput ? <DialogText x={0}
                                 y={(barChartHeightScale(d) || 0) + 0.25 * barChartHeightScale.bandwidth()}
                             >
                                 State
-                            </DialogText>
+                            </DialogText> : <></>}
+
                             <DialogText x={0}
-                                y={(barChartHeightScale(d) || 0) + 0.75 * barChartHeightScale.bandwidth()}
+                                y={(barChartHeightScale(d) || 0) + (0.5 + (stateRaceOutput ? 0.25 : 0)) * barChartHeightScale.bandwidth()}
                             >
                                 {store.currentShownCSType}
                             </DialogText>
@@ -65,10 +68,11 @@ const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, stateRaceOutpu
                         </g>
 
                         <g>
-                            <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + 0.45 * 0.5 * barChartHeightScale.bandwidth()}>
+                            {stateRaceOutput ? <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + 0.45 * 0.5 * barChartHeightScale.bandwidth()}>
                                 {`${stateRaceOutput[d]}, ${format(',.2%')(stateRaceOutput[d] / sum(Object.values(stateRaceOutput)))}`}
-                            </NumberLabText>
-                            <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + 0.75 * barChartHeightScale.bandwidth()}>
+                            </NumberLabText> : <></>}
+
+                            <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + (0.5 + (stateRaceOutput ? 0.25 : 0)) * barChartHeightScale.bandwidth()}>
                                 {`${CSRaceOutput[d]}, ${format(',.2%')(CSRaceOutput[d] / sum(Object.values(CSRaceOutput)))}`}
                             </NumberLabText>
                         </g>

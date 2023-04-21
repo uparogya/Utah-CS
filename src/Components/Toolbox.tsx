@@ -8,26 +8,13 @@ import { CourseCategoryColor, LightGray } from "../Preset/Colors";
 import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
 import readXlsxFile from "read-excel-file";
 import styled from "@emotion/styled";
+import { DataContext } from "../App";
 
 const Toolbox: FC = () => {
 
     const store = useContext(Store);
 
-    const [courseCategorization, setCourseCategorization] = useState([]);
-
-
-    useEffect(() => {
-        fetch(linkToData,).then(response => response.blob())
-            .then(blob => readXlsxFile(blob, { sheet: 'CS Courses' }))
-            .then(data => {
-                const cateList: any = { 'CS - Basic': 'CSB', 'CS - Advanced': 'CSA', 'CS - Related': 'CSR' };
-                data = (data as Array<number | string>[]).map(d => Object.keys(cateList).includes(d[3] as any) ? ([d[0], d[2], cateList[d[3] as any]]) : ([]));
-                data = data.filter(d => d.length > 0);
-                // console.log(data);
-                stateUpdateWrapperUseJSON(courseCategorization, data, setCourseCategorization);
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const courseCategorization = useContext(DataContext).courseList;
 
     const generateList = () => {
         // if (openCategoryDialog === '')
@@ -37,9 +24,8 @@ const Toolbox: FC = () => {
         } else if (openCategoryDialog === 'CSC') {
             includedCateList = ['CSA', 'CSB'];
         }
-
         return courseCategorization.map(courseInfo =>
-            includedCateList.includes(courseInfo[2]) ? <ListItem key={courseInfo[0]}>{courseInfo[1]}</ListItem> : <></>
+            includedCateList.includes(courseInfo[2] as string) ? <ListItem key={courseInfo[0]}>{courseInfo[1]}</ListItem> : <></>
         );
     };
 

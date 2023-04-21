@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import './App.css';
-import { AppBar, IconButton, SwipeableDrawer, Tab, Tabs, Toolbar, Typography } from '@mui/material';
+import { AppBar, Container, IconButton, SwipeableDrawer, Tab, Tabs, Toolbar, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import StateTable from './Components/StateTable';
 import DistrictTable from './Components/DistrictComponent/DistrictTable';
@@ -17,6 +17,8 @@ import CSMenu from './Components/CSMenu';
 import readXlsxFile from 'read-excel-file';
 import { stateUpdateWrapperUseJSON } from './Interface/StateChecker';
 import { linkToData } from './Preset/Constants';
+import CourseTable from './Components/CourseComponent/CourseTable';
+import OverviewTab from './Components/OverviewTab';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -41,7 +43,13 @@ function TabPanel(props: TabPanelProps) {
     );
 }
 
-export const DataContext = createContext<{ [key: string]: Array<number | string>[]; }>({ state: [], district: [], course: [], school: [] });
+export const DataContext = createContext<{ [key: string]: Array<number | string>[]; }>({
+    state: [],
+    district: [],
+    course: [],
+    school: [],
+    courseList: []
+});
 
 export const EnrollmentDataContext = createContext<{ [key: string]: string; }[]>([]);
 function App() {
@@ -64,13 +72,25 @@ function App() {
 
 
     const [stateData, setStateData] = useState<Array<number | string>[]>([]);
-
+    const [courseCategorization, setCourseCategorization] = useState([]);
 
     useEffect(() => {
         // fetch state data
         fetch(linkToData,).then(response => response.blob())
             .then(blob => readXlsxFile(blob, { sheet: 'State-Level Data By Year' }))
             .then(data => stateUpdateWrapperUseJSON(stateData, data as Array<number | string>[], setStateData));
+
+
+        fetch(linkToData,).then(response => response.blob())
+            .then(blob => readXlsxFile(blob, { sheet: 'CS Courses' }))
+            .then(data => {
+                const cateList: any = { 'CS - Basic': 'CSB', 'CS - Advanced': 'CSA', 'CS - Related': 'CSR' };
+                data = (data as Array<number | string>[]).map(d => Object.keys(cateList).includes(d[3] as any) ? ([d[0], d[2], cateList[d[3] as any]]) : ([]));
+                data = data.filter(d => d.length > 0);
+                // console.log(data);
+                stateUpdateWrapperUseJSON(courseCategorization, data, setCourseCategorization);
+            });
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -78,8 +98,10 @@ function App() {
 
     const [schoolData, setSchoolData] = useState<Array<number | string>[]>([]);
     const [districtData, setDistrictData] = useState<Array<number | string>[]>([]);
+    const [courseData, setCourseData] = useState<Array<number | string>[]>([]);
 
     useEffect(() => {
+        // school level
         fetch(linkToData,)
             .then(response => response.blob())
             .then(blob =>
@@ -89,6 +111,7 @@ function App() {
                 stateUpdateWrapperUseJSON(schoolData, data, setSchoolData);
             });
 
+        // LEA level
 
         fetch(linkToData,)
             .then(response => response.blob())
@@ -113,9 +136,17 @@ function App() {
                     }
                 });
                 tempDistrictData.push(charterRow);
-                console.log(tempDistrictData);
                 store.setSelectedDistrict(tempDistrictData.map(d => d[0] as string));
                 stateUpdateWrapperUseJSON(districtData, districtTitleEntry.concat(tempDistrictData), setDistrictData);
+            });
+
+        // course level
+
+        fetch(linkToData,)
+            .then(response => response.blob())
+            .then(blob => readXlsxFile(blob, { sheet: `Course-Level Data SY ${store.schoolYearShowing.slice(0, 5)}20${store.schoolYearShowing.slice(5)}` }))
+            .then((data) => {
+                stateUpdateWrapperUseJSON(courseData, data, setCourseData);
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [store.schoolYearShowing]);
@@ -128,7 +159,14 @@ function App() {
 
 
     return (
-        <DataContext.Provider value={{ state: stateData, school: schoolData, district: districtData }}>
+        <DataContext.Provider
+            value={{
+                state: stateData,
+                school: schoolData,
+                district: districtData,
+                course: courseData,
+                courseList: courseCategorization
+            }}>
             <SwipeableDrawer onClose={() => setDrawer(false)}
                 onOpen={() => setDrawer(true)} disableBackdropTransition={!iOS} disableDiscovery={iOS} open={drawerOpen} >
                 <Toolbox />
@@ -170,8 +208,11 @@ function App() {
                         <Tab label='Course Table' />
                         <Tab label='Trends' />
                     </Tabs>
-
                     <TabPanel value={tabVal} index={0}>
+                        <OverviewTab />
+                    </TabPanel>
+
+                    <TabPanel value={tabVal} index={1}>
                         <Grid container>
                             <BasicGrid xs={6} >
                                 <TableTitle color={'primary'} children='District List' />
@@ -182,6 +223,13 @@ function App() {
                                 <SchoolTable />
                             </BasicGrid>
                         </Grid>
+                    </TabPanel>
+
+                    <TabPanel value={tabVal} index={2}>
+                        <Container>
+                            {/* <TableTitle color={'primary'} children='Course List' /> */}
+                            <CourseTable />
+                        </Container>
                     </TabPanel>
 
 

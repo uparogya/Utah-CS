@@ -30,19 +30,18 @@ const RaceChart: FC<Props> = ({ keyIdentity, outputObj }: Props) => {
     const [totalStudent, setTotal] = useState(0);
 
 
-
     const [topThreeRace, setTopThree] = useState(['black', 'asian', 'hispanic']);
     useEffect(() => {
-
-
         const topThree = Object.keys(outputObj).sort((a, b) => outputObj[b] - outputObj[a]).filter(r => r !== 'white' && (outputObj[r] as any) !== 'n<10')!.slice(0, 3);
         // setOutput(output);
-        setTopThree(topThree);
+        topThree.length === 0 ? setTopThree(['black', 'asian', 'hispanic']) : setTopThree(topThree);
         setTotal(sum(Object.values(outputObj)));
     }, [outputObj]);
 
     return (
-        <div>
+        totalStudent === 0 ?
+            <> - </>
+            :
             <div style={{ cursor: 'pointer' }}>
                 {topThreeRace.map((race) => (
                     <span key={`${keyIdentity}-${race}`}>
@@ -53,7 +52,6 @@ const RaceChart: FC<Props> = ({ keyIdentity, outputObj }: Props) => {
                 ))}
             </div>
 
-        </div>
     );
 };
 

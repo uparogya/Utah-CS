@@ -26,6 +26,7 @@ const SchoolTable: FC = () => {
 
     useEffect(() => {
         let newSortedSchool = [...schoolData.slice(2)];
+        console.log(newSortedSchool);
         newSortedSchool.sort((a, b) => {
             if (sortAttribute === 'School Name') {
                 return sortUp ? (a[1] as string).localeCompare((b[1] as string)) : (b[1] as string).localeCompare((a[1] as string));
