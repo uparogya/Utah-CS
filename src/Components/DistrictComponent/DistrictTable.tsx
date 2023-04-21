@@ -124,7 +124,7 @@ const DistrictTable: FC = () => {
                             onClick={() => toggleSort(`${store.currentShownCSType}: Female`)}
                             isSortUp={sortUp}
                             isSortPercentage={sortCSPercentage}
-                            headerName='Gender' />
+                            headerName={`${store.currentShownCSType} Gender`} />
 
                     </TableRow>
                 </TableHead>
