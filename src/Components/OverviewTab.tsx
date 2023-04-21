@@ -19,7 +19,6 @@ const OverviewTab: FC = () => {
         return cscOfferingResult.length / allData.school.slice(2).length;
     };
 
-    console.log(allData.courseList);
     const findCSStudents = () => {
         //Total students
         const totalStudent = findAttribute('TOTAL: Total', allData.state[1], allData.state.filter(row => row[0] === store.schoolYearShowing)[0]);

@@ -62,9 +62,11 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
                     <StateTableCell component="th" scope="row">
                         Total 9-12 Student Population
                     </StateTableCell>
-                    <StateTableCell> <PercentageChart
-                        actualVal={totalStudentNum}
-                        percentage={1} /></StateTableCell>
+                    <StateTableCell>
+                        <PercentageChart
+                            actualVal={totalStudentNum}
+                            percentage={1} />
+                    </StateTableCell>
                     <StateTableCell>
                         <GenderRatioChart
                             maleNum={stateAttributeFinder('TOTAL: Male')}
@@ -103,13 +105,10 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <StateTableCell component="th"
                         scope="row"
-                        style={{
-                            textDecorationLine: 'underline',
-                            textDecorationColor: CourseCategoryColor[store.currentShownCSType]
-                        }}>
-                        <span onClick={csClickHandler} style={{ cursor: 'pointer' }}>
+                    >
+                        <u onClick={csClickHandler} style={{ cursor: 'pointer' }}>
                             Computer Science ({store.currentShownCSType})
-                        </span>
+                        </u>
                     </StateTableCell>
                     <StateTableCell>
                         <PercentageChart

@@ -28,6 +28,7 @@ export const DefaultEnrollment = {
     CSR: { Total: 0, Female: 0 }
 };
 
+// Add new school year here, need to mat
 export const PossibleSchoolYears = [
     '2021-22', '2020-21', '2019-20'
 ];

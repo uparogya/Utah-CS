@@ -19,6 +19,8 @@ import { stateUpdateWrapperUseJSON } from './Interface/StateChecker';
 import { linkToData } from './Preset/Constants';
 import CourseTable from './Components/CourseComponent/CourseTable';
 import OverviewTab from './Components/OverviewTab';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import AcademicYearMenu from './Components/AcademicYearMenu';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -58,8 +60,16 @@ function App() {
     const handleCSMenuClose = () => {
         setCSMenuAnchorEl(null);
     };
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    const handleCSTypeClick = (event: React.MouseEvent<HTMLElement>) => {
         setCSMenuAnchorEl(event.currentTarget);
+    };
+
+    const [yearMenuAnchorEl, setYearMenuAnchorEl] = useState<null | HTMLElement>(null);
+    const handleYearMenuClose = () => {
+        setYearMenuAnchorEl(null);
+    };
+    const handleYearTypeClick = (event: React.MouseEvent<HTMLElement>) => {
+        setYearMenuAnchorEl(event.currentTarget);
     };
 
     const store = useContext(Store);
@@ -181,7 +191,16 @@ function App() {
                             <span style={{ fontSize: '20px' }}>Settings</span>
                         </>} onClick={() => setDrawer(!drawerOpen)} />
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            Utah CS, {store.schoolYearShowing} Academic Year
+                            <span onClick={handleCSTypeClick} style={{ cursor: 'pointer' }}>
+                                <u>Utah {store.currentShownCSType}</u>
+                                <ArrowDropDownIcon fontSize='small' style={{ verticalAlign: 'text-bottom' }} />
+                            </span>
+
+                            <span onClick={handleYearTypeClick} style={{ cursor: 'pointer' }}>
+                                <u>{store.schoolYearShowing}</u>
+                                <ArrowDropDownIcon fontSize='small' style={{ verticalAlign: 'text-bottom' }} />
+                            </span>
+                            Academic Year
                         </Typography>
                         {/* <Button color="inherit">Login</Button> */}
                         <AppBarButton onClick={() => store.updateShowPercentage()}
@@ -200,7 +219,7 @@ function App() {
                     },
                 }}>
                     <Grid id="state-view" style={{ minWidth: '100vw', paddingBottom: '5px' }} xs={12}>
-                        <StateTable csClickHandler={handleClick} />
+                        <StateTable csClickHandler={handleCSTypeClick} />
                     </Grid>
                     <Tabs value={tabVal} onChange={tabChange} style={{ minWidth: '100vw' }}>
                         <Tab label='Overview' />
@@ -235,6 +254,7 @@ function App() {
 
                 </Grid>
                 <CSMenu anchorEl={CSMenuAnchorEl} handleClose={handleCSMenuClose} />
+                <AcademicYearMenu anchorEl={yearMenuAnchorEl} handleClose={handleYearMenuClose} />
             </div>
         </DataContext.Provider>
     );
