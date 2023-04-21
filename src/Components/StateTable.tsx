@@ -6,7 +6,6 @@ import RaceChart from "./CellComponents/RaceChart";
 import PercentageChart from "./CellComponents/PercentageChart";
 import Store from "../Interface/Store";
 import { format } from "d3-format";
-import { CourseCategoryColor } from "../Preset/Colors";
 import { findAttribute } from "../Interface/AttributeFinder";
 import RaceDialog from "./CellComponents/RaceDialog";
 import styled from "@emotion/styled";

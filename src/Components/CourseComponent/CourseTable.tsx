@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useState } from "react";
-import Store from "../../Interface/Store";
 import { DataContext } from "../../App";
 import { Table, TableBody, TableContainer, TableHead } from "@mui/material";
 import SortableHeader from "../CellComponents/SortableHeader";
@@ -11,13 +10,9 @@ import AllInfoRow from "../AllInfoRow";
 import { StickyTableContainer, TextCell } from "../GeneralComponents";
 import { BoldHeaderCell } from "../StateTable";
 
-type Prop = {
 
-};
+const CourseTable: FC = () => {
 
-const CourseTable: FC<Prop> = ({ }: Prop) => {
-
-    const store = useContext(Store);
     const courseData = useContext(DataContext).course;
 
     // const [sortUp, setSortUp] = useState(true);

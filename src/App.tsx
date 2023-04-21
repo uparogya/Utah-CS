@@ -21,6 +21,7 @@ import CourseTable from './Components/CourseComponent/CourseTable';
 import OverviewTab from './Components/OverviewTab';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AcademicYearMenu from './Components/AcademicYearMenu';
+import TrendContainer from './Components/TrendComponent/TrendContainer';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -86,6 +87,7 @@ function App() {
 
     useEffect(() => {
         // fetch state data
+
         fetch(linkToData,).then(response => response.blob())
             .then(blob => readXlsxFile(blob, { sheet: 'State-Level Data By Year' }))
             .then(data => stateUpdateWrapperUseJSON(stateData, data as Array<number | string>[], setStateData));
@@ -185,12 +187,12 @@ function App() {
                 <AppBar position="static">
                     {/* add dropdown to change academic year and course list  */}
                     <Toolbar>
-
                         <AppBarButton children={<>
                             <SettingsIcon />
                             <span style={{ fontSize: '20px' }}>Settings</span>
                         </>} onClick={() => setDrawer(!drawerOpen)} />
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+
                             <span onClick={handleCSTypeClick} style={{ cursor: 'pointer' }}>
                                 <u>Utah {store.currentShownCSType}</u>
                                 <ArrowDropDownIcon fontSize='small' style={{ verticalAlign: 'text-bottom' }} />
@@ -201,6 +203,7 @@ function App() {
                                 <ArrowDropDownIcon fontSize='small' style={{ verticalAlign: 'text-bottom' }} />
                             </span>
                             Academic Year
+
                         </Typography>
                         {/* <Button color="inherit">Login</Button> */}
                         <AppBarButton onClick={() => store.updateShowPercentage()}
@@ -249,6 +252,10 @@ function App() {
                             {/* <TableTitle color={'primary'} children='Course List' /> */}
                             <CourseTable />
                         </Container>
+                    </TabPanel>
+
+                    <TabPanel value={tabVal} index={3}>
+                        <TrendContainer />
                     </TabPanel>
 
 
