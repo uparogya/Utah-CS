@@ -30,7 +30,7 @@ export const DefaultEnrollment = {
 
 // Add new school year here, need to mat
 export const PossibleSchoolYears = [
-    '2021-22', '2020-21', '2019-20'
+    '2019-20', '2020-21', '2021-22',
 ];
 
 
