@@ -7,7 +7,7 @@ export const PossibleCategories = [
     { name: 'CS Advanced', key: 'CSA' },
     { name: 'CS Related', key: 'CSR' },
     { name: 'CS Core (CSB SCA)', key: 'CSC' },
-    { name: 'All CS Courses', key: 'CS' }
+    { name: 'All CS', key: 'CS' }
 ];
 
 // Add a cut off for smallest student category to be shown
@@ -35,3 +35,5 @@ export const PossibleSchoolYears = [
 
 
 export const linkToData = 'https://haihan-lin.github.io/Utah-CS/updated_data/all_data.xlsx';
+
+

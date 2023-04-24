@@ -10,6 +10,19 @@ import readXlsxFile from "read-excel-file";
 import styled from "@emotion/styled";
 import { DataContext } from "../App";
 
+export const generateCourseList = (openCategoryDialog: string, courseCategorization: (string | number)[][]) => {
+    // if (openCategoryDialog === '')
+    let includedCateList = [openCategoryDialog];
+    if (openCategoryDialog === 'CS') {
+        includedCateList = ['CSA', 'CSR', 'CSB'];
+    } else if (openCategoryDialog === 'CSC') {
+        includedCateList = ['CSA', 'CSB'];
+    }
+    return courseCategorization.filter(courseInfo =>
+        includedCateList.includes(courseInfo[2] as string));
+
+};
+
 const Toolbox: FC = () => {
 
     const store = useContext(Store);
@@ -17,17 +30,9 @@ const Toolbox: FC = () => {
     const courseCategorization = useContext(DataContext).courseList;
 
     const generateList = () => {
-        // if (openCategoryDialog === '')
-        let includedCateList = [openCategoryDialog];
-        if (openCategoryDialog === 'CS') {
-            includedCateList = ['CSA', 'CSR', 'CSB'];
-        } else if (openCategoryDialog === 'CSC') {
-            includedCateList = ['CSA', 'CSB'];
-        }
-        return courseCategorization.map(courseInfo =>
-            includedCateList.includes(courseInfo[2] as string) ? <ListItem key={courseInfo[0]}>{courseInfo[1]}</ListItem> : <></>
-        );
+        return generateCourseList(openCategoryDialog, courseCategorization).map(courseInfo => <ListItem key={courseInfo[0]}>{courseInfo[1]}</ListItem>);
     };
+
 
     const [openCategoryDialog, setDialog] = useState('');
 

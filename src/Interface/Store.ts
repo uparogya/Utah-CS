@@ -9,11 +9,10 @@ export class AppStore {
     schoolYearShowing: string;
 
     constructor() {
-        // this.selectedCategory = ['CSB', 'CSA'];
         this.selectedDistricts = [];
         this.showPercentage = true;
         makeAutoObservable(this);
-        this.currentShownCSType = 'CS';
+        this.currentShownCSType = 'CSC';
         this.schoolYearShowing = '2021-22';
     }
 
