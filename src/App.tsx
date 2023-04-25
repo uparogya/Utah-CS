@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import './App.css';
-import { AppBar, Container, IconButton, SwipeableDrawer, Tab, Tabs, Toolbar, Typography } from '@mui/material';
+import { AppBar, Container, Icon, IconButton, SwipeableDrawer, Tab, Tabs, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import StateTable from './Components/StateTable';
 import DistrictTable from './Components/DistrictComponent/DistrictTable';
@@ -8,9 +8,8 @@ import SchoolTable from './Components/SchoolComponent/SchoolTable';
 import Toolbox from './Components/Toolbox';
 import styled from '@emotion/styled';
 import SettingsIcon from '@mui/icons-material/Settings';
-import PercentIcon from '@mui/icons-material/Percent';
 import Store from './Interface/Store';
-import NumbersIcon from '@mui/icons-material/Numbers';
+
 import { observer } from 'mobx-react-lite';
 import { LightGray } from './Preset/Colors';
 import CSMenu from './Components/CSMenu';
@@ -19,9 +18,9 @@ import { stateUpdateWrapperUseJSON } from './Interface/StateChecker';
 import { linkToData } from './Preset/Constants';
 import CourseTable from './Components/CourseComponent/CourseTable';
 import OverviewTab from './Components/OverviewTab';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AcademicYearMenu from './Components/AcademicYearMenu';
 import TrendContainer from './Components/TrendComponent/TrendContainer';
+import SettingBar from './Components/SettingBar';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -65,13 +64,13 @@ function App() {
         setCSMenuAnchorEl(event.currentTarget);
     };
 
-    const [yearMenuAnchorEl, setYearMenuAnchorEl] = useState<null | HTMLElement>(null);
-    const handleYearMenuClose = () => {
-        setYearMenuAnchorEl(null);
-    };
-    const handleYearTypeClick = (event: React.MouseEvent<HTMLElement>) => {
-        setYearMenuAnchorEl(event.currentTarget);
-    };
+    // const [yearMenuAnchorEl, setYearMenuAnchorEl] = useState<null | HTMLElement>(null);
+    // const handleYearMenuClose = () => {
+    //     setYearMenuAnchorEl(null);
+    // };
+    // const handleYearTypeClick = (event: React.MouseEvent<HTMLElement>) => {
+    //     setYearMenuAnchorEl(event.currentTarget);
+    // };
 
     const store = useContext(Store);
 
@@ -179,14 +178,18 @@ function App() {
                 course: courseData,
                 courseList: courseCategorization
             }}>
-            <SwipeableDrawer onClose={() => setDrawer(false)}
+            {/* <SwipeableDrawer onClose={() => setDrawer(false)}
                 onOpen={() => setDrawer(true)} disableBackdropTransition={!iOS} disableDiscovery={iOS} open={drawerOpen} >
                 <Toolbox />
-            </SwipeableDrawer>
+            </SwipeableDrawer> */}
             <div className="App" style={{ overflow: 'hidden' }}>
-                <AppBar position="static">
+                <AppBar position="static" style={{ maxHeight: '40px', minHeight: '40px', justifyContent: 'center' }}>
+                    <Typography variant="h6" component="div" >
+                        Utah High School Computer Science (CS) Dashboard
+                    </Typography>
+
                     {/* add dropdown to change academic year and course list  */}
-                    <Toolbar>
+                    {/* <Toolbar>
                         <AppBarButton children={<>
                             <SettingsIcon />
                             <span style={{ fontSize: '20px' }}>Settings</span>
@@ -205,10 +208,9 @@ function App() {
                             Academic Year
 
                         </Typography>
-                        {/* <Button color="inherit">Login</Button> */}
                         <AppBarButton onClick={() => store.updateShowPercentage()}
                             children={store.showPercentage ? <NumbersIcon /> : <PercentIcon />} />
-                    </Toolbar>
+                    </Toolbar> */}
                 </AppBar>
                 <Grid container spacing={1} sx={{
                     '--Grid-borderWidth': '1px',
@@ -221,6 +223,7 @@ function App() {
                         borderColor: 'divider',
                     },
                 }}>
+                    <SettingBar />
                     <Grid id="state-view" style={{ minWidth: '100vw', paddingBottom: '5px' }} xs={12}>
                         <StateTable csClickHandler={handleCSTypeClick} />
                     </Grid>
@@ -260,8 +263,7 @@ function App() {
 
 
                 </Grid>
-                <CSMenu anchorEl={CSMenuAnchorEl} handleClose={handleCSMenuClose} />
-                <AcademicYearMenu anchorEl={yearMenuAnchorEl} handleClose={handleYearMenuClose} />
+
             </div>
         </DataContext.Provider>
     );
