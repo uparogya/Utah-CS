@@ -234,7 +234,7 @@ const TrendContainer: FC = () => {
     return <Grid container>
         <Grid xs={3}>
 
-            <TableTitle color={'primary'} children='Select Course to Show' />
+            <TableTitle color={'primary'} children='Select Category to Show' />
             <FormControl variant="standard" style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {/* <InputLabel>Course Category</InputLabel> */}
                 <Select value={store.currentShownCSType} onChange={(e) => store.updateSelectedCategory(e.target.value)} label='Course Category' style={{ paddingLeft: '5px' }}>

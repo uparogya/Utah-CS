@@ -33,17 +33,17 @@ const OverviewTab: FC = () => {
 
     const CourseExplainText: { [key: string]: ReactNode; } = {
         CSC: <span>
-            <b>Core CS Classes</b> directly teach <b>fundamental</b> computer science or programming skills.These courses may or may not include applications of computer science. They are divided into two categories: Basic and Advanced.
+            <b>Core CS Courses</b> directly teach <b>fundamental</b> computer science or programming skills.These courses may or may not include applications of computer science. They are divided into two categories: Basic and Advanced.
         </span>,
         CSB: <span>
-            <b>Basic CS Classes</b> are a subcategory of Core CS classes. These are <b>introductory</b> CS classes for students with no prior experience in the area.
+            <b>Basic CS Courses</b> are a subcategory of Core CS Courses. These are <b>introductory</b> CS Courses for students with no prior experience in the area.
         </span>,
         CSA: <span>
-            <b>Advanced CS Classes</b> are a subcategory of Core CS classes intended for students with prior programming experience.</span>,
+            <b>Advanced CS Courses</b> are a subcategory of Core CS Courses intended for students with prior programming experience.</span>,
         CSR: <span>
-            <b>Related CS Classes</b> emphasize the <b>application</b>, rather than the skills of computer science in a variety of settings.</span>,
+            <b>Related CS Courses</b> emphasize the <b>application</b>, rather than the skills of computer science in a variety of settings.</span>,
         CS: <span>
-            <b>All CS courses</b>, includes Basic CS, Advanced CS, and Related CS classes.
+            <b>All CS courses</b>, includes Basic CS, Advanced CS, and Related CS Courses.
         </span>,
 
     };
@@ -91,18 +91,18 @@ const OverviewTab: FC = () => {
                 <Typography style={{ textAlign: 'left' }} color='#3d3d3d'>
                     <ul>
                         <li>
-                            <b>Core CS Classes</b> - these classes directly teach fundamental computer science or programming skills. These courses may or may not include applications of computer science. They are divided into two categories:
+                            <b>Core CS Courses</b> - these classes directly teach fundamental computer science or programming skills. These courses may or may not include applications of computer science. They are divided into two categories:
                             <ul>
                                 <li>
-                                    <b>Basic CS Classes</b> - introductory CS classes for those with no prior experience in the area
+                                    <b>Basic CS Courses</b> - introductory CS Courses for those with no prior experience in the area
                                 </li>
                                 <li>
-                                    <b>Advanced CS Classes</b> - CS classes intended for those with prior experience
+                                    <b>Advanced CS Courses</b> - CS Courses intended for those with prior experience
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <b>Related CS Classes</b> - the emphasis of these classes is on the application, rather than the skills, of computer science in a variety of settings.
+                            <b>Related CS Courses</b> - the emphasis of these classes is on the application, rather than the skills, of computer science in a variety of settings.
 
                         </li>
                     </ul>
