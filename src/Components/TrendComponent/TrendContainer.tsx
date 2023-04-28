@@ -7,7 +7,7 @@ import { findAttribute } from "../../Interface/AttributeFinder";
 import { max } from "d3-array";
 import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from "d3-shape";
-import { CourseCategoryColor } from "../../Preset/Colors";
+import { CourseCategoryColor, LightGray } from "../../Preset/Colors";
 import { FormControl, Grid, InputLabel, List, ListItem, MenuItem, Select, Typography } from "@mui/material";
 import 'd3-transition';
 import Store from "../../Interface/Store";
@@ -103,6 +103,10 @@ const TrendContainer: FC = () => {
                 .attr('transform', `translate(0,${svgHeight - Margin.bottom})`)
                 .call(axisBottom(yearScale) as any);
 
+            svgSelection.select('#yearAxis')
+                .selectAll('text')
+                .attr('font-size', 'small');
+
             // draw student axis
             svgSelection.select('#studentAxis')
                 .attr('transform', `translate(${Margin.left},0)`)
@@ -159,12 +163,13 @@ const TrendContainer: FC = () => {
                 .attr('font-size', 'small')
                 .attr('y', (_, i) => (i) * RowHeight);
 
-            tableG.select('#body')
+            const columns = tableG.select('#body')
                 .selectAll('g')
                 .data(tempData)
                 .join('g')
-                .attr('transform', d => `translate(${yearScale(d.year as string)},0)`)
-                .selectAll('text')
+                .attr('transform', d => `translate(${yearScale(d.year as string)},0)`);
+
+            columns.selectAll('text')
                 .data(d => RequiredDemographic.map((demoName) => store.showPercentage ? (demoName === 'TotalStudents' ? (+d[demoName]) / (+d.StateTotal) : (+d[demoName]) / (+d.TotalStudents)) : d[demoName]))
                 // .data(d => RequiredDemographic.map((demoName) => d[demoName]))
                 .join('text')
@@ -173,6 +178,27 @@ const TrendContainer: FC = () => {
                 .attr('font-size', 'small')
                 .attr('text-anchor', 'middle')
                 .attr('y', (_, i) => (i) * RowHeight);
+
+            // draw column lines
+            columns.selectAll('line')
+                .data([0])
+                .join('line')
+                .attr('x1', yearScale.step() * 0.5)
+                .attr('x2', yearScale.step() * 0.5)
+                .attr('y1', -0.5 * RowHeight)
+                .attr('y2', RowHeight * RequiredDemographic.length)
+                .attr('stroke', LightGray);
+
+            tableG.select('#rowgrid')
+                .selectAll('line')
+                .data(RequiredDemographic)
+                .join('line')
+                .attr('x1', 2)
+                .attr('x2', svgWidth)
+                .attr('y1', (_, i) => RowHeight * (i - 0.25))
+                .attr('y2', (_, i) => RowHeight * (i - 0.25))
+                .attr('stroke', LightGray);
+
 
             stateUpdateWrapperUseJSON(dataToVisualize, tempData, setData);
         };
@@ -227,6 +253,7 @@ const TrendContainer: FC = () => {
                 <g id='table'>
                     <g id='header' />
                     <g id='body' />
+                    <g id='rowgrid' />
                 </g>
             </svg>
         </Grid>
