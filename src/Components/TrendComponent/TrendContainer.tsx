@@ -10,6 +10,10 @@ import { line } from "d3-shape";
 import { CourseCategoryColor } from "../../Preset/Colors";
 import { FormControl, Grid, InputLabel, List, ListItem, MenuItem, Select, Typography } from "@mui/material";
 import 'd3-transition';
+import Store from "../../Interface/Store";
+import { observer } from "mobx-react-lite";
+import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
+import { format } from "d3-format";
 
 const generateIncludedCat = (category: string) => {
     let includedCateList = [category];
@@ -29,11 +33,26 @@ export const generateCourseList = (category: string, courseCategorization: (stri
 
 };
 
+function addSpaces(inputString: string): string {
+    if (inputString === inputString.toUpperCase()) {
+        return inputString;
+    }
+
+    return inputString.replace(/([a-z])([A-Z])/g, '$1 $2');
+}
+
 const TrendContainer: FC = () => {
 
     const svgRef = useRef(null);
     const stateData = useContext(DataContext).state;
-    const MARGIN = { top: 50, left: 50, right: 50, bottom: 150 };
+
+    const store = useContext(Store);
+
+    const RequiredDemographic = ['TotalStudents', 'Female', 'Hispanic', 'Disability', 'EconDisadvantaged', 'ESL'];
+    const RowHeight = 30;
+    const Margin = { top: 50, left: 100, right: 50, bottom: (RequiredDemographic.length + 0.5) * RowHeight };
+
+
     const courseCateData = useContext(DataContext).courseList;
 
 
@@ -47,6 +66,8 @@ const TrendContainer: FC = () => {
         return generateCourseList(trendCat, courseCateData).map(courseInfo => <ListItem key={courseInfo[0]}>{courseInfo[1]}</ListItem>);
     };
 
+    const [dataToVisualize, setData] = useState<{ [key: string]: number | string, }[]>([]);
+
     useEffect(() => {
         if (svgRef.current) {
             const svgSelection = select(svgRef.current);
@@ -54,73 +75,62 @@ const TrendContainer: FC = () => {
             const svgHeight = (svgSelection.node() as any).clientHeight;
 
             //Construct the data to visualize
-            const dataToVisualize = PossibleSchoolYears.map((year) => {
-
-                return {
-                    year: year,
-                    studentTotal: stateAttributeFinder(`${trendCat}: Total`, year),
-                    femaleTotal: stateAttributeFinder(`${trendCat}: Female`, year),
-                    hispanic: stateAttributeFinder(`${trendCat}: Hispanic or Latino`, year),
-                    disability: stateAttributeFinder(`${trendCat}: Disability`, year),
-                    economic: stateAttributeFinder(`${trendCat}: Eco. Dis.`, year),
-                    esl: stateAttributeFinder(`${trendCat}: Eng. Learners`, year),
-
-                };
-            });
-            console.log(dataToVisualize);
+            const tempData: { [key: string]: number | string, }[] = PossibleSchoolYears.map((year) => ({
+                year: year,
+                TotalStudents: stateAttributeFinder(`${trendCat}: Total`, year),
+                Female: stateAttributeFinder(`${trendCat}: Female`, year),
+                Hispanic: stateAttributeFinder(`${trendCat}: Hispanic or Latino`, year),
+                Disability: stateAttributeFinder(`${trendCat}: Disability`, year),
+                EconDisadvantaged: stateAttributeFinder(`${trendCat}: Eco. Dis.`, year),
+                ESL: stateAttributeFinder(`${trendCat}: Eng. Learners`, year),
+                StateTotal: stateAttributeFinder(`TOTAL: Total`, year),
+            })
+            );
 
             // PossibleSchoolYears.map((y) = stateData.filter(row => row[0] === store.schoolYearShowing)[0])
             const studentEnrollmentAxis = scaleLinear()
-                .domain([0, max(dataToVisualize, d => d.studentTotal) || 0])
-                .range([svgHeight - MARGIN.bottom, MARGIN.top])
+                .domain([0, max(tempData, d => d.TotalStudents as number) || 0])
+                .range([svgHeight - Margin.bottom, Margin.top])
                 .nice();
 
             const yearScale = scalePoint()
                 .domain(PossibleSchoolYears)
-                .range([MARGIN.left, svgWidth - MARGIN.right])
+                .range([Margin.left, svgWidth - Margin.right])
                 .padding(0.3);
 
             // draw year axis
             svgSelection.select('#yearAxis')
-                .attr('transform', `translate(0,${svgHeight - MARGIN.bottom})`)
-                .transition()
-                .duration(1000)
+                .attr('transform', `translate(0,${svgHeight - Margin.bottom})`)
                 .call(axisBottom(yearScale) as any);
-            //
 
             // draw student axis
             svgSelection.select('#studentAxis')
-                .attr('transform', `translate(${MARGIN.left},0)`)
+                .attr('transform', `translate(${Margin.left},0)`)
                 .transition()
                 .duration(1000)
                 .call(axisLeft(studentEnrollmentAxis) as any);
-            //
 
-            // three lines
-
+            // draw lines
             svgSelection.select('#lines')
                 .selectAll('path')
                 .data([trendCat])
                 .join('path')
                 .attr('stroke', d => CourseCategoryColor[d])
-                .datum(dataToVisualize)
+                .datum(tempData)
                 .attr('d', line()
                     .x((d: any) => (yearScale(d.year) || 0))
-                    .y((d: any) => (studentEnrollmentAxis(d.studentTotal) || 0)) as any
+                    .y((d: any) => (studentEnrollmentAxis(d.TotalStudents) || 0)) as any
                 )
                 .attr("stroke-width", 2)
                 .attr("fill", "none");
 
-            // draw a legend
-
-            // Add a colored square for each item in the legend
-
+            // draw legends
             const legend = svgSelection.select('#legend').attr('transform', `translate(${svgWidth - 200},0)`);
             legend.selectAll('rect')
                 .data([trendCat])
                 .join('rect')
                 .attr('x', 10)
-                .attr('y', (d, i) => i * 20 + 10)
+                .attr('y', (_, i) => i * 20 + 10)
                 .attr('width', 10)
                 .attr('height', 10)
                 .style('fill', d => CourseCategoryColor[d]);
@@ -132,9 +142,64 @@ const TrendContainer: FC = () => {
                 .attr('x', 25)
                 .attr('y', (d, i) => i * 20 + 20)
                 .text(d => d);
+
+            // draw table with demographics
+
+            const tableG = svgSelection.select('#table');
+
+            tableG.attr('transform', `translate(0,${svgHeight - Margin.bottom + RowHeight})`);
+
+            tableG.select('#header')
+                .attr('transform', 'translate(2,0)')
+                .selectAll('text')
+                .data(RequiredDemographic)
+                .join('text')
+                .text(d => addSpaces(d))
+                .attr('alignment-baseline', 'hanging')
+                .attr('font-size', 'small')
+                .attr('y', (_, i) => (i) * RowHeight);
+
+            tableG.select('#body')
+                .selectAll('g')
+                .data(tempData)
+                .join('g')
+                .attr('transform', d => `translate(${yearScale(d.year as string)},0)`)
+                .selectAll('text')
+                .data(d => RequiredDemographic.map((demoName) => store.showPercentage ? (demoName === 'TotalStudents' ? (+d[demoName]) / (+d.StateTotal) : (+d[demoName]) / (+d.TotalStudents)) : d[demoName]))
+                // .data(d => RequiredDemographic.map((demoName) => d[demoName]))
+                .join('text')
+                .text(t => format(`,${store.showPercentage ? '.1%' : ''}`)(t as number))
+                .attr('alignment-baseline', 'hanging')
+                .attr('font-size', 'small')
+                .attr('text-anchor', 'middle')
+                .attr('y', (_, i) => (i) * RowHeight);
+
+            stateUpdateWrapperUseJSON(dataToVisualize, tempData, setData);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [svgRef, trendCat]);
+
+    // // // update text based on state
+
+    useEffect(() => {
+        if (svgRef.current && dataToVisualize.length) {
+            const svgSelection = select(svgRef.current);
+            svgSelection.select('#body')
+                .selectAll('g')
+                .data(dataToVisualize)
+                .join('g')
+                .selectAll('text')
+                .data(d => RequiredDemographic.map((demoName) => store.showPercentage ? (demoName === 'TotalStudents' ? (+d[demoName]) / (+d.StateTotal) : (+d[demoName]) / (+d.TotalStudents)) : d[demoName]))
+                // .data(d => RequiredDemographic.map((demoName) => d[demoName]))
+                .join('text')
+                .text(t => format(`,${store.showPercentage ? '.1%' : ''}`)(t as number))
+                .attr('alignment-baseline', 'hanging')
+                .attr('font-size', 'small')
+                .attr('text-anchor', 'middle')
+                .attr('y', (_, i) => (i) * RowHeight);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [store.showPercentage]);
 
 
     return <Grid container>
@@ -159,10 +224,14 @@ const TrendContainer: FC = () => {
                 <g id='studentAxis' />
                 <g id='lines' />
                 <g id='legend' />
+                <g id='table'>
+                    <g id='header' />
+                    <g id='body' />
+                </g>
             </svg>
         </Grid>
     </Grid>;
 
 };
 
-export default (TrendContainer);
+export default observer(TrendContainer);
