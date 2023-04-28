@@ -60,11 +60,13 @@ const TrendContainer: FC = () => {
         findAttribute(attributeName, stateData[1], stateData.filter(row => row[0] === year)[0])
         , [stateData]);
 
-    const [trendCat, setTrendCat] = useState(PossibleCategories[0].key);
+    // const [store.currentShownCSType, setstore.currentShownCSType] = useState(PossibleCategories[0].key);
 
     const generateList = () => {
-        return generateCourseList(trendCat, courseCateData).map(courseInfo => <ListItem key={courseInfo[0]}>{courseInfo[1]}</ListItem>);
+        return generateCourseList(store.currentShownCSType, courseCateData).map(courseInfo => <ListItem key={courseInfo[0]}>{courseInfo[1]}</ListItem>);
     };
+
+
 
     const [dataToVisualize, setData] = useState<{ [key: string]: number | string, }[]>([]);
 
@@ -77,12 +79,12 @@ const TrendContainer: FC = () => {
             //Construct the data to visualize
             const tempData: { [key: string]: number | string, }[] = PossibleSchoolYears.map((year) => ({
                 year: year,
-                TotalStudents: stateAttributeFinder(`${trendCat}: Total`, year),
-                Female: stateAttributeFinder(`${trendCat}: Female`, year),
-                Hispanic: stateAttributeFinder(`${trendCat}: Hispanic or Latino`, year),
-                Disability: stateAttributeFinder(`${trendCat}: Disability`, year),
-                EconDisadvantaged: stateAttributeFinder(`${trendCat}: Eco. Dis.`, year),
-                ESL: stateAttributeFinder(`${trendCat}: Eng. Learners`, year),
+                TotalStudents: stateAttributeFinder(`${store.currentShownCSType}: Total`, year),
+                Female: stateAttributeFinder(`${store.currentShownCSType}: Female`, year),
+                Hispanic: stateAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`, year),
+                Disability: stateAttributeFinder(`${store.currentShownCSType}: Disability`, year),
+                EconDisadvantaged: stateAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`, year),
+                ESL: stateAttributeFinder(`${store.currentShownCSType}: Eng. Learners`, year),
                 StateTotal: stateAttributeFinder(`TOTAL: Total`, year),
             })
             );
@@ -119,7 +121,7 @@ const TrendContainer: FC = () => {
             // draw lines
             svgSelection.select('#lines')
                 .selectAll('path')
-                .data([trendCat])
+                .data([store.currentShownCSType])
                 .join('path')
                 .attr('stroke', d => CourseCategoryColor[d])
                 .datum(tempData)
@@ -133,7 +135,7 @@ const TrendContainer: FC = () => {
             // draw legends
             const legend = svgSelection.select('#legend').attr('transform', `translate(${svgWidth - 200},0)`);
             legend.selectAll('rect')
-                .data([trendCat])
+                .data([store.currentShownCSType])
                 .join('rect')
                 .attr('x', 10)
                 .attr('y', (_, i) => i * 20 + 10)
@@ -143,7 +145,7 @@ const TrendContainer: FC = () => {
 
             // Add the text label for each item in the legend
             legend.selectAll('text')
-                .data([trendCat])
+                .data([store.currentShownCSType])
                 .join('text')
                 .attr('x', 25)
                 .attr('y', (d, i) => i * 20 + 20)
@@ -204,7 +206,7 @@ const TrendContainer: FC = () => {
             stateUpdateWrapperUseJSON(dataToVisualize, tempData, setData);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [svgRef, trendCat]);
+    }, [svgRef, store.currentShownCSType]);
 
     // // // update text based on state
 
@@ -235,7 +237,7 @@ const TrendContainer: FC = () => {
             <TableTitle color={'primary'} children='Select Course to Show' />
             <FormControl variant="standard" style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {/* <InputLabel>Course Category</InputLabel> */}
-                <Select value={trendCat} onChange={(e) => setTrendCat(e.target.value)} label='Course Category' style={{ paddingLeft: '5px' }}>
+                <Select value={store.currentShownCSType} onChange={(e) => store.updateSelectedCategory(e.target.value)} label='Course Category' style={{ paddingLeft: '5px' }}>
                     {PossibleCategories.map((category) => (
                         <MenuItem key={`${category.name}-mi-trend`} value={category.key}>{category.name}</MenuItem>
                     ))}
