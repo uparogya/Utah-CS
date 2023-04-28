@@ -26,7 +26,7 @@ const SchoolRow: FC<Props> = ({ schoolEntry, titleEntry }: Props) => {
                 {(schoolEntry[1])}
             </TextCell>
             <TextCell onClick={() => setIsExpanded(!isExpanded)}>
-                {format(',')(schoolAttributeFinder('TOTAL: Total'))}
+                {schoolAttributeFinder('TOTAL: Total') >= 0 ? format(',')(schoolAttributeFinder('TOTAL: Total')) : (schoolAttributeFinder('TOTAL: Total'))}
             </TextCell>
             <TextCell>
                 <PercentageChart actualVal={schoolAttributeFinder(`${store.currentShownCSType}: Total`)} percentage={schoolAttributeFinder(`${store.currentShownCSType}: Total`) / schoolAttributeFinder('TOTAL: Total')} />

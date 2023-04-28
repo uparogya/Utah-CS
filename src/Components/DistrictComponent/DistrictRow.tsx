@@ -33,7 +33,8 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
         </FunctionCell>
 
         <TextCell>{districtAttributeFinder('District Name')}</TextCell>
-        <TextCell>{format(',')(districtAttributeFinder('TOTAL: Total'))}</TextCell>
+        {/* schoolAttributeFinder('TOTAL: Total') >= 0 ? format(',')(schoolAttributeFinder('TOTAL: Total')) : (schoolAttributeFinder('TOTAL: Total'))} */}
+        <TextCell>{districtAttributeFinder('TOTAL: Total') >= 0 ? format(',')(districtAttributeFinder('TOTAL: Total')) : districtAttributeFinder('TOTAL: Total')}</TextCell>
 
         <TextCell>
             <PercentageChart
