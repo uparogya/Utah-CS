@@ -43,20 +43,27 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum, compareFemaleNum, com
 
 
     const TextMargin = 5;
+    const RectMargin = 2;
     return (totalStudent ?
         <ComponentSVG onClick={(e) => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
             <g>
                 <rect
                     x={0}
-                    y={0}
-                    height={(hasComparison ? 0.5 : 1) * CellSVGHeight}
-                    width={CellSVGWidth * ((+computedMale) / (+totalStudent)) || 0}
+                    y={RectMargin}
+                    height={(hasComparison ? 0.5 : 1) * CellSVGHeight - 2 * RectMargin}
+                    width={CellSVGWidth * (((+computedMale) / (+totalStudent)) || 0.5)}
+                    strokeWidth={2}
+                    fillOpacity={(+totalStudent) ? 1 : 0}
+                    stroke={GenderColor.male}
                     fill={GenderColor.male} />
 
-                <rect x={(CellSVGWidth * ((+computedMale) / (+totalStudent))) || 0}
-                    y={0}
-                    height={(hasComparison ? 0.5 : 1) * CellSVGHeight}
-                    width={CellSVGWidth * ((+computedFemale) / (+totalStudent)) || 0}
+                <rect x={CellSVGWidth * (((+computedMale) / (+totalStudent)) || 0.5)}
+                    y={RectMargin}
+                    height={(hasComparison ? 0.5 : 1) * CellSVGHeight - 2 * RectMargin}
+                    width={CellSVGWidth * (((+computedFemale) / (+totalStudent)) || 0.5)}
+                    strokeWidth={2}
+                    stroke={GenderColor.female}
+                    fillOpacity={(+totalStudent) ? 1 : 0}
                     fill={GenderColor.female} />
 
                 <OnChartText children={computeTextOutcome(computedMale, (+computedMale) / (+totalStudent), store.showPercentage)} x={TextMargin} y={CellSVGHeight * (hasComparison ? 0.5 : 1) * 0.5} alignmentBaseline='middle' textAnchor='start' />
