@@ -36,8 +36,17 @@ const DistrictTable: FC = () => {
             let aTotal = (districtAttributeFinder(sortAttribute, a) as string | number === 'n<10' ? 0.00001 : +districtAttributeFinder(sortAttribute, a));
             let bTotal = (districtAttributeFinder(sortAttribute, b) as string | number === 'n<10' ? 0.00001 : +districtAttributeFinder(sortAttribute, b));
             if (sortCSPercentage) {
-                const aPercentage = aTotal / districtAttributeFinder('TOTAL: Total', a);
-                const bPercentage = bTotal / districtAttributeFinder('TOTAL: Total', b);
+                let aPercentage, bPercentage;
+                if (sortAttribute.includes('Female')) {
+                    aPercentage = aTotal === 0.00001 ? aTotal : districtAttributeFinder(`${store.currentShownCSType}: Total`, a) ? aTotal / districtAttributeFinder(`${store.currentShownCSType}: Total`, a) : 0;
+                    bPercentage = bTotal === 0.00001 ? bTotal : districtAttributeFinder(`${store.currentShownCSType}: Total`, b) ? bTotal / districtAttributeFinder(`${store.currentShownCSType}: Total`, b) : 0;
+                    // return sortUp ? aPercentage - bPercentage : bPercentage - aPercentage;
+                } else {
+                    aPercentage = districtAttributeFinder('TOTAL: Total', a) ? aTotal / districtAttributeFinder('TOTAL: Total', a) : 0;
+                    bPercentage = districtAttributeFinder('TOTAL: Total', a) ? bTotal / districtAttributeFinder('TOTAL: Total', b) : 0;
+                }
+
+
                 return sortUp ? aPercentage - bPercentage : bPercentage - aPercentage;
             }
             return sortUp ? aTotal - bTotal : bTotal - aTotal;

@@ -15,7 +15,7 @@ type Props = {
 const SortableHeader: FC<Props> = ({ headerName, isSortUp, isSorting, isSortPercentage, onClick, additionalStyle }: Props) => {
 
     const findHeaderName = () => {
-        if ((headerName === 'Gender' || headerName.includes('Enrollment')) && isSorting) {
+        if ((headerName.includes('Gender') || headerName.includes('Enrollment')) && isSorting) {
             return `${headerName} ${isSortPercentage ? '%' : '#'}`;
         } return headerName;
     };
