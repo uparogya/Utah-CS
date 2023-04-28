@@ -14,6 +14,7 @@ import Store from "../../Interface/Store";
 import { observer } from "mobx-react-lite";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import { format } from "d3-format";
+import { computeTextOutcome } from "../CellComponents/PercentageChart";
 
 const generateIncludedCat = (category: string) => {
     let includedCateList = [category];
@@ -199,10 +200,11 @@ const TrendContainer: FC = () => {
                 .data(dataToVisualize)
                 .join('g')
                 .selectAll('text')
-                .data(d => RequiredDemographic.map((demoName) => store.showPercentage ? (demoName === 'TotalStudents' ? (+d[demoName]) / (+d.StateTotal) : (+d[demoName]) / (+d.TotalStudents)) : d[demoName]))
+                // store.showPercentage ? (demoName === 'TotalStudents' ? (+d[demoName]) / (+d.StateTotal) : (+d[demoName]) / (+d.TotalStudents)) : d[demoName])
+                .data(d => RequiredDemographic.map((demoName) => computeTextOutcome(d[demoName], demoName === 'TotalStudents' ? (+d[demoName]) / (+d.StateTotal) : (+d[demoName]) / (+d.TotalStudents), store.showPercentage)))
                 // .data(d => RequiredDemographic.map((demoName) => d[demoName]))
                 .join('text')
-                .text(t => format(`,${store.showPercentage ? '.1%' : ''}`)(t as number))
+                .text(t => t)
                 .attr('alignment-baseline', 'hanging')
                 .attr('font-size', 'small')
                 .attr('text-anchor', 'middle')

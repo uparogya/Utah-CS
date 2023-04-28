@@ -68,7 +68,7 @@ const SettingBar: FC = () => {
         <Grid xs={2} >
             <div style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <span>Change to </span>
-                <IconButton size='small' onClick={() => store.updateShowPercentage()} children={store.showPercentage ? <NumbersIcon /> : <PercentIcon />} />
+                <IconButton color="primary" size='medium' onClick={() => store.updateShowPercentage()} children={store.showPercentage ? <NumbersIcon /> : <PercentIcon />} />
             </div>
         </Grid>
         {/* <CSMenu anchorEl={CSMenuAnchorEl} handleClose={handleCSMenuClose} />

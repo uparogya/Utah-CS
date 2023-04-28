@@ -11,7 +11,7 @@ export class AppStore {
 
     constructor() {
         this.selectedDistricts = [];
-        this.showPercentage = true;
+        this.showPercentage = false;
         makeAutoObservable(this);
         this.currentShownCSType = 'CSC';
         this.schoolYearShowing = '2021-22';

@@ -42,7 +42,7 @@ const PercentageChart: FC<Props> = ({ actualVal, percentage, tooltip }: Props) =
     );
 };
 
-export const computeTextOutcome = (input: string | number, percentage: number, showPercentage: boolean) => {
+export const computeTextOutcome = (input: string | number, percentage: number, showPercentage: boolean, noDecimal?: boolean) => {
     if (input === 0) {
         return '0';
     }
@@ -51,6 +51,9 @@ export const computeTextOutcome = (input: string | number, percentage: number, s
     }
     if (Number.isNaN(percentage)) {
         return format(',')(+input);
+    }
+    if (noDecimal) {
+        return showPercentage ? format(',.0%')(percentage) : format(',')(+input);
     }
     return showPercentage ? format(',.1%')(percentage) : format(',')(+input);
 };

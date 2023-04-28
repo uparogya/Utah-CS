@@ -9,6 +9,7 @@ import OverviewCard from "./CellComponents/OverviewCard";
 import { PossibleCategories } from "../Preset/Constants";
 import styled from "@emotion/styled";
 import { generateCourseList } from "./TrendComponent/TrendContainer";
+import { computeTextOutcome } from "./CellComponents/PercentageChart";
 
 
 const OverviewTab: FC = () => {
@@ -20,7 +21,8 @@ const OverviewTab: FC = () => {
     // find schools that offer cs core classes
     const findCSCOfferings = () => {
         const cscOfferingResult = allData.school.slice(2).filter((schoolEntry) => findAttribute(`${store.currentShownCSType}: Number of Courses Offered`, allData.school[1], schoolEntry));
-        return store.showPercentage ? format(',.0%')(cscOfferingResult.length / allData.school.slice(2).length) : cscOfferingResult.length;
+        return computeTextOutcome(cscOfferingResult.length, (cscOfferingResult.length / allData.school.slice(2).length), store.showPercentage, true);
+
     };
 
     const findCSStudents = () => {
@@ -28,7 +30,7 @@ const OverviewTab: FC = () => {
         const totalStudent = findAttribute('TOTAL: Total', allData.state[1], allData.state.filter(row => row[0] === store.schoolYearShowing)[0]);
         // Total CS Students
         const totalCSStudent = findAttribute(`${store.currentShownCSType}: Total`, allData.state[1], allData.state.filter(row => row[0] === store.schoolYearShowing)[0]);
-        return store.showPercentage ? format(',.0%')(totalCSStudent / totalStudent) : totalCSStudent;
+        return computeTextOutcome(totalCSStudent, (totalCSStudent / totalStudent), store.showPercentage, true);
     };
 
     const CourseExplainText: { [key: string]: ReactNode; } = {
@@ -73,14 +75,21 @@ const OverviewTab: FC = () => {
                 <OverviewGridItem xs={6} item >
                     <OverviewCard
 
-                        mainText={(findCSCOfferings())}
+                        mainText={
+                            <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
+                                {findCSCOfferings()}
+                            </span>
+                        }
                         subText={<span>Schools <b>Offering</b> {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name} Courses
                         </span>} />
                 </OverviewGridItem>
                 <OverviewGridItem xs={6} item>
                     <OverviewCard
-
-                        mainText={findCSStudents()}
+                        mainText={
+                            <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
+                                {findCSStudents()}
+                            </span>
+                        }
                         subText={
                             <span>Student <b>Participating</b> in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name} Courses
                             </span>} />
