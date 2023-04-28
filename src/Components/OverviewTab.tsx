@@ -91,7 +91,7 @@ const OverviewTab: FC = () => {
                 <Typography style={{ textAlign: 'left' }} color='#3d3d3d'>
                     <ul>
                         <li>
-                            <b>Core CS Courses</b> - these classes directly teach fundamental computer science or programming skills. These courses may or may not include applications of computer science. They are divided into two categories:
+                            <b>Core CS Courses</b> - these classes directly teach fundamental computer science or programming skills. They are divided into two categories:
                             <ul>
                                 <li>
                                     <b>Basic CS Courses</b> - introductory CS Courses for those with no prior experience in the area
