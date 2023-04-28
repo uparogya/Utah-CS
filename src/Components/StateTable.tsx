@@ -11,11 +11,8 @@ import RaceDialog from "./CellComponents/RaceDialog";
 import styled from "@emotion/styled";
 import { DataContext } from "../App";
 
-type Prop = {
-    csClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
-};
 
-const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
+const StateTable: FC = () => {
     const store = useContext(Store);
 
     const stateData = useContext(DataContext).state;
@@ -106,9 +103,7 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
                     <StateTableCell component="th"
                         scope="row"
                     >
-                        <u onClick={csClickHandler} style={{ cursor: 'pointer' }}>
-                            Computer Science ({store.currentShownCSType})
-                        </u>
+                        Computer Science ({store.currentShownCSType})
                     </StateTableCell>
                     <StateTableCell>
                         <PercentageChart

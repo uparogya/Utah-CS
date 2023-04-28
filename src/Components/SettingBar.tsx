@@ -1,12 +1,9 @@
-import { Grid, Typography, IconButton, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
-import { FC, useContext, useState } from "react";
+import { Grid, Typography, IconButton, FormControl, Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import { FC, useContext } from "react";
 import Store from "../Interface/Store";
 import NumbersIcon from '@mui/icons-material/Numbers';
 import PercentIcon from '@mui/icons-material/Percent';
 import { observer } from "mobx-react-lite";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import AcademicYearMenu from "./AcademicYearMenu";
-import CSMenu from "./CSMenu";
 import { PossibleCategories, PossibleSchoolYears } from "../Preset/Constants";
 
 

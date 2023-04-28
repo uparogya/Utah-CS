@@ -6,7 +6,6 @@ import { observer } from "mobx-react-lite";
 import { FunctionCell, TextCell } from "../GeneralComponents";
 import PercentageChart from "../CellComponents/PercentageChart";
 import { findAttribute } from "../../Interface/AttributeFinder";
-import styled from "@emotion/styled";
 import { format } from "d3-format";
 
 type Props = {

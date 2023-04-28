@@ -1,24 +1,19 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import './App.css';
-import { AppBar, Container, Icon, IconButton, SwipeableDrawer, Tab, Tabs, Typography } from '@mui/material';
+import { AppBar, Container, IconButton, Tab, Tabs, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import StateTable from './Components/StateTable';
 import DistrictTable from './Components/DistrictComponent/DistrictTable';
 import SchoolTable from './Components/SchoolComponent/SchoolTable';
-import Toolbox from './Components/Toolbox';
 import styled from '@emotion/styled';
-import SettingsIcon from '@mui/icons-material/Settings';
 import Store from './Interface/Store';
-
 import { observer } from 'mobx-react-lite';
 import { LightGray } from './Preset/Colors';
-import CSMenu from './Components/CSMenu';
 import readXlsxFile from 'read-excel-file';
 import { stateUpdateWrapperUseJSON } from './Interface/StateChecker';
 import { linkToData } from './Preset/Constants';
 import CourseTable from './Components/CourseComponent/CourseTable';
 import OverviewTab from './Components/OverviewTab';
-import AcademicYearMenu from './Components/AcademicYearMenu';
 import TrendContainer from './Components/TrendComponent/TrendContainer';
 import SettingBar from './Components/SettingBar';
 
@@ -56,13 +51,6 @@ export const DataContext = createContext<{ [key: string]: Array<number | string>
 export const EnrollmentDataContext = createContext<{ [key: string]: string; }[]>([]);
 function App() {
 
-    const [CSMenuAnchorEl, setCSMenuAnchorEl] = useState<null | HTMLElement>(null);
-    const handleCSMenuClose = () => {
-        setCSMenuAnchorEl(null);
-    };
-    const handleCSTypeClick = (event: React.MouseEvent<HTMLElement>) => {
-        setCSMenuAnchorEl(event.currentTarget);
-    };
 
     // const [yearMenuAnchorEl, setYearMenuAnchorEl] = useState<null | HTMLElement>(null);
     // const handleYearMenuClose = () => {
@@ -225,7 +213,7 @@ function App() {
                 }}>
                     <SettingBar />
                     <Grid id="state-view" style={{ minWidth: '100vw', paddingBottom: '5px' }} xs={12}>
-                        <StateTable csClickHandler={handleCSTypeClick} />
+                        <StateTable />
                     </Grid>
                     <Tabs value={tabVal} onChange={tabChange} style={{ minWidth: '100vw' }}>
                         <Tab label='Overview' />
@@ -276,9 +264,6 @@ const BasicGrid = styled(Grid)`
 overflow: hidden;
 `;
 
-const AppBarButton = styled(IconButton)({
-    color: LightGray
-});
 
 
 const TableTitle = styled(Typography)({
