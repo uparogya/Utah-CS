@@ -150,11 +150,6 @@ function App() {
     }, [store.schoolYearShowing]);
 
 
-    const iOS =
-        typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-    const [drawerOpen, setDrawer] = useState(false);
-
 
     return (
         <DataContext.Provider

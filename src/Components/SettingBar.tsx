@@ -47,13 +47,6 @@ const SettingBar: FC = () => {
 
                 </Select>
             </FormControl>
-
-
-
-            {/* <span onClick={handleCSTypeClick} style={{ cursor: 'pointer' }}>
-                <u>Utah {store.currentShownCSType}</u>
-                <ArrowDropDownIcon fontSize='small' style={{ verticalAlign: 'text-bottom' }} />
-            </span> */}
         </Grid>
         <Grid xs={4}>
             <FormControl variant="standard" style={{ flexDirection: 'row', alignItems: 'center' }}>
