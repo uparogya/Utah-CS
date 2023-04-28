@@ -9,11 +9,13 @@ import GenderRatioChart from "../CellComponents/GenderRatioChart";
 import AllInfoRow from "../AllInfoRow";
 import { StickyTableContainer, TextCell } from "../GeneralComponents";
 import { BoldHeaderCell } from "../StateTable";
+import Store from "../../Interface/Store";
 
 
 const CourseTable: FC = () => {
 
-    const courseData = useContext(DataContext).course;
+    const store = useContext(Store);
+    const courseData = useContext(DataContext).course[store.schoolYearShowing];
 
     // const [sortUp, setSortUp] = useState(true);
     // const [sortAttribute, setSortAttribute] = useState('District Name');

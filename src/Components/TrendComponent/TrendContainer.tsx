@@ -8,11 +8,13 @@ import { max } from "d3-array";
 import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from "d3-shape";
 import { CourseCategoryColor } from "../../Preset/Colors";
+import Store from "../../Interface/Store";
 
 const TrendContainer: FC = () => {
 
+    const store = useContext(Store);
     const svgRef = useRef(null);
-    const stateData = useContext(DataContext).state;
+    const stateData = useContext(DataContext).state[store.schoolYearShowing];
     const MARGIN = 50;
 
     const stateAttributeFinder = useCallback((attributeName: string, year: string) =>

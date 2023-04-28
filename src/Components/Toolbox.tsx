@@ -27,7 +27,7 @@ const Toolbox: FC = () => {
 
     const store = useContext(Store);
 
-    const courseCategorization = useContext(DataContext).courseList;
+    const courseCategorization = useContext(DataContext).courseList[store.schoolYearShowing];
 
     const generateList = () => {
         return generateCourseList(openCategoryDialog, courseCategorization).map(courseInfo => <ListItem key={courseInfo[0]}>{courseInfo[1]}</ListItem>);

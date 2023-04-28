@@ -13,7 +13,7 @@ import { DataContext } from "../../App";
 const SchoolTable: FC = () => {
 
     const store = useContext(Store);
-    const schoolData = useContext(DataContext).school;
+    const schoolData = useContext(DataContext).school[store.schoolYearShowing];
 
 
     const [sortAttribute, setSortAttribute] = useState('School Name');

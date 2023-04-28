@@ -13,10 +13,9 @@ import { DataContext } from "../../App";
 
 const DistrictTable: FC = () => {
 
-
-    const districtData = useContext(DataContext).district;
-
     const store = useContext(Store);
+    const districtData = useContext(DataContext).district[store.schoolYearShowing];
+
 
     const [sortAttribute, setSortAttribute] = useState('District Name');
     const [sortCSPercentage, setSortPercentage] = useState(true);
