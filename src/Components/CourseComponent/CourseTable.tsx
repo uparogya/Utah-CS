@@ -4,9 +4,9 @@ import { DataContext } from "../../App";
 import { Table, TableBody, TableContainer, TableHead } from "@mui/material";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { findAttribute } from "../../Interface/AttributeFinder";
-import CourseRow from "../AllInfoRow";
+import CourseRow from "./AllInfoRow";
 import GenderRatioChart from "../CellComponents/GenderRatioChart";
-import AllInfoRow from "../AllInfoRow";
+import AllInfoRow from "./AllInfoRow";
 import { StickyTableContainer, TextCell } from "../GeneralComponents";
 import { BoldHeaderCell } from "../StateTable";
 

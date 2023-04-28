@@ -20,7 +20,7 @@ const OverviewTab: FC = () => {
     // find schools that offer cs core classes
     const findCSCOfferings = () => {
         const cscOfferingResult = allData.school.slice(2).filter((schoolEntry) => findAttribute(`${store.currentShownCSType}: Number of Courses Offered`, allData.school[1], schoolEntry));
-        return cscOfferingResult.length / allData.school.slice(2).length;
+        return store.showPercentage ? format(',.0%')(cscOfferingResult.length / allData.school.slice(2).length) : cscOfferingResult.length;
     };
 
     const findCSStudents = () => {
@@ -28,7 +28,7 @@ const OverviewTab: FC = () => {
         const totalStudent = findAttribute('TOTAL: Total', allData.state[1], allData.state.filter(row => row[0] === store.schoolYearShowing)[0]);
         // Total CS Students
         const totalCSStudent = findAttribute(`${store.currentShownCSType}: Total`, allData.state[1], allData.state.filter(row => row[0] === store.schoolYearShowing)[0]);
-        return totalCSStudent / totalStudent;
+        return store.showPercentage ? format(',.0%')(totalCSStudent / totalStudent) : totalCSStudent;
     };
 
     const CourseExplainText: { [key: string]: ReactNode; } = {
@@ -54,32 +54,32 @@ const OverviewTab: FC = () => {
         <Grid container spacing={1}>
             <Grid container spacing={2} xs={6} >
                 <OverviewGridItem xs={12} item >
-                    <OverviewCard subText={CourseExplainText[store.currentShownCSType]} mainText={<></>} />
+                    <OverviewCard subText={CourseExplainText[store.currentShownCSType]} mainText={''} />
                 </OverviewGridItem>
                 <OverviewGridItem xs={6} item >
                     <OverviewCard
-                        mainText={allData.school.slice(2).length.toString()}
+                        mainText={allData.school.slice(2).length}
 
                         subText='Public Utah High Schools' />
                 </OverviewGridItem>
                 <OverviewGridItem xs={6} item >
                     <OverviewCard
 
-                        mainText={generateCourseList(store.currentShownCSType, allData.courseList).length.toString()}
+                        mainText={generateCourseList(store.currentShownCSType, allData.courseList).length}
                         subText={`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name} Courses`} />
                 </OverviewGridItem>
 
                 <OverviewGridItem xs={6} item >
                     <OverviewCard
 
-                        mainText={format(',.0%')(findCSCOfferings())}
+                        mainText={(findCSCOfferings())}
                         subText={<span>Schools <b>Offering</b> ${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name} Classes
                         </span>} />
                 </OverviewGridItem>
                 <OverviewGridItem xs={6} item>
                     <OverviewCard
                         // Students Participating in Core CS Classes
-                        mainText={format(',.0%')(findCSStudents())}
+                        mainText={findCSStudents()}
                         subText={
                             <span>Student <b>Participating</b> in ${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name} Classes
                             </span>} />

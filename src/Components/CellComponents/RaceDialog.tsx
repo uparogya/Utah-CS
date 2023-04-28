@@ -69,11 +69,11 @@ const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, CSRaceOutput, 
 
                         <g>
                             {stateRaceOutput ? <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + 0.45 * 0.5 * barChartHeightScale.bandwidth()}>
-                                {`${stateRaceOutput[d]}, ${format(',.2%')(stateRaceOutput[d] / sum(Object.values(stateRaceOutput)))}`}
+                                {`${stateRaceOutput[d]}, ${format(',.1%')(stateRaceOutput[d] / sum(Object.values(stateRaceOutput)))}`}
                             </NumberLabText> : <></>}
 
                             <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + (0.5 + (stateRaceOutput ? 0.25 : 0)) * barChartHeightScale.bandwidth()}>
-                                {`${CSRaceOutput[d]}, ${format(',.2%')(CSRaceOutput[d] / sum(Object.values(CSRaceOutput)))}`}
+                                {`${CSRaceOutput[d]}, ${format(',.1%')(CSRaceOutput[d] / sum(Object.values(CSRaceOutput)))}`}
                             </NumberLabText>
                         </g>
                     </g>

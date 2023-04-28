@@ -1,12 +1,13 @@
 import { TableRow } from "@mui/material";
 import { FC, useState } from "react";
-import PercentageChart from "./CellComponents/PercentageChart";
-import { TextCell } from "./GeneralComponents";
-import { findAttribute } from "../Interface/AttributeFinder";
+import PercentageChart from "../CellComponents/PercentageChart";
+import { TextCell } from "../GeneralComponents";
+import { findAttribute } from "../../Interface/AttributeFinder";
 import { observer } from "mobx-react-lite";
-import GenderRatioChart from "./CellComponents/GenderRatioChart";
-import RaceChart from "./CellComponents/RaceChart";
-import RaceDialog from "./CellComponents/RaceDialog";
+import GenderRatioChart from "../CellComponents/GenderRatioChart";
+import RaceChart from "../CellComponents/RaceChart";
+import RaceDialog from "../CellComponents/RaceDialog";
+import { format } from "d3-format";
 
 type Prop = {
     courseEntry: (number | string)[];
@@ -26,7 +27,7 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
                 {courseAttributeFinder('Course Name')}
             </TextCell>
             <TextCell >
-                {courseAttributeFinder('Total')}
+                {format(',')(courseAttributeFinder('Total'))}
             </TextCell>
             <TextCell>
                 <GenderRatioChart

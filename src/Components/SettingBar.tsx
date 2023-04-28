@@ -35,7 +35,7 @@ const SettingBar: FC = () => {
     const store = useContext(Store);
     // TODO change the spans into form controls
     return <Grid xs={12} style={{ background: 'aliceblue', alignItems: 'center', color: '#3d3d3d' }} container>
-        <Grid xs={3}>
+        <Grid xs={2}>
             <Typography>Settings</Typography>
         </Grid>
         <Grid xs={4}>
@@ -75,8 +75,11 @@ const SettingBar: FC = () => {
             </span> */}
             {/* Academic Year */}
         </Grid>
-        <Grid xs={1}>
-            <IconButton size='small' onClick={() => store.updateShowPercentage()} children={store.showPercentage ? <NumbersIcon /> : <PercentIcon />} />
+        <Grid xs={2} >
+            <div style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <span>Change to </span>
+                <IconButton size='small' onClick={() => store.updateShowPercentage()} children={store.showPercentage ? <NumbersIcon /> : <PercentIcon />} />
+            </div>
         </Grid>
         {/* <CSMenu anchorEl={CSMenuAnchorEl} handleClose={handleCSMenuClose} />
         <AcademicYearMenu anchorEl={yearMenuAnchorEl} handleClose={handleYearMenuClose} /> */}

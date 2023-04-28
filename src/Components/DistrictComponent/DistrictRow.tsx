@@ -7,6 +7,7 @@ import { FunctionCell, TextCell } from "../GeneralComponents";
 import PercentageChart from "../CellComponents/PercentageChart";
 import { findAttribute } from "../../Interface/AttributeFinder";
 import styled from "@emotion/styled";
+import { format } from "d3-format";
 
 type Props = {
     districtEntry: Array<string | number>;
@@ -33,7 +34,7 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
         </FunctionCell>
 
         <TextCell>{districtAttributeFinder('District Name')}</TextCell>
-        <TextCell>{districtAttributeFinder('TOTAL: Total')}</TextCell>
+        <TextCell>{format(',')(districtAttributeFinder('TOTAL: Total'))}</TextCell>
 
         <TextCell>
             <PercentageChart

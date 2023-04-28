@@ -114,7 +114,7 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
                         <PercentageChart
                             actualVal={totalCSStudentNum}
                             percentage={totalCSStudentNum / totalStudentNum}
-                            tooltip={`${format(',.2%')(totalCSStudentNum / totalStudentNum)} out of all HS students`} /></StateTableCell>
+                            tooltip={`${format(',.1%')(totalCSStudentNum / totalStudentNum)} out of all HS students`} /></StateTableCell>
                     <StateTableCell>
                         <GenderRatioChart
                             maleNum={stateAttributeFinder(`${store.currentShownCSType}: Male`)}

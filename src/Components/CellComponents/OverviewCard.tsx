@@ -7,10 +7,11 @@
 // ];
 
 import { Card, CardContent, Typography } from "@mui/material";
+import { format } from "d3-format";
 import { FC, ReactNode } from "react";
 
 type Prop = {
-    mainText: ReactNode;
+    mainText: number | string;
     subText: ReactNode;
 };
 
@@ -26,7 +27,7 @@ const OverviewCard: FC<Prop> = ({ mainText, subText, }: Prop) => {
                     {subText}
                 </Typography>
                 <Typography variant="h3" component="h1">
-                    {mainText}
+                    {typeof mainText === 'number' ? format(',')(mainText) : mainText}
                 </Typography>
             </CardContent>
         </Card>
