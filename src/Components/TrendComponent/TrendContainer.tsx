@@ -8,6 +8,8 @@ import { max } from "d3-array";
 import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from "d3-shape";
 import { CourseCategoryColor } from "../../Preset/Colors";
+import { Grid } from "@mui/material";
+import Store from "../../Interface/Store";
 
 const TrendContainer: FC = () => {
 
@@ -60,7 +62,8 @@ const TrendContainer: FC = () => {
             // PossibleSchoolYears.map((y) = stateData.filter(row => row[0] === store.schoolYearShowing)[0])
             const studentEnrollmentAxis = scaleLinear()
                 .domain([0, max(dataToVisualize.map((entry) => ([entry.CSA, entry.CSB, entry.CSR])).flat() as number[]) || 0])
-                .range([svgHeight - MARGIN, MARGIN]);
+                .range([svgHeight - MARGIN, MARGIN])
+                .nice();
 
             const yearScale = scalePoint()
                 .domain(PossibleSchoolYears)
@@ -118,13 +121,17 @@ const TrendContainer: FC = () => {
     }, [svgRef]);
 
 
-    return (
-        <svg width='90vw' height='55vh' ref={svgRef}>
+    return <Grid container>
+        <Grid xs={3}></Grid>
+        <Grid xs={9}> <svg width='100%' height='55vh' ref={svgRef}>
             <g id='yearAxis' />
             <g id='studentAxis' />
             <g id='lines' />
             <g id='legend' />
-        </svg>);
+        </svg>
+        </Grid>
+    </Grid>;
+
 };
 
 export default (TrendContainer);

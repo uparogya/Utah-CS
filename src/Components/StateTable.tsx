@@ -70,6 +70,7 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
                         <GenderRatioChart
                             maleNum={stateAttributeFinder('TOTAL: Male')}
                             femaleNum={stateAttributeFinder('TOTAL: Female')}
+                            totalStudent={stateAttributeFinder('TOTAL: Total')}
                         />
                     </StateTableCell>
                     <StateTableCell onClick={() => setOpenRaceDialog(true)}>
@@ -117,6 +118,7 @@ const StateTable: FC<Prop> = ({ csClickHandler }: Prop) => {
                     <StateTableCell>
                         <GenderRatioChart
                             maleNum={stateAttributeFinder(`${store.currentShownCSType}: Male`)}
+                            totalStudent={totalCSStudentNum}
                             femaleNum={stateAttributeFinder(`${store.currentShownCSType}: Female`)} />
                     </StateTableCell>
                     <StateTableCell onClick={() => setOpenRaceDialog(true)}>

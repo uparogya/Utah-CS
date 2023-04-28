@@ -32,6 +32,7 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
                 <GenderRatioChart
                     femaleNum={courseAttributeFinder(`Female`)}
                     maleNum={courseAttributeFinder(`Male`)}
+                    totalStudent={courseAttributeFinder('Total')}
                 />
             </TextCell>
             <TextCell onClick={() => setOpenRaceDialog(true)} >

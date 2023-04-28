@@ -44,6 +44,7 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
             <GenderRatioChart
                 // femaleNum={districtAttributeFinder('TOTAL: Female')}
                 // maleNum={districtAttributeFinder('TOTAL: Male')}
+                totalStudent={districtAttributeFinder(`${store.currentShownCSType}: Total`)}
                 femaleNum={districtAttributeFinder(`${store.currentShownCSType}: Female`)}
                 maleNum={districtAttributeFinder(`${store.currentShownCSType}: Male`)}
             />

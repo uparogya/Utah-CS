@@ -52,7 +52,7 @@ export const computeTextOutcome = (input: string | number, percentage: number, s
     if (Number.isNaN(percentage)) {
         return input;
     }
-    return showPercentage ? format(',.2%')(percentage) : input;
+    return showPercentage ? format(',.1%')(percentage) : input;
 };
 
 const BarText = styled.text`

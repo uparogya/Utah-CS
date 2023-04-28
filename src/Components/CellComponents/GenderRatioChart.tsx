@@ -7,14 +7,15 @@ import { CellSVGHeight, CellSVGWidth } from "../../Preset/Constants";
 import { ComponentSVG } from "../GeneralComponents";
 import { computeTextOutcome } from "./PercentageChart";
 type Props = {
-    maleNum: number,
-    femaleNum: number,
+    maleNum: number | string,
+    femaleNum: number | string,
     compareMaleNum?: number,
     compareFemaleNum?: number;
+    totalStudent: number | string;
 };
-const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum, compareFemaleNum, compareMaleNum }: Props) => {
+const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum, compareFemaleNum, compareMaleNum, totalStudent }: Props) => {
 
-    const [totalStudent, setTotalStudent] = useState(maleNum + femaleNum);
+    // const [totalStudent, setTotalStudent] = useState(maleNum + femaleNum);
 
     const [compareTotalStudent, setCompareTotalStudent] = useState(0);
 
@@ -27,10 +28,18 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum, compareFemaleNum, com
         setCompareTotalStudent((+(compareFemaleNum || 0) || 0) + (+(compareMaleNum || 0) || 0));
     }, [compareFemaleNum, compareMaleNum]);
 
+    const [computedFemale, setFemale] = useState(femaleNum);
+
+    const [computedMale, setMale] = useState(maleNum);
 
     useEffect(() => {
-        setTotalStudent(maleNum + femaleNum);
-    }, [maleNum, femaleNum]);
+        if (femaleNum === 'n<10' && (+totalStudent) - (+maleNum) > 0) {
+            setFemale((+totalStudent) - (+maleNum));
+        } if (maleNum === 'n<10' && (+totalStudent) - (+femaleNum) > 0) {
+            setMale((+totalStudent) - (+femaleNum));
+        }
+    }, [maleNum, femaleNum, totalStudent]);
+
 
 
     const TextMargin = 5;
@@ -41,17 +50,17 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum, compareFemaleNum, com
                     x={0}
                     y={0}
                     height={(hasComparison ? 0.5 : 1) * CellSVGHeight}
-                    width={CellSVGWidth * (maleNum / totalStudent) || 0}
+                    width={CellSVGWidth * ((+computedMale) / (+totalStudent)) || 0}
                     fill={GenderColor.male} />
 
-                <rect x={(CellSVGWidth * (maleNum / totalStudent)) || 0}
+                <rect x={(CellSVGWidth * ((+computedMale) / (+totalStudent))) || 0}
                     y={0}
                     height={(hasComparison ? 0.5 : 1) * CellSVGHeight}
-                    width={CellSVGWidth * (femaleNum / totalStudent) || 0}
+                    width={CellSVGWidth * ((+computedFemale) / (+totalStudent)) || 0}
                     fill={GenderColor.female} />
 
-                <OnChartText children={computeTextOutcome(maleNum, maleNum / totalStudent, store.showPercentage)} x={TextMargin} y={CellSVGHeight * (hasComparison ? 0.5 : 1) * 0.5} alignmentBaseline='middle' textAnchor='start' />
-                <OnChartText children={computeTextOutcome(femaleNum, femaleNum / totalStudent, store.showPercentage)} x={CellSVGWidth - TextMargin} y={CellSVGHeight * (compareMaleNum ? 0.5 : 1) * 0.5} fill={XDarkGray} alignmentBaseline='middle' textAnchor='end' />
+                <OnChartText children={computeTextOutcome(computedMale, (+computedMale) / (+totalStudent), store.showPercentage)} x={TextMargin} y={CellSVGHeight * (hasComparison ? 0.5 : 1) * 0.5} alignmentBaseline='middle' textAnchor='start' />
+                <OnChartText children={computeTextOutcome(computedFemale, (+computedFemale) / (+totalStudent), store.showPercentage)} x={CellSVGWidth - TextMargin} y={CellSVGHeight * (compareMaleNum ? 0.5 : 1) * 0.5} fill={XDarkGray} alignmentBaseline='middle' textAnchor='end' />
             </g>
             {
                 hasComparison ? <g>
