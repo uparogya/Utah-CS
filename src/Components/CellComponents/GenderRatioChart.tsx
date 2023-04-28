@@ -35,11 +35,13 @@ const GenderRatioChart: FC<Props> = ({ maleNum, femaleNum, compareFemaleNum, com
     useEffect(() => {
         if (femaleNum === 'n<10' && (+totalStudent) - (+maleNum) > 0) {
             setFemale((+totalStudent) - (+maleNum));
-        } if (maleNum === 'n<10' && (+totalStudent) - (+femaleNum) > 0) {
+        } else if (maleNum === 'n<10' && (+totalStudent) - (+femaleNum) > 0) {
             setMale((+totalStudent) - (+femaleNum));
         }
-        setFemale(femaleNum);
-        setMale(maleNum);
+        else {
+            setFemale(femaleNum);
+            setMale(maleNum);
+        }
     }, [maleNum, femaleNum, totalStudent]);
 
 
