@@ -60,7 +60,9 @@ const OverviewTab: FC = () => {
                     <OverviewCard
                         mainText={allData.school.slice(2).length}
 
-                        subText='Public Utah High Schools' />
+                        subText={<>
+                            <span>Public Utah High Schools</span>
+                        </>} />
                 </OverviewGridItem>
                 <OverviewGridItem xs={6} item >
                     <OverviewCard
@@ -78,7 +80,7 @@ const OverviewTab: FC = () => {
                 </OverviewGridItem>
                 <OverviewGridItem xs={6} item>
                     <OverviewCard
-                        // Students Participating in Core CS Classes
+
                         mainText={findCSStudents()}
                         subText={
                             <span>Student <b>Participating</b> in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name} Classes

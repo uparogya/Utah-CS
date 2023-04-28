@@ -13,11 +13,12 @@ import { FC, ReactNode } from "react";
 type Prop = {
     mainText: number | string;
     subText: ReactNode;
+    height?: string;
 };
 
-const OverviewCard: FC<Prop> = ({ mainText, subText, }: Prop) => {
+const OverviewCard: FC<Prop> = ({ mainText, subText, height }: Prop) => {
     return (
-        <Card variant="outlined" >
+        <Card variant="outlined" style={{ minHeight: height, maxHeight: height }}>
             <CardContent>
                 {/* <Typography variant="h5" component="h2">
                     {title}

@@ -21,7 +21,7 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
     const courseAttributeFinder = (attributeName: string) => findAttribute(attributeName, titleEntry, courseEntry);
 
     return (
-        <TableRow >
+        <TableRow key={`course-row-${courseAttributeFinder('Course Name')}`}>
 
             <TextCell style={{ maxWidth: '20vw' }}>
                 {courseAttributeFinder('Course Name')}
