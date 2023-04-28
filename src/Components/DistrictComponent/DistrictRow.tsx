@@ -57,7 +57,3 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
 
 export default observer(DistrictRow);
 
-
-const Label = styled.span({
-    fontSize: '0.875rem'
-});

@@ -9,7 +9,6 @@ import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from "d3-shape";
 import { CourseCategoryColor } from "../../Preset/Colors";
 import { Grid } from "@mui/material";
-import Store from "../../Interface/Store";
 
 const TrendContainer: FC = () => {
 

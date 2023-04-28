@@ -1,13 +1,9 @@
 import { observer } from "mobx-react-lite";
-import { FC, useContext, useState } from "react";
+import { FC, useContext } from "react";
 import { DataContext } from "../../App";
-import { Table, TableBody, TableContainer, TableHead } from "@mui/material";
-import SortableHeader from "../CellComponents/SortableHeader";
-import { findAttribute } from "../../Interface/AttributeFinder";
-import CourseRow from "./AllInfoRow";
-import GenderRatioChart from "../CellComponents/GenderRatioChart";
+import { Table, TableBody, TableHead } from "@mui/material";
 import AllInfoRow from "./AllInfoRow";
-import { StickyTableContainer, TextCell } from "../GeneralComponents";
+import { StickyTableContainer } from "../GeneralComponents";
 import { BoldHeaderCell } from "../StateTable";
 
 

@@ -1,12 +1,10 @@
 import { Stack, Chip, Container, Box, Dialog, DialogTitle, List, ListItem, IconButton, Tooltip, Button, DialogActions } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useState } from "react";
 import Store from "../Interface/Store";
 import { PossibleCategories, PossibleSchoolYears } from "../Preset/Constants";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { CourseCategoryColor, LightGray } from "../Preset/Colors";
-import { stateUpdateWrapperUseJSON } from "../Interface/StateChecker";
-import readXlsxFile from "read-excel-file";
 import styled from "@emotion/styled";
 import { DataContext } from "../App";
 
