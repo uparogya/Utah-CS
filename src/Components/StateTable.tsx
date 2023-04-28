@@ -10,6 +10,7 @@ import { findAttribute } from "../Interface/AttributeFinder";
 import RaceDialog from "./CellComponents/RaceDialog";
 import styled from "@emotion/styled";
 import { DataContext } from "../App";
+import { PossibleCategories } from "../Preset/Constants";
 
 
 const StateTable: FC = () => {
@@ -103,7 +104,7 @@ const StateTable: FC = () => {
                     <StateTableCell component="th"
                         scope="row"
                     >
-                        Computer Science ({store.currentShownCSType})
+                        {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name}
                     </StateTableCell>
                     <StateTableCell>
                         <PercentageChart

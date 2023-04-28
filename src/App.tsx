@@ -260,7 +260,7 @@ overflow: hidden;
 
 
 
-const TableTitle = styled(Typography)({
+export const TableTitle = styled(Typography)({
     textAlign: 'start',
     paddingLeft: '12px!important'
 });

@@ -6,9 +6,9 @@ import { findAttribute } from "../Interface/AttributeFinder";
 import { format } from "d3-format";
 import Store from "../Interface/Store";
 import OverviewCard from "./CellComponents/OverviewCard";
-import { generateCourseList } from "./Toolbox";
 import { PossibleCategories } from "../Preset/Constants";
 import styled from "@emotion/styled";
+import { generateCourseList } from "./TrendComponent/TrendContainer";
 
 
 const OverviewTab: FC = () => {
@@ -66,7 +66,6 @@ const OverviewTab: FC = () => {
                 </OverviewGridItem>
                 <OverviewGridItem xs={6} item >
                     <OverviewCard
-
                         mainText={generateCourseList(store.currentShownCSType, allData.courseList).length}
                         subText={`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name} Courses`} />
                 </OverviewGridItem>
