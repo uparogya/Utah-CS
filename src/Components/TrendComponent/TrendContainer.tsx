@@ -132,25 +132,6 @@ const TrendContainer: FC = () => {
                 .attr("stroke-width", 2)
                 .attr("fill", "none");
 
-            // draw legends
-            const legend = svgSelection.select('#legend').attr('transform', `translate(${svgWidth - 200},0)`);
-            legend.selectAll('rect')
-                .data([store.currentShownCSType])
-                .join('rect')
-                .attr('x', 10)
-                .attr('y', (_, i) => i * 20 + 10)
-                .attr('width', 10)
-                .attr('height', 10)
-                .style('fill', d => CourseCategoryColor[d]);
-
-            // Add the text label for each item in the legend
-            legend.selectAll('text')
-                .data([store.currentShownCSType])
-                .join('text')
-                .attr('x', 25)
-                .attr('y', (d, i) => i * 20 + 20)
-                .text(d => d);
-
             // draw table with demographics
 
             const tableG = svgSelection.select('#table');

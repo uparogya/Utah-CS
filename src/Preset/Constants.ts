@@ -6,8 +6,8 @@ export const PossibleCategories = [
     { name: 'Basic CS', key: 'CSB' },
     { name: 'Advanced CS', key: 'CSA' },
     { name: 'Related CS', key: 'CSR' },
-    { name: 'Core CS (basic+advanced)', key: 'CSC' },
-    { name: 'All CS (core+related)', key: 'CS' }
+    { name: 'Core CS (Basic+Advanced)', key: 'CSC' },
+    { name: 'All CS (Core+Related)', key: 'CS' }
 ];
 
 // Add a cut off for smallest student category to be shown
