@@ -111,7 +111,9 @@ const TrendContainer: FC = () => {
             svgSelection.select('#studentAxis')
                 .attr('transform', `translate(${Margin.left},0)`)
                 .transition()
-                .duration(1000)
+                .duration(function () {
+                    return svgSelection.select('#studentAxis').selectAll('text').size() ? 500 : 0;
+                })
                 .call(axisLeft(studentEnrollmentAxis) as any);
 
             // draw lines
@@ -198,7 +200,6 @@ const TrendContainer: FC = () => {
                 .attr('y1', (_, i) => RowHeight * (i - 0.25))
                 .attr('y2', (_, i) => RowHeight * (i - 0.25))
                 .attr('stroke', LightGray);
-
 
             stateUpdateWrapperUseJSON(dataToVisualize, tempData, setData);
         };

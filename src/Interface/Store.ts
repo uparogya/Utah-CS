@@ -7,6 +7,7 @@ export class AppStore {
     showPercentage: boolean;
     currentShownCSType: string;
     schoolYearShowing: string;
+    dataLoading: boolean;
 
     constructor() {
         this.selectedDistricts = [];
@@ -14,10 +15,15 @@ export class AppStore {
         makeAutoObservable(this);
         this.currentShownCSType = 'CSC';
         this.schoolYearShowing = '2021-22';
+        this.dataLoading = true;
     }
 
     updateShowPercentage() {
         this.showPercentage = !this.showPercentage;
+    }
+
+    updateDataLoading(newStatus: boolean) {
+        this.dataLoading = newStatus;
     }
 
     updateSelectedCategory(newSelection: string) {
@@ -26,6 +32,7 @@ export class AppStore {
 
     updateSchoolYEar(newYearEntry: string) {
         this.schoolYearShowing = newYearEntry;
+        this.dataLoading = true;
     }
 
     setSelectedDistrict(districtArray: string[]) {

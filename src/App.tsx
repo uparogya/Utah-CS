@@ -15,6 +15,7 @@ import CourseTable from './Components/CourseComponent/CourseTable';
 import OverviewTab from './Components/OverviewTab';
 import TrendContainer from './Components/TrendComponent/TrendContainer';
 import SettingBar from './Components/SettingBar';
+import DataLoadingModal from './Components/DataLoadingModal';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -51,19 +52,11 @@ export const EnrollmentDataContext = createContext<{ [key: string]: string; }[]>
 function App() {
 
 
-    // const [yearMenuAnchorEl, setYearMenuAnchorEl] = useState<null | HTMLElement>(null);
-    // const handleYearMenuClose = () => {
-    //     setYearMenuAnchorEl(null);
-    // };
-    // const handleYearTypeClick = (event: React.MouseEvent<HTMLElement>) => {
-    //     setYearMenuAnchorEl(event.currentTarget);
-    // };
-
     const store = useContext(Store);
 
     const [tabVal, setTabVal] = useState(0);
 
-    const tabChange = (event: React.SyntheticEvent, newValue: number) => {
+    const tabChange = (_: React.SyntheticEvent, newValue: number) => {
         setTabVal(newValue);
     };
 
@@ -97,6 +90,7 @@ function App() {
     const [schoolData, setSchoolData] = useState<Array<number | string>[]>([]);
     const [districtData, setDistrictData] = useState<Array<number | string>[]>([]);
     const [courseData, setCourseData] = useState<Array<number | string>[]>([]);
+
 
     useEffect(() => {
         // school level
@@ -145,7 +139,10 @@ function App() {
             .then(blob => readXlsxFile(blob, { sheet: `Course-Level Data SY ${store.schoolYearShowing.slice(0, 5)}20${store.schoolYearShowing.slice(5)}` }))
             .then((data) => {
                 stateUpdateWrapperUseJSON(courseData, data, setCourseData);
+                store.updateDataLoading(false);
             });
+
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [store.schoolYearShowing]);
 
@@ -247,6 +244,7 @@ function App() {
                 </Grid>
 
             </div>
+            <DataLoadingModal />
         </DataContext.Provider>
     );
 }
