@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import './App.css';
-import { AppBar, Container, IconButton, Tab, Tabs, Typography } from '@mui/material';
+import { AppBar, Container, Tab, Tabs, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import StateTable from './Components/StateTable';
 import DistrictTable from './Components/DistrictComponent/DistrictTable';
@@ -8,7 +8,6 @@ import SchoolTable from './Components/SchoolComponent/SchoolTable';
 import styled from '@emotion/styled';
 import Store from './Interface/Store';
 import { observer } from 'mobx-react-lite';
-import { LightGray } from './Preset/Colors';
 import readXlsxFile from 'read-excel-file';
 import { stateUpdateWrapperUseJSON } from './Interface/StateChecker';
 import { linkToData } from './Preset/Constants';
