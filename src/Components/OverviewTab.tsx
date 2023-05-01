@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import { FC, useContext, ReactNode } from "react";
 import { DataContext } from "../App";
 import { findAttribute } from "../Interface/AttributeFinder";
-import { format } from "d3-format";
 import Store from "../Interface/Store";
 import OverviewCard from "./CellComponents/OverviewCard";
 import { PossibleCategories } from "../Preset/Constants";
