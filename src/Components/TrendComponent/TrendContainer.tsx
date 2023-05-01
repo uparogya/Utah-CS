@@ -8,7 +8,7 @@ import { max } from "d3-array";
 import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from "d3-shape";
 import { CourseCategoryColor, LightGray } from "../../Preset/Colors";
-import { FormControl, Grid, InputLabel, List, ListItem, MenuItem, Select, Typography } from "@mui/material";
+import { FormControl, Grid, List, ListItem, MenuItem, Select } from "@mui/material";
 import 'd3-transition';
 import Store from "../../Interface/Store";
 import { observer } from "mobx-react-lite";
