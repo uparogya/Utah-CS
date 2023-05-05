@@ -57,11 +57,10 @@ const OverviewTab: FC = () => {
                     const leaRow = allData.district.filter(row => row[0] === d.properties.NAME)[0];
 
 
-                    return 'none';
+                    return 'aliceblue';
                 }) //change fill to district cs percentage
                 .attr('stroke-width', 1)
                 .attr('stroke', '#222')
-                .attr('pointer-event', 'all')
                 .on('mouseover', (e, data) => {
                     tooltip
                         .html((data as any).properties.NAME)
