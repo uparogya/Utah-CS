@@ -1,21 +1,96 @@
 import { Container, Grid, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { FC, useContext, ReactNode } from "react";
+import { FC, useContext, ReactNode, useRef, useEffect, useState } from "react";
 import { DataContext } from "../App";
 import { findAttribute } from "../Interface/AttributeFinder";
 import Store from "../Interface/Store";
 import OverviewCard from "./CellComponents/OverviewCard";
-import { PossibleCategories } from "../Preset/Constants";
+import { PossibleCategories, linkToGeoJson } from "../Preset/Constants";
 import styled from "@emotion/styled";
 import { generateCourseList } from "./TrendComponent/TrendContainer";
 import { computeTextOutcome } from "./CellComponents/PercentageChart";
+import { pointer, select } from "d3-selection";
+import { GeoPath, GeoPermissibleObjects, geoAlbers, geoAlbersUsa, geoMercator, geoPath } from "d3-geo";
+import { json } from "d3-fetch";
+import { scaleLinear } from "d3-scale";
 
 
 const OverviewTab: FC = () => {
 
     const allData = useContext(DataContext);
     const store = useContext(Store);
+    // const leaData = useContext()
 
+    const mapRef = useRef(null);
+    const tooltipRef = useRef(null);
+
+
+    useEffect(() => {
+
+        async function drawMap() {
+
+            const svgSelection = select(mapRef.current);
+            const svgWidth = (svgSelection.node() as any).clientWidth;
+            const svgHeight = (svgSelection.node() as any).clientHeight;
+
+            const tooltip = select(tooltipRef.current);
+
+            const file = await json(linkToGeoJson);
+            const projection = geoMercator()
+                .center([-111.950684, 39.419220])
+                .translate([svgWidth / 2, svgHeight / 2])
+                // .scale(100);
+                .scale(3000);
+
+
+
+
+
+            const path = geoPath().projection(projection);
+
+
+            // console.log(file);
+            svgSelection.select('#map').selectAll('path').data((file as any).features)
+                .join('path')
+                .attr('d', path as any)
+                .attr('fill', (d: any) => {
+                    // console.log(allData);
+                    // find row
+                    const leaRow = allData.district.filter(row => row[0] === d.properties.NAME)[0];
+                    const totalStudents = findAttribute('TOTAL: Total', allData.district[0], leaRow);
+                    const CSStudents = findAttribute(`${store.currentShownCSType}: Total`, allData.district[0], leaRow);
+                    return interpolateBlues((CSStudents / totalStudents) || 0);
+                    // return 'aliceblue';
+                }) //change fill to district cs percentage
+                .attr('stroke-width', 1)
+                .attr('stroke', '#222')
+                .attr('pointer-event', 'fill')
+                .on('mouseover', (e, data) => {
+                    tooltip
+                        .html((data as any).properties.NAME)
+                        .style('display', 'block')
+                        .style("left", `${e.pageX + 5}px`)
+                        .style("top", `${e.pageY + 5}px`);
+
+                    console.log(data);
+                }).on('mousemove', (e) => {
+                    tooltip.style("left", `${e.pageX + 5}px`)
+                        .style("top", `${e.pageY + 5}px`);
+                })
+
+                .on('mouseout', () => {
+                    // tooltip.style('opacity', 0);
+                    tooltip.style('display', 'none');
+                });
+
+        };
+
+        if (mapRef.current && tooltipRef.current) {
+            drawMap();
+        }
+
+
+    }, [allData.district, mapRef, store.currentShownCSType]);
 
     // find schools that offer cs core classes
     const findCSCOfferings = () => {
@@ -96,7 +171,7 @@ const OverviewTab: FC = () => {
 
             </Grid>
             <Grid item xs={6}>
-                <Typography style={{ textAlign: 'left' }} color='#3d3d3d'>
+                {/* <Typography style={{ textAlign: 'left' }} color='#3d3d3d'>
                     <ul>
                         <li>
                             <b>Core CS Courses</b> - these courses directly teach fundamental computer science or programming skills. They are divided into two categories:
@@ -114,8 +189,21 @@ const OverviewTab: FC = () => {
 
                         </li>
                     </ul>
-                </Typography>
-
+                </Typography> */}
+                <svg ref={mapRef} width='100%' height='55vh'>
+                    <g id='map' />
+                </svg>
+                <div
+                    id="tooltip"
+                    ref={tooltipRef}
+                    style={{
+                        position: 'absolute',
+                        background: '#f4f1d6',
+                        borderRadius: '8px',
+                        pointerEvents: 'none',
+                        padding: '5px',
+                        textAlign: 'center',
+                    }} />
             </Grid>
         </Grid>
     </Container>;
@@ -127,3 +215,7 @@ export default observer(OverviewTab);
 const OverviewGridItem = styled(Grid)({
     padding: '10px'
 });
+function interpolateBlues(arg0: number): string | number | boolean | readonly (string | number)[] | null {
+    throw new Error("Function not implemented.");
+}
+

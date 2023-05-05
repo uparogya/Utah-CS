@@ -35,5 +35,5 @@ export const PossibleSchoolYears = [
 
 
 export const linkToData = 'https://haihan-lin.github.io/Utah-CS/updated_data/all_data.xlsx';
-
+export const linkToGeoJson = 'https://haihan-lin.github.io/Utah-CS/updated_data/Utah_School_District_Boundaries.geojson'
 
