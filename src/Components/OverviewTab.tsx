@@ -12,7 +12,8 @@ import { computeTextOutcome } from "./CellComponents/PercentageChart";
 import { pointer, select } from "d3-selection";
 import { GeoPath, GeoPermissibleObjects, geoAlbers, geoAlbersUsa, geoMercator, geoPath } from "d3-geo";
 import { json } from "d3-fetch";
-
+import { interpolateBlues } from 'd3-scale-chromatic';
+import { format } from "d3-format";
 
 const OverviewTab: FC = () => {
 
@@ -41,6 +42,27 @@ const OverviewTab: FC = () => {
                 // .scale(100);
                 .scale(3000);
 
+            // draw legend
+
+            svgSelection.select('#legend')
+                .select('rect')
+                .attr('x', svgWidth - 80)
+                .attr('y', 50)
+                .attr('width', 80)
+                .attr('height', 30)
+                .attr('fill', 'url(#legend-gradient)');
+
+            svgSelection.select('#legend')
+                .selectAll('text')
+                .data([0, 1])
+                .join('text')
+                .attr('x', d => svgWidth - 80 + d * 80)
+                .attr('y', 80)
+                .text(d => format(',.0%')(d))
+                .attr('alignment-baseline', 'hanging')
+                .attr('font-size', 'smaller')
+                .attr('text-anchor', d => d ? 'end' : 'start');
+
 
 
 
@@ -55,20 +77,21 @@ const OverviewTab: FC = () => {
                     // console.log(allData);
                     // find row
                     const leaRow = allData.district.filter(row => row[0] === d.properties.NAME)[0];
-
-
-                    return 'aliceblue';
+                    const totalStudents = findAttribute('TOTAL: Total', allData.district[0], leaRow);
+                    const totalCS = findAttribute(`${store.currentShownCSType}: Total`, allData.district[0], leaRow);
+                    return interpolateBlues((totalCS / totalStudents) || 0);
                 }) //change fill to district cs percentage
                 .attr('stroke-width', 1)
                 .attr('stroke', '#222')
                 .on('mouseover', (e, data) => {
+                    const leaRow = allData.district.filter(row => row[0] === (data as any).properties.NAME)[0];
+                    const totalStudents = findAttribute('TOTAL: Total', allData.district[0], leaRow);
+                    const totalCS = findAttribute(`${store.currentShownCSType}: Total`, allData.district[0], leaRow);
                     tooltip
-                        .html((data as any).properties.NAME)
+                        .html(`${(data as any).properties.NAME}, ${format(',.0%')(totalCS / totalStudents)}`)
                         .style('display', 'block')
                         .style("left", `${e.pageX + 5}px`)
                         .style("top", `${e.pageY + 5}px`);
-
-                    console.log(data);
                 }).on('mousemove', (e) => {
                     tooltip.style("left", `${e.pageX + 5}px`)
                         .style("top", `${e.pageY + 5}px`);
@@ -86,7 +109,7 @@ const OverviewTab: FC = () => {
         }
 
 
-    }, [mapRef]);
+    }, [allData.district, mapRef, store.currentShownCSType]);
 
     // find schools that offer cs core classes
     const findCSCOfferings = () => {
@@ -187,7 +210,19 @@ const OverviewTab: FC = () => {
                     </ul>
                 </Typography> */}
                 <svg ref={mapRef} width='100%' height='55vh'>
+                    <linearGradient id='legend-gradient' x1="0" x2="1" y1="0" y2="0" colorInterpolation="CIE-LCHab">
+                        <stop offset="0%" stopColor={interpolateBlues(0)} />
+                        <stop offset="50%" stopColor={interpolateBlues(0.5)} />
+                        <stop offset="100%" stopColor={interpolateBlues(1)} />
+                    </linearGradient>
+                    <text x='50%' y={0} textAnchor="middle" alignmentBaseline="hanging">
+                        District {store.currentShownCSType} Student Percentage
+                    </text>
                     <g id='map' />
+                    <g id='legend'>
+                        <rect />
+                    </g>
+
                 </svg>
                 <div
                     id="tooltip"
