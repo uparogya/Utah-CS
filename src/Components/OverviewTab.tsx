@@ -12,7 +12,6 @@ import { computeTextOutcome } from "./CellComponents/PercentageChart";
 import { pointer, select } from "d3-selection";
 import { GeoPath, GeoPermissibleObjects, geoAlbers, geoAlbersUsa, geoMercator, geoPath } from "d3-geo";
 import { json } from "d3-fetch";
-import { scaleLinear } from "d3-scale";
 
 
 const OverviewTab: FC = () => {
@@ -45,7 +44,6 @@ const OverviewTab: FC = () => {
 
 
 
-
             const path = geoPath().projection(projection);
 
 
@@ -57,14 +55,13 @@ const OverviewTab: FC = () => {
                     // console.log(allData);
                     // find row
                     const leaRow = allData.district.filter(row => row[0] === d.properties.NAME)[0];
-                    const totalStudents = findAttribute('TOTAL: Total', allData.district[0], leaRow);
-                    const CSStudents = findAttribute(`${store.currentShownCSType}: Total`, allData.district[0], leaRow);
-                    return interpolateBlues((CSStudents / totalStudents) || 0);
-                    // return 'aliceblue';
+
+
+                    return 'none';
                 }) //change fill to district cs percentage
                 .attr('stroke-width', 1)
                 .attr('stroke', '#222')
-                .attr('pointer-event', 'fill')
+                .attr('pointer-event', 'all')
                 .on('mouseover', (e, data) => {
                     tooltip
                         .html((data as any).properties.NAME)
@@ -90,7 +87,7 @@ const OverviewTab: FC = () => {
         }
 
 
-    }, [allData.district, mapRef, store.currentShownCSType]);
+    }, [mapRef]);
 
     // find schools that offer cs core classes
     const findCSCOfferings = () => {
@@ -215,7 +212,3 @@ export default observer(OverviewTab);
 const OverviewGridItem = styled(Grid)({
     padding: '10px'
 });
-function interpolateBlues(arg0: number): string | number | boolean | readonly (string | number)[] | null {
-    throw new Error("Function not implemented.");
-}
-
