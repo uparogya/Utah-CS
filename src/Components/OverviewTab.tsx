@@ -191,25 +191,7 @@ const OverviewTab: FC = () => {
 
             </Grid>
             <Grid item xs={6}>
-                {/* <Typography style={{ textAlign: 'left' }} color='#3d3d3d'>
-                    <ul>
-                        <li>
-                            <b>Core CS Courses</b> - these courses directly teach fundamental computer science or programming skills. They are divided into two categories:
-                            <ul>
-                                <li>
-                                    <b>Basic CS Courses</b> - introductory CS Courses for those with no prior experience in the area
-                                </li>
-                                <li>
-                                    <b>Advanced CS Courses</b> - CS Courses intended for those with prior experience
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <b>Related CS Courses</b> - the emphasis of these courses is on the application, rather than the skills, of computer science in a variety of settings.
 
-                        </li>
-                    </ul>
-                </Typography> */}
                 <svg ref={mapRef} width='100%' height='55vh'>
                     <linearGradient id='legend-gradient' x1="0" x2="1" y1="0" y2="0" colorInterpolation="CIE-LCHab">
                         <stop offset="0%" stopColor={interpolateBlues(0)} />

@@ -16,6 +16,7 @@ import OverviewTab from './Components/OverviewTab';
 import TrendContainer from './Components/TrendComponent/TrendContainer';
 import SettingBar from './Components/SettingBar';
 import DataLoadingModal from './Components/DataLoadingModal';
+import CourseDefinitionTab from './Components/CourseDefinitionTab';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -209,8 +210,9 @@ function App() {
                     <Tabs value={tabVal} onChange={tabChange} style={{ minWidth: '100vw' }}>
                         <Tab label='Overview' />
                         <Tab label='District & School Table' />
-                        <Tab label='Course Table' />
                         <Tab label='Trends' />
+                        <Tab label='Course Table' />
+                        <Tab label='Course Categories' />
                     </Tabs>
                     <TabPanel value={tabVal} index={0}>
                         <OverviewTab />
@@ -228,17 +230,21 @@ function App() {
                             </BasicGrid>
                         </Grid>
                     </TabPanel>
-
                     <TabPanel value={tabVal} index={2}>
+                        <TrendContainer />
+                    </TabPanel>
+
+                    <TabPanel value={tabVal} index={3}>
                         <Container>
                             {/* <TableTitle color={'primary'} children='Course List' /> */}
                             <CourseTable />
                         </Container>
                     </TabPanel>
-
-                    <TabPanel value={tabVal} index={3}>
-                        <TrendContainer />
+                    <TabPanel value={tabVal} index={4}>
+                        <CourseDefinitionTab />
                     </TabPanel>
+
+
 
 
                 </Grid>
