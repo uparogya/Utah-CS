@@ -54,9 +54,9 @@ const OverviewTab: FC = () => {
 
             svgSelection.select('#legend')
                 .selectAll('text')
-                .data([0, 1])
+                .data([0, 0.75])
                 .join('text')
-                .attr('x', d => svgWidth - 80 + d * 80)
+                .attr('x', (_, i) => svgWidth - 80 + i * 80)
                 .attr('y', 80)
                 .text(d => format(',.0%')(d))
                 .attr('alignment-baseline', 'hanging')
@@ -69,6 +69,7 @@ const OverviewTab: FC = () => {
             const path = geoPath().projection(projection);
 
 
+
             // console.log(file);
             svgSelection.select('#map').selectAll('path').data((file as any).features)
                 .join('path')
@@ -79,7 +80,7 @@ const OverviewTab: FC = () => {
                     const leaRow = allData.district.filter(row => row[0] === d.properties.NAME)[0];
                     const totalStudents = findAttribute('TOTAL: Total', allData.district[0], leaRow);
                     const totalCS = findAttribute(`${store.currentShownCSType}: Total`, allData.district[0], leaRow);
-                    return interpolateBlues((totalCS / totalStudents) || 0);
+                    return interpolateBlues((totalCS / totalStudents / 0.75) || 0);
                 }) //change fill to district cs percentage
                 .attr('stroke-width', 1)
                 .attr('stroke', '#222')
