@@ -30,10 +30,11 @@ export const DefaultEnrollment = {
 
 // Add new school year here, need to mat
 export const PossibleSchoolYears = [
-    '2019-20', '2020-21', '2021-22',
+    '2019-20', '2020-21', '2021-22'
 ];
 
-
+// The link to the data, probably need to change once the project is updated to the new domain name
 export const linkToData = 'https://haihan-lin.github.io/Utah-CS/updated_data/all_data.xlsx';
+
 export const linkToGeoJson = 'https://haihan-lin.github.io/Utah-CS/updated_data/Utah_School_District_Boundaries.geojson'
 

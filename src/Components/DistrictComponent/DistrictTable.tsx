@@ -14,6 +14,7 @@ import { DataContext } from "../../App";
 const DistrictTable: FC = () => {
 
 
+    console.log(useContext(DataContext));
     const districtData = useContext(DataContext).district;
 
     const store = useContext(Store);
