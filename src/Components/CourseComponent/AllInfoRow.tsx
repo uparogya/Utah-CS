@@ -27,7 +27,7 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
                 {courseAttributeFinder('Course Name')}
             </TextCell>
             <TextCell >
-                {format(',')(courseAttributeFinder('Total'))}
+                {isNaN(+courseAttributeFinder('Total')) ? courseAttributeFinder('Total') : format(',')(courseAttributeFinder('Total'))}
             </TextCell>
             <TextCell>
                 <GenderRatioChart
