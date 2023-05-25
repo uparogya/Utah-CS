@@ -32,7 +32,6 @@ export const generateCourseList = (category: string, courseCategorization: (stri
     const output = courseCategorization.filter(courseInfo =>
         includedCateList.includes(courseInfo[2] as string));
     output.sort((a, b) => (a[1].toString()).localeCompare(b[1].toString()));
-    console.log(output);
     return output;
 
 };
