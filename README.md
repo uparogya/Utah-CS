@@ -47,7 +47,7 @@ export const PossibleSchoolYears = ['2019-20', '2020-21', '2021-22', '2022-23'];
 ### Data Loading and Retrieving
 
 The data is loaded in `App.tsx`, and stored in a `DataContext`. All data is stored in an object:
-```
+``` ts
 {
     state: stateData,
     school: schoolData,
@@ -56,3 +56,47 @@ The data is loaded in `App.tsx`, and stored in a `DataContext`. All data is stor
     courseList: courseCategorization
 }
 ```
+All the values are array of arrays. To use data in a component:
+
+```ts
+//You will need to import useContext and DataContext
+const toUseData = useContext(DataContext);
+//If you want to use a particular data
+const courseData = toUseData.course;
+ ```
+Because the `DataContext` created in `App.tsx` wrapped over the entire project in the `return` statement of `App`, it can be used in any component, and will update across all components.
+
+### State Management
+
+State are used so that updating one selection in a particular component can have effect over the entire project. The State object is in `./Interface/Store.ts`.
+
+To use the state variable in a component,
+```ts
+// import useContext and Store
+// make sure the Store is imported from ./Interface/Store
+    const store = useContext(Store);
+```
+For example, if the current school year is needed for the component:
+```ts
+console.log(store.schoolYearShowing)
+```
+this line will print the current school year selected in the browser console.
+
+If the state variable is directly used as part of the `return` of the component, for example:
+
+```tsx
+const Example:FC = ()=>{
+    // an example component that output a div that just shows the current school year showing
+    return (
+        <div>
+        {store.schoolYearShowing}
+        </div>
+    )
+}
+export default observer (Example)
+```
+If the component is in the `observer` (from MobX) in the export, the `store.schoolYearShowing` in the component will automatically update whenever `schoolYearShowing` changes. This will ONLY happen IF `observer` is used in the `export` statement.
+
+### Interface Structure
+
+Each part of the dashboard is divided into its own component. Starting from the top, `App.tsx` has the state table and the tabs, and each tab is its own component.
