@@ -29,8 +29,11 @@ const generateIncludedCat = (category: string) => {
 export const generateCourseList = (category: string, courseCategorization: (string | number)[][]) => {
     // if (openCategoryDialog === '')
     let includedCateList = generateIncludedCat(category);
-    return courseCategorization.filter(courseInfo =>
+    const output = courseCategorization.filter(courseInfo =>
         includedCateList.includes(courseInfo[2] as string));
+    output.sort((a, b) => (a[1].toString()).localeCompare(b[1].toString()));
+    console.log(output);
+    return output;
 
 };
 
