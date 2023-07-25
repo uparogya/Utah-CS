@@ -49,8 +49,8 @@ const StateTable: FC = () => {
                         {/* </GenderHeaderSVG> */}
                     </BoldHeaderCell>
                     <BoldHeaderCell>Race</BoldHeaderCell>
-                    <BoldHeaderCell>Disability</BoldHeaderCell>
-                    <BoldHeaderCell >Econ Disadvantaged</BoldHeaderCell>
+                    <BoldHeaderCell>Econ Disadvantaged</BoldHeaderCell>
+                    <BoldHeaderCell >Disability</BoldHeaderCell>
                     <BoldHeaderCell>ESL</BoldHeaderCell>
                 </TableRow>
             </TableHead>
@@ -85,12 +85,12 @@ const StateTable: FC = () => {
                     </StateTableCell>
                     <StateTableCell>
                         <PercentageChart
-                            actualVal={stateAttributeFinder('TOTAL: Disability')}
-                            percentage={stateAttributeFinder('TOTAL: Disability') / totalStudentNum} /> </StateTableCell>
+                            actualVal={stateAttributeFinder('TOTAL: Eco. Dis.')}
+                            percentage={stateAttributeFinder('TOTAL: Eco. Dis.') / totalStudentNum} /> </StateTableCell>
                     <StateTableCell>
                         <PercentageChart
-                            actualVal={stateAttributeFinder('TOTAL: Eco. Dis.')}
-                            percentage={stateAttributeFinder('TOTAL: Eco. Dis.') / totalStudentNum} />
+                            actualVal={stateAttributeFinder('TOTAL: Disability')}
+                            percentage={stateAttributeFinder('TOTAL: Disability') / totalStudentNum} />
                     </StateTableCell>
                     <StateTableCell>
                         <PercentageChart
@@ -132,12 +132,12 @@ const StateTable: FC = () => {
                     </StateTableCell>
                     <StateTableCell>
                         <PercentageChart
-                            actualVal={stateAttributeFinder(`${store.currentShownCSType}: Disability`)}
-                            percentage={stateAttributeFinder(`${store.currentShownCSType}: Disability`) / totalCSStudentNum} /> </StateTableCell>
+                            actualVal={stateAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)}
+                            percentage={stateAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`) / totalCSStudentNum} /> </StateTableCell>
                     <StateTableCell>
                         <PercentageChart
-                            actualVal={stateAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)}
-                            percentage={stateAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`) / totalCSStudentNum} />
+                            actualVal={stateAttributeFinder(`${store.currentShownCSType}: Disability`)}
+                            percentage={stateAttributeFinder(`${store.currentShownCSType}: Disability`) / totalCSStudentNum} />
                     </StateTableCell>
                     <StateTableCell>
                         <PercentageChart
