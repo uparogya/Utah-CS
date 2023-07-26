@@ -1,6 +1,6 @@
 # Utah CS Dashboard
 
-This is the repo for Utah CS Dashboard.
+This is the repo for the [Utah CS Dashboard](https://omaroaalj.github.io/Utah-CS/).
 
 ## Tech Stack
 
@@ -17,7 +17,7 @@ After cloning the project to local development environment, here are the command
 
 ### `yarn`
 
-Install the packages required for the proejct. Normally, you only need to do this once.
+Install the packages required for the project. Normally, you only need to do this once.
 
 ### `yarn start`
 
