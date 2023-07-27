@@ -198,7 +198,7 @@ const OverviewTab: FC = () => {
                         <stop offset="50%" stopColor={interpolateBlues(0.5)} />
                         <stop offset="100%" stopColor={interpolateBlues(1)} />
                     </linearGradient>
-                    <text x='50%' y={0} textAnchor="middle" alignmentBaseline="hanging">
+                    <text x='50%' y={20} textAnchor="middle" alignmentBaseline="hanging">
                         District {store.currentShownCSType} Student Percentage
                     </text>
                     <g id='map' />
