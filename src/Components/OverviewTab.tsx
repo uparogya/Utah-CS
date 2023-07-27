@@ -57,7 +57,7 @@ const OverviewTab: FC = () => {
                 .data([0, 0.75])
                 .join('text')
                 .attr('x', (_, i) => svgWidth - 80 + i * 80)
-                .attr('y', 80)
+                .attr('y', 90)
                 .text(d => format(',.0%')(d))
                 .attr('alignment-baseline', 'hanging')
                 .attr('font-size', 'smaller')
