@@ -42,33 +42,7 @@ const OverviewTab: FC = () => {
                 // .scale(100);
                 .scale(3000);
 
-            // draw legend
-
-            svgSelection.select('#legend')
-                .select('rect')
-                .attr('x', svgWidth - 80)
-                .attr('y', 50)
-                .attr('width', 80)
-                .attr('height', 30)
-                .attr('fill', 'url(#legend-gradient)');
-
-            svgSelection.select('#legend')
-                .selectAll('text')
-                .data([0, 0.75])
-                .join('text')
-                .attr('x', (_, i) => svgWidth - 80 + i * 80)
-                .attr('y', 90)
-                .text(d => format(',.0%')(d))
-                .attr('alignment-baseline', 'hanging')
-                .attr('font-size', 'smaller')
-                .attr('text-anchor', d => d ? 'end' : 'start');
-
-
-
-
             const path = geoPath().projection(projection);
-
-
 
             // console.log(file);
             svgSelection.select('#map').selectAll('path').data((file as any).features)
@@ -103,6 +77,26 @@ const OverviewTab: FC = () => {
                     tooltip.style('display', 'none');
                 });
 
+            // draw legend
+            svgSelection.select('#legend')
+                .select('rect')
+                .attr('x', svgWidth - 80)
+                .attr('y', 50)
+                .attr('width', 80)
+                .attr('height', 30)
+                .attr('fill', 'url(#legend-gradient)');
+
+            svgSelection.select('#legend')
+                .selectAll('text')
+                .data([0, 0.75])
+                .join('text')
+                .attr('x', (_, i) => svgWidth - 80 + i * 80)
+                .attr('y', 90)
+                .text(d => format(',.0%')(d))
+                .attr('alignment-baseline', 'hanging')
+                .attr('font-size', 'smaller')
+                .attr('text-anchor', d => d ? 'end' : 'start');
+                
         };
 
         if (mapRef.current && tooltipRef.current) {
