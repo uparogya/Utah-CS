@@ -24,7 +24,6 @@ const OverviewTab: FC = () => {
     const mapRef = useRef(null);
     const tooltipRef = useRef(null);
 
-
     useEffect(() => {
 
         async function drawMap() {
@@ -42,19 +41,26 @@ const OverviewTab: FC = () => {
                 // .scale(100);
                 .scale(3000);
 
-            const path = geoPath().projection(projection);
+            const highestDistrictPercent = allData.district.slice(1)
+                .reduce((highPercentage, currentRow) => {
+                    const totalStudents = findAttribute('TOTAL: Total', allData.district[0], currentRow);
+                    const totalCS = findAttribute(`${store.currentShownCSType}: Total`, allData.district[0], currentRow);
+                    // default number value of 5 if n<10
+                    const currentPercentage = (isNaN(totalCS) ? 5 : totalCS) / totalStudents;
+                    return Math.max(currentPercentage, highPercentage);
+                }, 0);
 
+            const path = geoPath().projection(projection);
             // console.log(file);
             svgSelection.select('#map').selectAll('path').data((file as any).features)
                 .join('path')
                 .attr('d', path as any)
                 .attr('fill', (d: any) => {
-                    // console.log(allData);
                     // find row
                     const leaRow = allData.district.filter(row => row[0] === d.properties.NAME)[0];
                     const totalStudents = findAttribute('TOTAL: Total', allData.district[0], leaRow);
                     const totalCS = findAttribute(`${store.currentShownCSType}: Total`, allData.district[0], leaRow);
-                    return interpolateBlues((totalCS / totalStudents / 0.75) || 0);
+                    return interpolateBlues((totalCS / totalStudents / highestDistrictPercent) || 0);
                 }) //change fill to district cs percentage
                 .attr('stroke-width', 1)
                 .attr('stroke', '#222')
@@ -88,7 +94,7 @@ const OverviewTab: FC = () => {
 
             svgSelection.select('#legend')
                 .selectAll('text')
-                .data([0, 0.75])
+                .data([0, highestDistrictPercent])
                 .join('text')
                 .attr('x', (_, i) => svgWidth - 80 + i * 80)
                 .attr('y', 90)
