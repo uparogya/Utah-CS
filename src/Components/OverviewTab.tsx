@@ -41,12 +41,15 @@ const OverviewTab: FC = () => {
                 // .scale(100);
                 .scale(3000);
 
-            const highestDistrictPercent = allData.district.slice(1)
+            const highestDistrictPercent = allData.district.filter((row) => {
+                    const totalStudents = findAttribute('TOTAL: Total', allData.district[0], row);
+                    const totalCS = findAttribute(`${store.currentShownCSType}: Total`, allData.district[0], row);
+                    return typeof totalStudents === "number" && typeof totalCS === "number";
+                })
                 .reduce((highPercentage, currentRow) => {
                     const totalStudents = findAttribute('TOTAL: Total', allData.district[0], currentRow);
                     const totalCS = findAttribute(`${store.currentShownCSType}: Total`, allData.district[0], currentRow);
-                    // default number value of 5 if n<10
-                    const currentPercentage = (isNaN(totalCS) ? 5 : totalCS) / totalStudents;
+                    const currentPercentage = totalCS / totalStudents;
                     return Math.max(currentPercentage, highPercentage);
                 }, 0);
 
