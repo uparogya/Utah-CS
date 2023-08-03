@@ -210,7 +210,7 @@ function App() {
                     <Tabs value={tabVal} onChange={tabChange} style={{ minWidth: '100vw' }}>
                         <Tab label='Overview' />
                         <Tab label='District & School Table' />
-                        <Tab label='Trends' />
+                        <Tab label='Statewide Trends' />
                         <Tab label='Course Table' />
                         <Tab label='Course Categories' />
                     </Tabs>
