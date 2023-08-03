@@ -166,7 +166,7 @@ const OverviewTab: FC = () => {
                 <OverviewGridItem xs={6} item >
                     <OverviewCard
                         mainText={generateCourseList(store.currentShownCSType, allData.courseList).length}
-                        subText={`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name} Courses`} />
+                        subText={`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses`} />
                 </OverviewGridItem>
 
                 <OverviewGridItem xs={6} item >
@@ -177,7 +177,7 @@ const OverviewTab: FC = () => {
                                 {findCSCOfferings()}
                             </span>
                         }
-                        subText={<span>Schools <b>Offering</b> {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name} Courses
+                        subText={<span>Schools <b>Offering</b> {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses
                         </span>} />
                 </OverviewGridItem>
                 <OverviewGridItem xs={6} item>
@@ -188,7 +188,7 @@ const OverviewTab: FC = () => {
                             </span>
                         }
                         subText={
-                            <span>Student <b>Participating</b> in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name} Courses
+                            <span>Students <b>Participating</b> in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses
                             </span>} />
                 </OverviewGridItem>
 

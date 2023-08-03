@@ -104,7 +104,7 @@ const StateTable: FC = () => {
                     <StateTableCell component="th"
                         scope="row"
                     >
-                        {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].name}
+                        Utah Students in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses
                     </StateTableCell>
                     <StateTableCell>
                         <PercentageChart
