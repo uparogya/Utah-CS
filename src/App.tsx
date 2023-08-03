@@ -165,7 +165,7 @@ function App() {
             <div className="App" style={{ overflow: 'hidden' }}>
                 <AppBar position="static" style={{ maxHeight: '40px', minHeight: '40px', justifyContent: 'center' }}>
                     <Typography variant="h6" component="div" >
-                        Utah High School Computer Science (CS) Dashboard
+                        Utah Computer Science Dashboard for Grades 9-12
                     </Typography>
 
                     {/* add dropdown to change academic year and course list  */}
