@@ -202,7 +202,7 @@ const OverviewTab: FC = () => {
                         <stop offset="100%" stopColor={interpolateBlues(1)} />
                     </linearGradient>
                     <text x='50%' y={20} textAnchor="middle" alignmentBaseline="hanging">
-                        District {store.currentShownCSType} Student Percentage
+                        Percentage of Students in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} by District
                     </text>
                     <g id='map' />
                     <g id='legend'>
