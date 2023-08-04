@@ -67,7 +67,7 @@ const SettingBar: FC = () => {
         </Grid>
         <Grid xs={2} >
             <div style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <span>Change to </span>
+                <span>Display </span>
                 <IconButton color="primary" size='medium' onClick={() => store.updateShowPercentage()} children={store.showPercentage ? <NumbersIcon /> : <PercentIcon />} />
             </div>
         </Grid>
