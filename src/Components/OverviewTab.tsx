@@ -160,7 +160,7 @@ const OverviewTab: FC = () => {
                         mainText={allData.school.slice(2).length}
 
                         subText={<>
-                            <span>Public Utah High Schools</span>
+                            <span>Public Schools With 9-12 Graders</span>
                         </>} />
                 </OverviewGridItem>
                 <OverviewGridItem xs={6} item >
