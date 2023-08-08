@@ -132,17 +132,17 @@ const OverviewTab: FC = () => {
 
     const CourseExplainText: { [key: string]: ReactNode; } = {
         CSC: <span>
-            <b>Core CS Courses</b> directly teach <b>fundamental</b> computer science or programming skills. They are divided into two categories: Basic and Advanced.
+            <b>Core CS Courses</b> directly teach <b>fundamental</b> computer science or programming skills. They are divided into two categories: Basic and Advanced. Refer to Course Categories for more information.
         </span>,
         CSB: <span>
-            <b>Basic CS Courses</b> are a subcategory of Core CS Courses. These are <b>introductory</b> CS Courses for students with no prior experience in the area.
+            <b>Basic CS Courses</b> are a subcategory of Core CS Courses. These are <b>introductory</b> CS Courses for students with no prior experience in the area. Refer to Course Categories for more information.
         </span>,
         CSA: <span>
-            <b>Advanced CS Courses</b> are a subcategory of Core CS Courses intended for students with prior programming experience.</span>,
+            <b>Advanced CS Courses</b> are a subcategory of Core CS Courses intended for students with prior programming experience. Refer to Course Categories for more information.</span>,
         CSR: <span>
-            <b>Related CS Courses</b> emphasize the <b>application</b>, rather than the skills of computer science in a variety of settings.</span>,
+            <b>Related CS Courses</b> emphasize the <b>application</b>, rather than the skills of computer science in a variety of settings. Refer to Course Categories for more information.</span>,
         CS: <span>
-            <b>All CS courses</b>, includes Basic CS, Advanced CS, and Related CS Courses.
+            <b>All CS courses</b>, includes Basic CS, Advanced CS, and Related CS Courses. Refer to Course Categories for more information.
         </span>,
 
     };
