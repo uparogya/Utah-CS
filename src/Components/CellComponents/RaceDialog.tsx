@@ -29,10 +29,10 @@ const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, CSRaceOutput, 
     const barChartScale = scaleLinear().domain([0, 1]).range([leftPadding, dialogSVGWidth]);
     const barChartHeightScale = scaleBand().domain(Object.keys(CSRaceOutput)).range([0, dialogSVGHeight]).padding(0.3);
 
-
+    const currentCSTypeShortName = PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName;
 
     return (<Dialog open={openDialog} onClose={() => setDialogVisibility(false)}>
-        <DialogTitle children={`${store.currentShownCSType} Race Breakdown`} />
+        <DialogTitle children={`${currentCSTypeShortName} Race Breakdown`} />
         <DialogContent>
             <svg width={dialogSVGWidth} height={dialogSVGHeight}>
                 {Object.keys(CSRaceOutput).map((d) => (
@@ -59,7 +59,7 @@ const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, CSRaceOutput, 
                             <DialogText x={0}
                                 y={(barChartHeightScale(d) || 0) + (0.5 + (stateRaceOutput ? 0.25 : 0)) * barChartHeightScale.bandwidth()}
                             >
-                                {store.currentShownCSType}
+                                {currentCSTypeShortName}
                             </DialogText>
                             <DialogText x={0}
                                 y={(barChartHeightScale(d) || 0) - 12} fontWeight='bold'>
