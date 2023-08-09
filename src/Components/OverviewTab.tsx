@@ -72,7 +72,7 @@ const OverviewTab: FC = () => {
                     const totalStudents = findAttribute('TOTAL: Total', allData.district[0], leaRow);
                     const totalCS = findAttribute(`${store.currentShownCSType}: Total`, allData.district[0], leaRow);
                     tooltip
-                        .html(`${(data as any).properties.NAME}, ${isNaN(totalCS) ? totalCS : isNaN(totalStudents) ? totalStudents : format(',.0%')(totalCS / totalStudents)}`)
+                        .html(`${(data as any).properties.NAME}, ${isNaN(totalCS) || isNaN(totalStudents) ? 'n<10' : format(',.0%')(totalCS / totalStudents)}`)
                         .style('display', 'block')
                         .style("left", `${e.pageX + 5}px`)
                         .style("top", `${e.pageY + 5}px`);
