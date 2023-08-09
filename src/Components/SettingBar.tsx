@@ -35,9 +35,9 @@ const SettingBar: FC = () => {
 
     const store = useContext(Store);
     // TODO change the spans into form controls
-    return <Grid xs={12} style={{ background: 'aliceblue', alignItems: 'center', color: '#3d3d3d' }} container>
-        <Grid xs={2}>
-            <Typography>Settings</Typography>
+    return <Grid xs={12} style={{ background: 'aliceblue', color: '#3d3d3d' }} container>
+        <Grid xs={12}>
+            <Typography>Dashboard Settings</Typography>
         </Grid>
         <Grid xs={4}>
 
@@ -69,7 +69,7 @@ const SettingBar: FC = () => {
             </span> */}
             {/* Academic Year */}
         </Grid>
-        <Grid xs={2} >
+        <Grid xs={4}>
             <FormControl variant="standard" style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                 <span>Display</span>
