@@ -82,7 +82,7 @@ const CourseTable: FC = () => {
                     isSorting={sortAttribute === 'Course Name'}
                     isSortUp={sortUp} />
                 <SortableHeader
-                    headerName='Total Students'
+                    headerName='Utah Students'
                     onClick={() => toggleSort('Total')}
                     isSorting={sortAttribute === 'Total'}
                     isSortUp={sortUp} />
