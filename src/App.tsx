@@ -163,8 +163,8 @@ function App() {
                 <Toolbox />
             </SwipeableDrawer> */}
             <div className="App" style={{ overflow: 'hidden' }}>
-                <AppBar position="static" style={{ maxHeight: '40px', minHeight: '40px', justifyContent: 'center' }}>
-                    <Typography variant="h6" component="div" >
+                <AppBar position="static" style={{ maxHeight: '40px', minHeight: '40px' }}>
+                    <Typography variant="h6" component="div" sx={{ textAlign: 'center' }}>
                         Utah Computer Science Dashboard for Grades 9-12
                     </Typography>
 
