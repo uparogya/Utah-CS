@@ -35,8 +35,7 @@ const SettingBar: FC = () => {
 
     const store = useContext(Store);
     // TODO change the spans into form controls
-    return <Box sx={{ width: 1, p: 1 }}>
-        <Typography>Dashboard Settings</Typography>
+    return (
         <Grid sx={{ textAlign: 'center' }} container>
             <Grid xs={5}>
 
@@ -78,10 +77,9 @@ const SettingBar: FC = () => {
                     </Select>
                 </FormControl>
             </Grid>
-        </Grid>
+        </Grid>);
         {/* <CSMenu anchorEl={CSMenuAnchorEl} handleClose={handleCSMenuClose} />
         <AcademicYearMenu anchorEl={yearMenuAnchorEl} handleClose={handleYearMenuClose} /> */}
-    </Box>;
 };
 
 export default observer(SettingBar);

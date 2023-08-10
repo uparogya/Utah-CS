@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import './App.css';
-import { AppBar, Container, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Container, Tab, Tabs, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import StateTable from './Components/StateTable';
 import DistrictTable from './Components/DistrictComponent/DistrictTable';
@@ -163,8 +163,8 @@ function App() {
                 <Toolbox />
             </SwipeableDrawer> */}
             <div className="App" style={{ overflow: 'hidden' }}>
-                <AppBar position="static" style={{ maxHeight: '40px', minHeight: '40px' }}>
-                    <Typography variant="h6" component="div" sx={{ textAlign: 'center' }}>
+                <Box sx={{ padding: 2, alignContent: 'center', backgroundColor: '#003789' }}>
+                    <Typography variant="h5" component="div" sx={{ textAlign: 'center', color: '#ffffff', fontWeight: 700 }} >
                         Utah Computer Science Dashboard for Grades 9-12
                     </Typography>
 
@@ -191,7 +191,7 @@ function App() {
                         <AppBarButton onClick={() => store.updateShowPercentage()}
                             children={store.showPercentage ? <NumbersIcon /> : <PercentIcon />} />
                     </Toolbar> */}
-                </AppBar>
+                </Box>
                 <Grid container spacing={1} sx={{
                     '--Grid-borderWidth': '1px',
                     borderTop: 'var(--Grid-borderWidth) solid',
@@ -203,7 +203,10 @@ function App() {
                         borderColor: 'divider',
                     },
                 }}>
-                    <SettingBar />
+                    <Box sx={{ width: 1, padding: 2, margin: 2, backgroundColor: '#e7f0ff'}}>
+                        <Typography>Dashboard Settings</Typography>
+                        <SettingBar />
+                    </Box>
                     <Grid id="state-view" style={{ minWidth: '100vw', paddingBottom: '5px' }} xs={12}>
                         <StateTable />
                     </Grid>
