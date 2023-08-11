@@ -163,7 +163,7 @@ function App() {
                 <Toolbox />
             </SwipeableDrawer> */}
             <div className="App" style={{ overflow: 'hidden' }}>
-                <Box sx={{ padding: 2, alignContent: 'center', backgroundColor: '#003789' }}>
+                <Box sx={{ padding: 2, marginBottom: 2, alignContent: 'center', backgroundColor: '#003789' }}>
                     <Typography variant="h5" component="div" sx={{ textAlign: 'center', color: '#ffffff', fontWeight: 700 }} >
                         Utah Computer Science Dashboard for Grades 9-12
                     </Typography>
@@ -192,66 +192,51 @@ function App() {
                             children={store.showPercentage ? <NumbersIcon /> : <PercentIcon />} />
                     </Toolbar> */}
                 </Box>
-                <Grid container spacing={1} sx={{
-                    '--Grid-borderWidth': '1px',
-                    borderTop: 'var(--Grid-borderWidth) solid',
-                    borderLeft: 'var(--Grid-borderWidth) solid',
-                    borderColor: 'divider',
-                    '& > div': {
-                        borderRight: 'var(--Grid-borderWidth) solid',
-                        borderBottom: 'var(--Grid-borderWidth) solid',
-                        borderColor: 'divider',
-                    },
-                }}>
-                    <Box sx={{ width: 1, padding: 2, margin: 2, backgroundColor: '#e7f0ff'}}>
-                        <Typography>Dashboard Settings</Typography>
-                        <SettingBar />
-                    </Box>
-                    <Grid id="state-view" style={{ minWidth: '100vw', paddingBottom: '5px' }} xs={12}>
+                <Box sx={{ margin: 2, padding: 2, backgroundColor: '#e7f0ff'}}>
+                    <Typography>Dashboard Settings</Typography>
+                    <SettingBar />
+                </Box>
+                <Grid container>
+                    <Grid id="state-view" xs={12} style={{ minWidth: '100vw', padding: '2' }}>
                         <StateTable />
                     </Grid>
-                    <Tabs value={tabVal} onChange={tabChange} style={{ minWidth: '100vw' }}>
-                        <Tab label='Overview' />
-                        <Tab label='District & School Table' />
-                        <Tab label='Statewide Trends' />
-                        <Tab label='Course Table' />
-                        <Tab label='Course Categories' />
-                    </Tabs>
-                    <TabPanel value={tabVal} index={0}>
-                        <OverviewTab />
-                    </TabPanel>
-
-                    <TabPanel value={tabVal} index={1}>
-                        <Grid container>
-                            <BasicGrid xs={6} >
-                                <TableTitle color={'primary'} children='District List' />
-                                <DistrictTable />
-                            </BasicGrid>
-                            <BasicGrid xs={6} >
-                                <TableTitle color={'primary'} children='Schools in Selected Districts' />
-                                <SchoolTable />
-                            </BasicGrid>
-                        </Grid>
-                    </TabPanel>
-                    <TabPanel value={tabVal} index={2}>
-                        <TrendContainer />
-                    </TabPanel>
-
-                    <TabPanel value={tabVal} index={3}>
-                        <Container>
-                            {/* <TableTitle color={'primary'} children='Course List' /> */}
-                            <CourseTable />
-                        </Container>
-                    </TabPanel>
-                    <TabPanel value={tabVal} index={4}>
-                        <CourseDefinitionTab />
-                    </TabPanel>
-
-
-
-
                 </Grid>
+                <Tabs value={tabVal} onChange={tabChange} style={{ minWidth: '100vw' }}>
+                    <Tab label='Overview' />
+                    <Tab label='District & School Table' />
+                    <Tab label='Statewide Trends' />
+                    <Tab label='Course Table' />
+                    <Tab label='Course Categories' />
+                </Tabs>
+                <TabPanel value={tabVal} index={0}>
+                    <OverviewTab />
+                </TabPanel>
 
+                <TabPanel value={tabVal} index={1}>
+                    <Grid container>
+                        <BasicGrid xs={6} >
+                            <TableTitle color={'primary'} children='District List' />
+                            <DistrictTable />
+                        </BasicGrid>
+                        <BasicGrid xs={6} >
+                            <TableTitle color={'primary'} children='Schools in Selected Districts' />
+                            <SchoolTable />
+                        </BasicGrid>
+                    </Grid>
+                </TabPanel>
+                <TabPanel value={tabVal} index={2}>
+                    <TrendContainer />
+                </TabPanel>
+
+                <TabPanel value={tabVal} index={3}>
+                    <Container>
+                        {/* <TableTitle color={'primary'} children='Course List' /> */}
+                        <CourseTable />
+                    </Container>
+                </TabPanel>
+                <TabPanel value={tabVal} index={4}>
+                    <CourseDefinitionTab />
+                </TabPanel>
             </div>
             <DataLoadingModal />
         </DataContext.Provider>
