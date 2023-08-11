@@ -36,8 +36,8 @@ const SettingBar: FC = () => {
     const store = useContext(Store);
     // TODO change the spans into form controls
     return (
-        <Grid sx={{ textAlign: 'center' }} container>
-            <Grid xs={5}>
+        <Grid container rowSpacing={1.5} sx={{ textAlign: 'center' }} >
+            <Grid item xs={12} md={5}>
 
                 <FormControl variant="standard" style={{ flexDirection: 'row', alignItems: 'center' }}>
 
@@ -50,7 +50,7 @@ const SettingBar: FC = () => {
                     </Select>
                 </FormControl>
             </Grid>
-            <Grid xs={5}>
+            <Grid item xs={12} md={5}>
                 <FormControl variant="standard" style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                     <span>Academic Year</span>
@@ -67,7 +67,7 @@ const SettingBar: FC = () => {
                 </span> */}
                 {/* Academic Year */}
             </Grid>
-            <Grid xs={2}>
+            <Grid item xs={12} md={2}>
                 <FormControl variant="standard" style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                     <span>Display</span>
