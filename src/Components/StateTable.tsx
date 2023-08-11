@@ -41,17 +41,17 @@ const StateTable: FC = () => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
-                    <BoldHeaderCell>Student Type</BoldHeaderCell>
-                    <BoldHeaderCell># of Students</BoldHeaderCell>
-                    <BoldHeaderCell >
+                    <TableCell>Student Type</TableCell>
+                    <TableCell># of Students</TableCell>
+                    <TableCell >
                         {/* <GenderHeaderSVG > */}
                         Gender
                         {/* </GenderHeaderSVG> */}
-                    </BoldHeaderCell>
-                    <BoldHeaderCell>Race</BoldHeaderCell>
-                    <BoldHeaderCell>Econ Disadvantaged</BoldHeaderCell>
-                    <BoldHeaderCell >Disability</BoldHeaderCell>
-                    <BoldHeaderCell>ESL</BoldHeaderCell>
+                    </TableCell>
+                    <TableCell>Race</TableCell>
+                    <TableCell>Econ Disadvantaged</TableCell>
+                    <TableCell >Disability</TableCell>
+                    <TableCell>ESL</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -179,9 +179,9 @@ const StateTable: FC = () => {
 
 export default observer(StateTable);
 
-export const BoldHeaderCell = styled(TableCell)({
-    fontWeight: 'bold'
-});
+//export const BoldHeaderCell = styled(TableCell)({
+//    fontWeight: 'bold'
+//});
 
 const StateTableCell = styled(TableCell)({
     paddingTop: '5px',

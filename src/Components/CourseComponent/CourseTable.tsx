@@ -4,7 +4,6 @@ import { DataContext } from "../../App";
 import { Table, TableBody, TableCell, TableHead } from "@mui/material";
 import AllInfoRow from "./AllInfoRow";
 import { StickyTableContainer, TextCell } from "../GeneralComponents";
-import { BoldHeaderCell } from "../StateTable";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import { findAttribute } from "../../Interface/AttributeFinder";

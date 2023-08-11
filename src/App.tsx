@@ -24,6 +24,13 @@ interface TabPanelProps {
     value: number;
 }
 
+const SectionTitle = styled(Typography)({
+    color: '#2f1600',
+    fontWeight: 800,
+    paddingLeft: 15,
+    paddingBottom: 15
+});
+
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
 
@@ -192,12 +199,12 @@ function App() {
                             children={store.showPercentage ? <NumbersIcon /> : <PercentIcon />} />
                     </Toolbar> */}
                 </Box>
-                <Box sx={{ margin: 2, padding: 2, backgroundColor: '#e7f0ff'}}>
-                    <Typography>Dashboard Settings</Typography>
+                <Box sx={{ margin: 2, padding: 2, backgroundColor: '#e7f0ff' }}>
+                    <SectionTitle>Dashboard Settings</SectionTitle>
                     <SettingBar />
                 </Box>
-                <Box sx={{ backgroundColor: '#f5f3f3', margin: 2 }}>
-                    <Typography>Statewide Student Population</Typography>
+                <Box sx={{ margin: 2, padding: 2, backgroundColor: '#f5f3f3' }}>
+                    <SectionTitle>Statewide Student Population</SectionTitle>
                     <Grid container>
                         <Grid id="state-view" xs={12} style={{ padding: '2' }}>
                             <StateTable />
