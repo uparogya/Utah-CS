@@ -193,9 +193,8 @@ const OverviewTab: FC = () => {
                 </OverviewGridItem>
 
             </Grid>
-            <Grid item xs={12} md={6}>
-
-                <svg ref={mapRef} width='100%' height='55vh'>
+            <Grid container item xs={12} md={6}>
+                <svg ref={mapRef} width='100%' height='100%'>
                     <linearGradient id='legend-gradient' x1="0" x2="1" y1="0" y2="0" colorInterpolation="CIE-LCHab">
                         <stop offset="0%" stopColor={interpolateBlues(0)} />
                         <stop offset="50%" stopColor={interpolateBlues(0.5)} />
