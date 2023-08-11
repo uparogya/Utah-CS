@@ -150,12 +150,12 @@ const OverviewTab: FC = () => {
 
 
     return <Container style={{ paddingTop: '20px' }}>
-        <Grid container spacing={1}>
-            <Grid container spacing={2} xs={6} >
-                <OverviewGridItem xs={12} item >
+        <Grid container>
+            <Grid container xs={12} md={6}>
+                <OverviewGridItem item xs={12} >
                     <OverviewCard subText={CourseExplainText[store.currentShownCSType]} mainText={''} />
                 </OverviewGridItem>
-                <OverviewGridItem xs={6} item >
+                <OverviewGridItem item xs={6} >
                     <OverviewCard
                         mainText={allData.school.slice(2).length}
 
@@ -163,13 +163,13 @@ const OverviewTab: FC = () => {
                             <span>Public Schools With 9-12 Graders</span>
                         </>} />
                 </OverviewGridItem>
-                <OverviewGridItem xs={6} item >
+                <OverviewGridItem item xs={6} >
                     <OverviewCard
                         mainText={generateCourseList(store.currentShownCSType, allData.courseList).length}
                         subText={`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses`} />
                 </OverviewGridItem>
 
-                <OverviewGridItem xs={6} item >
+                <OverviewGridItem item xs={6} >
                     <OverviewCard
 
                         mainText={
@@ -180,7 +180,7 @@ const OverviewTab: FC = () => {
                         subText={<span>Schools <b>Offering</b> {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses
                         </span>} />
                 </OverviewGridItem>
-                <OverviewGridItem xs={6} item>
+                <OverviewGridItem item xs={6} >
                     <OverviewCard
                         mainText={
                             <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
@@ -193,7 +193,7 @@ const OverviewTab: FC = () => {
                 </OverviewGridItem>
 
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
 
                 <svg ref={mapRef} width='100%' height='55vh'>
                     <linearGradient id='legend-gradient' x1="0" x2="1" y1="0" y2="0" colorInterpolation="CIE-LCHab">
