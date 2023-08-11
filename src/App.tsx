@@ -36,7 +36,7 @@ function TabPanel(props: TabPanelProps) {
 
     return (
         <div
-            style={{ minWidth: '100vw' }}
+            style={{ backgroundColor: '#f5f3f3' }}
             role="tabpanel"
             hidden={value !== index}
             id={`simple-tabpanel-${index}`}
@@ -211,42 +211,44 @@ function App() {
                         </Grid>
                     </Grid>
                 </Box>
-                <Tabs value={tabVal} onChange={tabChange} style={{ minWidth: '100vw' }}>
-                    <Tab label='Overview' />
-                    <Tab label='District & School Table' />
-                    <Tab label='Statewide Trends' />
-                    <Tab label='Course Table' />
-                    <Tab label='Course Categories' />
-                </Tabs>
-                <TabPanel value={tabVal} index={0}>
-                    <OverviewTab />
-                </TabPanel>
+                <Box sx={{ padding: 2 }}>
+                    <Tabs value={tabVal} onChange={tabChange} sx={{ backgroundColor: '#f5f3f3' }}>
+                        <Tab label='Overview' />
+                        <Tab label='District & School Table' />
+                        <Tab label='Statewide Trends' />
+                        <Tab label='Course Table' />
+                        <Tab label='Course Categories' />
+                    </Tabs>
+                    <TabPanel value={tabVal} index={0}>
+                        <OverviewTab />
+                    </TabPanel>
 
-                <TabPanel value={tabVal} index={1}>
-                    <Grid container>
-                        <BasicGrid xs={6} >
-                            <TableTitle color={'primary'} children='District List' />
-                            <DistrictTable />
-                        </BasicGrid>
-                        <BasicGrid xs={6} >
-                            <TableTitle color={'primary'} children='Schools in Selected Districts' />
-                            <SchoolTable />
-                        </BasicGrid>
-                    </Grid>
-                </TabPanel>
-                <TabPanel value={tabVal} index={2}>
-                    <TrendContainer />
-                </TabPanel>
+                    <TabPanel value={tabVal} index={1}>
+                        <Grid container>
+                            <BasicGrid xs={6} >
+                                <TableTitle color={'primary'} children='District List' />
+                                <DistrictTable />
+                            </BasicGrid>
+                            <BasicGrid xs={6} >
+                                <TableTitle color={'primary'} children='Schools in Selected Districts' />
+                                <SchoolTable />
+                            </BasicGrid>
+                        </Grid>
+                    </TabPanel>
+                    <TabPanel value={tabVal} index={2}>
+                        <TrendContainer />
+                    </TabPanel>
 
-                <TabPanel value={tabVal} index={3}>
-                    <Container>
-                        {/* <TableTitle color={'primary'} children='Course List' /> */}
-                        <CourseTable />
-                    </Container>
-                </TabPanel>
-                <TabPanel value={tabVal} index={4}>
-                    <CourseDefinitionTab />
-                </TabPanel>
+                    <TabPanel value={tabVal} index={3}>
+                        <Container>
+                            {/* <TableTitle color={'primary'} children='Course List' /> */}
+                            <CourseTable />
+                        </Container>
+                    </TabPanel>
+                    <TabPanel value={tabVal} index={4}>
+                        <CourseDefinitionTab />
+                    </TabPanel>
+                </Box>
             </div>
             <DataLoadingModal />
         </DataContext.Provider>
