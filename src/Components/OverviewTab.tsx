@@ -151,7 +151,7 @@ const OverviewTab: FC = () => {
 
     return <Container style={{ paddingTop: '20px' }}>
         <Grid container>
-            <Grid item xs={12} md={6}>
+            <Grid container item xs={12} md={6}>
                 <OverviewGridItem item xs={12} >
                     <OverviewCard subText={CourseExplainText[store.currentShownCSType]} mainText={''} />
                 </OverviewGridItem>
