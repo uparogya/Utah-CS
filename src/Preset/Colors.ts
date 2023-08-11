@@ -17,7 +17,7 @@ export const RaceColor: { [key: string]: string; } = {
     pacific: '#e377c2'
 };
 
-export const LightGray = '#ededed';
+export const LightGray = '#d9d9d9';
 export const MediumGray = '#adadad';
 export const DarkGray = '#878787';
 export const XDarkGray = '#252525';
