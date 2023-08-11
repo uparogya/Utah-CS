@@ -77,9 +77,9 @@ const SettingBar: FC = () => {
                     </Select>
                 </FormControl>
             </Grid>
-        </Grid>);
         {/* <CSMenu anchorEl={CSMenuAnchorEl} handleClose={handleCSMenuClose} />
         <AcademicYearMenu anchorEl={yearMenuAnchorEl} handleClose={handleYearMenuClose} /> */}
+        </Grid>);
 };
 
 export default observer(SettingBar);

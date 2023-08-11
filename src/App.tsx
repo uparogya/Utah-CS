@@ -196,11 +196,14 @@ function App() {
                     <Typography>Dashboard Settings</Typography>
                     <SettingBar />
                 </Box>
-                <Grid container>
-                    <Grid id="state-view" xs={12} style={{ minWidth: '100vw', padding: '2' }}>
-                        <StateTable />
+                <Box sx={{ backgroundColor: '#f5f3f3', margin: 2 }}>
+                    <Typography>Statewide Student Population</Typography>
+                    <Grid container>
+                        <Grid id="state-view" xs={12} style={{ padding: '2' }}>
+                            <StateTable />
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Box>
                 <Tabs value={tabVal} onChange={tabChange} style={{ minWidth: '100vw' }}>
                     <Tab label='Overview' />
                     <Tab label='District & School Table' />
