@@ -31,6 +31,22 @@ const SectionTitle = styled(Typography)({
     paddingBottom: 15
 });
 
+// Tabs styling source and inspiration: https://mui-treasury.com/styles/tabs/#Chrome (Chrome tabs)
+const FolderTabs = styled(Tabs)({
+    '& .MuiTabs-indicator': {
+        backgroundColor: '#f5f3f3',
+        width: '100%',
+        height: '100%',
+        borderTopLeftRadius: '10px',
+        borderTopRightRadius: '10px',
+        zIndex: -1
+    }
+});
+
+const FolderTab = styled(Tab)({
+    textTransform: 'none',
+});
+
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
 
@@ -212,13 +228,13 @@ function App() {
                     </Grid>
                 </Box>
                 <Box sx={{ padding: 2 }}>
-                    <Tabs value={tabVal} onChange={tabChange} sx={{ backgroundColor: '#f5f3f3' }}>
-                        <Tab label='Overview' />
-                        <Tab label='District & School Table' />
-                        <Tab label='Statewide Trends' />
-                        <Tab label='Course Table' />
-                        <Tab label='Course Categories' />
-                    </Tabs>
+                    <FolderTabs value={tabVal} variant='scrollable' onChange={tabChange}>
+                        <FolderTab label='Overview' />
+                        <FolderTab label='District & School Table' />
+                        <FolderTab label='Statewide Trends' />
+                        <FolderTab label='Course Table' />
+                        <FolderTab label='Course Categories' />
+                    </FolderTabs>
                     <TabPanel value={tabVal} index={0}>
                         <OverviewTab />
                     </TabPanel>
