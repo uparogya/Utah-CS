@@ -45,6 +45,7 @@ const FolderTabs = styled(Tabs)({
 
 const FolderTab = styled(Tab)({
     textTransform: 'none',
+    fontSize: '1rem'
 });
 
 function TabPanel(props: TabPanelProps) {
