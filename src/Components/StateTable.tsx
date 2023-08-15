@@ -7,7 +7,7 @@ import PercentageChart from "./CellComponents/PercentageChart";
 import Store from "../Interface/Store";
 import { format } from "d3-format";
 import { findAttribute } from "../Interface/AttributeFinder";
-import RaceDialog from "./CellComponents/RaceDialog";
+import AttributeDialog from "./CellComponents/AttributeDialog";
 import styled from "@emotion/styled";
 import { DataContext } from "../App";
 import { PossibleCategories } from "../Preset/Constants";
@@ -22,7 +22,7 @@ const StateTable: FC = () => {
         findAttribute(attributeName, stateData[1], stateData.filter(row => row[0] === store.schoolYearShowing)[0])
         , [store.schoolYearShowing, stateData]);
 
-    const [openRaceDialog, setOpenRaceDialog] = useState(false);
+    const [openAttributeDialog, setOpenAttributeDialog] = useState(false);
 
 
     const [totalStudentNum, setTotalStudentNum] = useState(0);
@@ -71,7 +71,7 @@ const StateTable: FC = () => {
                                 female: stateAttributeFinder('TOTAL: Female')
                             }} />
                     </StateTableCell>
-                    <StateTableCell onClick={() => setOpenRaceDialog(true)}>
+                    <StateTableCell onClick={() => setOpenAttributeDialog(true)}>
                         <AttributeChart option='race' keyIdentity="State Total"
                             outputObj={{
                                 white: stateAttributeFinder('TOTAL: White'),
@@ -118,7 +118,7 @@ const StateTable: FC = () => {
                                 female: stateAttributeFinder(`${store.currentShownCSType}: Female`)
                             }} />
                     </StateTableCell>
-                    <StateTableCell onClick={() => setOpenRaceDialog(true)}>
+                    <StateTableCell onClick={() => setOpenAttributeDialog(true)}>
                         <AttributeChart option='race' keyIdentity="CS"
                             outputObj={{
                                 white: stateAttributeFinder(`${store.currentShownCSType}: White`),
@@ -149,9 +149,9 @@ const StateTable: FC = () => {
                 </TableRow>
             </TableBody>
         </Table>
-        <RaceDialog openDialog={openRaceDialog}
-            setDialogVisibility={(bol: boolean) => setOpenRaceDialog(bol)}
-            CSRaceOutput={{
+        <AttributeDialog option='Race' openDialog={openAttributeDialog}
+            setDialogVisibility={(bol: boolean) => setOpenAttributeDialog(bol)}
+            CSAttributeOutput={{
                 white: stateAttributeFinder(`${store.currentShownCSType}: White`),
                 hispanic: stateAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`),
                 asian: stateAttributeFinder(`${store.currentShownCSType}: Asian`),
@@ -159,7 +159,7 @@ const StateTable: FC = () => {
                 native: stateAttributeFinder(`${store.currentShownCSType}: American Indian or Alaska Native`),
                 pacific: stateAttributeFinder(`${store.currentShownCSType}: Native Hawaiian or Pacific Islander`), other: stateAttributeFinder(`${store.currentShownCSType}: Two or more races`),
             }}
-            stateRaceOutput={{
+            stateAttributeOutput={{
                 white: stateAttributeFinder('TOTAL: White'),
                 hispanic: stateAttributeFinder('TOTAL: Hispanic or Latino'),
                 asian: stateAttributeFinder('TOTAL: Asian'),

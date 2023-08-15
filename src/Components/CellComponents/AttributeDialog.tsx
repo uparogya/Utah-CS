@@ -4,18 +4,19 @@ import { format } from "d3-format";
 import { scaleLinear, scaleBand } from "d3-scale";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, } from "react";
-import { RaceColor } from "../../Preset/Colors";
+import { RaceColor, GenderColor } from "../../Preset/Colors";
 import styled from "@emotion/styled";
 import Store from "../../Interface/Store";
-import { RaceDictionary, PossibleCategories } from "../../Preset/Constants";
+import { RaceDictionary, GenderDictionary, PossibleCategories } from "../../Preset/Constants";
 
 type Props = {
+    option: 'Gender' | 'Race',
     openDialog: boolean,
     setDialogVisibility: (value: boolean) => void,
-    stateRaceOutput?: { [key: string]: number; },
-    CSRaceOutput: { [key: string]: number; };
+    stateAttributeOutput?: { [key: string]: number; },
+    CSAttributeOutput: { [key: string]: number; };
 };
-const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, CSRaceOutput, stateRaceOutput }) => {
+const AttributeDialog: FC<Props> = ({ option, openDialog, setDialogVisibility, CSAttributeOutput, stateAttributeOutput }) => {
 
 
 
@@ -27,53 +28,53 @@ const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, CSRaceOutput, 
 
 
     const barChartScale = scaleLinear().domain([0, 1]).range([leftPadding, dialogSVGWidth]);
-    const barChartHeightScale = scaleBand().domain(Object.keys(CSRaceOutput)).range([0, dialogSVGHeight]).padding(0.3);
+    const barChartHeightScale = scaleBand().domain(Object.keys(CSAttributeOutput)).range([0, dialogSVGHeight]).padding(0.3);
 
     const currentCSTypeShortName = PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName;
 
     return (<Dialog open={openDialog} onClose={() => setDialogVisibility(false)}>
-        <DialogTitle children={`${currentCSTypeShortName} Race Breakdown`} />
+        <DialogTitle children={`${currentCSTypeShortName} ${option} Breakdown`} />
         <DialogContent>
             <svg width={dialogSVGWidth} height={dialogSVGHeight}>
-                {Object.keys(CSRaceOutput).map((d) => (
+                {Object.keys(CSAttributeOutput).map((d) => (
                     <g key={`${d}`}>
-                        {stateRaceOutput ? <rect x={leftPadding}
-                            fill={RaceColor[d]}
+                        {stateAttributeOutput ? <rect x={leftPadding}
+                            fill={option === 'Race' ? RaceColor[d] : GenderColor[d]}
                             height={barChartHeightScale.bandwidth() * 0.45}
                             y={barChartHeightScale(d)}
-                            width={barChartScale(stateRaceOutput[d] / sum(Object.values(stateRaceOutput))) - leftPadding} /> : <></>}
+                            width={barChartScale(stateAttributeOutput[d] / sum(Object.values(stateAttributeOutput))) - leftPadding} /> : <></>}
 
                         <rect x={leftPadding}
-                            fill={RaceColor[d]}
+                            fill={option === 'Race' ? RaceColor[d] : GenderColor[d]}
                             height={barChartHeightScale.bandwidth() * 0.45}
-                            y={(barChartHeightScale(d) || 0) + barChartHeightScale.bandwidth() * (0.55 - (stateRaceOutput ? 0 : 0.25))}
-                            width={barChartScale(CSRaceOutput[d] / sum(Object.values(CSRaceOutput))) - leftPadding} />
+                            y={(barChartHeightScale(d) || 0) + barChartHeightScale.bandwidth() * (0.55 - (stateAttributeOutput ? 0 : 0.25))}
+                            width={barChartScale(CSAttributeOutput[d] / sum(Object.values(CSAttributeOutput))) - leftPadding} />
 
                         <g>
-                            {stateRaceOutput ? <DialogText x={0}
+                            {stateAttributeOutput ? <DialogText x={0}
                                 y={(barChartHeightScale(d) || 0) + 0.25 * barChartHeightScale.bandwidth()}
                             >
                                 State
                             </DialogText> : <></>}
 
                             <DialogText x={0}
-                                y={(barChartHeightScale(d) || 0) + (0.5 + (stateRaceOutput ? 0.25 : 0)) * barChartHeightScale.bandwidth()}
+                                y={(barChartHeightScale(d) || 0) + (0.5 + (stateAttributeOutput ? 0.25 : 0)) * barChartHeightScale.bandwidth()}
                             >
                                 {currentCSTypeShortName}
                             </DialogText>
                             <DialogText x={0}
                                 y={(barChartHeightScale(d) || 0) - 12} fontWeight='bold'>
-                                {RaceDictionary[d]}
+                                {option === 'Race' ? RaceDictionary[d] : GenderDictionary[d]}
                             </DialogText>
                         </g>
 
                         <g>
-                            {stateRaceOutput ? <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + 0.45 * 0.5 * barChartHeightScale.bandwidth()}>
-                                {`${stateRaceOutput[d].toLocaleString("en-US")} (${format(',.1%')(stateRaceOutput[d] / sum(Object.values(stateRaceOutput)))})`}
+                            {stateAttributeOutput ? <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + 0.45 * 0.5 * barChartHeightScale.bandwidth()}>
+                                {`${stateAttributeOutput[d].toLocaleString("en-US")} (${format(',.1%')(stateAttributeOutput[d] / sum(Object.values(stateAttributeOutput)))})`}
                             </NumberLabText> : <></>}
 
-                            <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + (0.5 + (stateRaceOutput ? 0.25 : 0)) * barChartHeightScale.bandwidth()}>
-                                {`${CSRaceOutput[d].toLocaleString("en-US")} (${format(',.1%')(CSRaceOutput[d] / sum(Object.values(CSRaceOutput)))})`}
+                            <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + (0.5 + (stateAttributeOutput ? 0.25 : 0)) * barChartHeightScale.bandwidth()}>
+                                {`${CSAttributeOutput[d].toLocaleString("en-US")} (${format(',.1%')(CSAttributeOutput[d] / sum(Object.values(CSAttributeOutput)))})`}
                             </NumberLabText>
                         </g>
                     </g>
@@ -86,7 +87,7 @@ const RaceDialog: FC<Props> = ({ openDialog, setDialogVisibility, CSRaceOutput, 
     </Dialog>);
 };
 
-export default observer(RaceDialog);
+export default observer(AttributeDialog);
 
 const DialogText = styled.text({
     fontSize: 'small',

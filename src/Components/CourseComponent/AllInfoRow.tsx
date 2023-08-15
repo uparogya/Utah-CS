@@ -6,7 +6,7 @@ import { findAttribute } from "../../Interface/AttributeFinder";
 import { observer } from "mobx-react-lite";
 import GenderRatioChart from "../CellComponents/GenderRatioChart";
 import AttributeChart from "../CellComponents/AttributeChart";
-import RaceDialog from "../CellComponents/RaceDialog";
+import AttributeDialog from "../CellComponents/AttributeDialog";
 import { format } from "d3-format";
 
 type Prop = {
@@ -16,7 +16,7 @@ type Prop = {
 
 const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
 
-    const [openRaceDialog, setOpenRaceDialog] = useState(false);
+    const [openAttributeDialog, setOpenAttributeDialog] = useState(false);
 
     const courseAttributeFinder = (attributeName: string) => findAttribute(attributeName, titleEntry, courseEntry);
 
@@ -36,7 +36,7 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
                     totalStudent={courseAttributeFinder('Total')}
                 />
             </TextCell>
-            <TextCell onClick={() => setOpenRaceDialog(true)} >
+            <TextCell onClick={() => setOpenAttributeDialog(true)} >
                 <AttributeChart option='race'
                     keyIdentity={String(courseAttributeFinder('Course Name'))}
                     outputObj={{
@@ -64,9 +64,9 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
                     actualVal={courseAttributeFinder(`Eng. Learners`)}
                     percentage={(+courseAttributeFinder(`Eng. Learners`)) / (+courseAttributeFinder('Total'))} />
             </TextCell>
-            <RaceDialog openDialog={openRaceDialog}
-                setDialogVisibility={(bol: boolean) => setOpenRaceDialog(bol)}
-                CSRaceOutput={{
+            <AttributeDialog option='Race' openDialog={openAttributeDialog}
+                setDialogVisibility={(bol: boolean) => setOpenAttributeDialog(bol)}
+                CSAttributeOutput={{
                     white: courseAttributeFinder('White'),
                     hispanic: courseAttributeFinder('Hispanic or Latino'),
                     asian: courseAttributeFinder('Asian'),

@@ -1,7 +1,7 @@
 //gender color
 
 
-export const GenderColor = {
+export const GenderColor: { [key: string]: string; } = {
     male: '#9d9dff',
     female: '#ff9d9d',
     other: '#9dff9d'
