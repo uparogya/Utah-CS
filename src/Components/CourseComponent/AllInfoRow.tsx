@@ -5,7 +5,7 @@ import { TextCell } from "../GeneralComponents";
 import { findAttribute } from "../../Interface/AttributeFinder";
 import { observer } from "mobx-react-lite";
 import GenderRatioChart from "../CellComponents/GenderRatioChart";
-import RaceChart from "../CellComponents/RaceChart";
+import AttributeChart from "../CellComponents/AttributeChart";
 import RaceDialog from "../CellComponents/RaceDialog";
 import { format } from "d3-format";
 
@@ -37,7 +37,7 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
                 />
             </TextCell>
             <TextCell onClick={() => setOpenRaceDialog(true)} >
-                <RaceChart
+                <AttributeChart option='race'
                     keyIdentity={String(courseAttributeFinder('Course Name'))}
                     outputObj={{
                         white: courseAttributeFinder('White'),

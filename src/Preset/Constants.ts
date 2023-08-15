@@ -22,6 +22,11 @@ export const RaceDictionary: { [key: string]: string; } = {
     pacific: 'Pacific Islander'
 };
 
+export const GenderDictionary: { [key: string]: string; } = {
+    male: 'Male',
+    female: 'Female'
+};
+
 export const DefaultEnrollment = {
     CSB: { Total: 0, Female: 0 },
     CSA: { Total: 0, Female: 0 },

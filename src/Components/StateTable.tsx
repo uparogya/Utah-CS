@@ -2,7 +2,7 @@ import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from
 import { observer } from "mobx-react-lite";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import GenderRatioChart from "./CellComponents/GenderRatioChart";
-import RaceChart from "./CellComponents/RaceChart";
+import AttributeChart from "./CellComponents/AttributeChart";
 import PercentageChart from "./CellComponents/PercentageChart";
 import Store from "../Interface/Store";
 import { format } from "d3-format";
@@ -72,7 +72,7 @@ const StateTable: FC = () => {
                         />
                     </StateTableCell>
                     <StateTableCell onClick={() => setOpenRaceDialog(true)}>
-                        <RaceChart keyIdentity="State Total"
+                        <AttributeChart option='race' keyIdentity="State Total"
                             outputObj={{
                                 white: stateAttributeFinder('TOTAL: White'),
                                 hispanic: stateAttributeFinder('TOTAL: Hispanic or Latino'),
@@ -118,7 +118,7 @@ const StateTable: FC = () => {
                             femaleNum={stateAttributeFinder(`${store.currentShownCSType}: Female`)} />
                     </StateTableCell>
                     <StateTableCell onClick={() => setOpenRaceDialog(true)}>
-                        <RaceChart keyIdentity="CS"
+                        <AttributeChart option='race' keyIdentity="CS"
                             outputObj={{
                                 white: stateAttributeFinder(`${store.currentShownCSType}: White`),
                                 hispanic: stateAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`),
