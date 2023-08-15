@@ -26,7 +26,7 @@ type Props = {
 
 };
 
-const RaceChart: FC<Props> = ({ option, keyIdentity, outputObj }: Props) => {
+const AttributeChart: FC<Props> = ({ option, keyIdentity, outputObj }: Props) => {
 
     const outputObjKeys = Object.keys(outputObj);
 
@@ -67,4 +67,4 @@ const SmallerText = styled.span({
     textDecoration: 'underline'
 });
 
-export default observer(RaceChart);
+export default observer(AttributeChart);

@@ -65,11 +65,11 @@ const StateTable: FC = () => {
                             percentage={1} />
                     </StateTableCell>
                     <StateTableCell>
-                        <GenderRatioChart
-                            maleNum={stateAttributeFinder('TOTAL: Male')}
-                            femaleNum={stateAttributeFinder('TOTAL: Female')}
-                            totalStudent={stateAttributeFinder('TOTAL: Total')}
-                        />
+                        <AttributeChart option='gender' keyIdentity="State Total"
+                            outputObj={{
+                                male: stateAttributeFinder('TOTAL: Male'),
+                                female: stateAttributeFinder('TOTAL: Female')
+                            }} />
                     </StateTableCell>
                     <StateTableCell onClick={() => setOpenRaceDialog(true)}>
                         <AttributeChart option='race' keyIdentity="State Total"
@@ -112,10 +112,11 @@ const StateTable: FC = () => {
                             percentage={totalCSStudentNum / totalStudentNum}
                             tooltip={`${format(',.1%')(totalCSStudentNum / totalStudentNum)} out of all HS students`} /></StateTableCell>
                     <StateTableCell>
-                        <GenderRatioChart
-                            maleNum={stateAttributeFinder(`${store.currentShownCSType}: Male`)}
-                            totalStudent={totalCSStudentNum}
-                            femaleNum={stateAttributeFinder(`${store.currentShownCSType}: Female`)} />
+                        <AttributeChart option='gender' keyIdentity="CS"
+                            outputObj={{
+                                male: stateAttributeFinder(`${store.currentShownCSType}: Male`),
+                                female: stateAttributeFinder(`${store.currentShownCSType}: Female`)
+                            }} />
                     </StateTableCell>
                     <StateTableCell onClick={() => setOpenRaceDialog(true)}>
                         <AttributeChart option='race' keyIdentity="CS"
