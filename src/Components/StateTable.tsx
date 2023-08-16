@@ -22,8 +22,9 @@ const StateTable: FC = () => {
         findAttribute(attributeName, stateData[1], stateData.filter(row => row[0] === store.schoolYearShowing)[0])
         , [store.schoolYearShowing, stateData]);
 
-    const [openAttributeDialog, setOpenAttributeDialog] = useState(false);
+    const [openRaceDialog, setOpenRaceDialog] = useState(false);
 
+    const [openGenderDialog, setOpenGenderDialog] = useState(false);
 
     const [totalStudentNum, setTotalStudentNum] = useState(0);
 
@@ -64,14 +65,14 @@ const StateTable: FC = () => {
                             actualVal={totalStudentNum}
                             percentage={1} />
                     </StateTableCell>
-                    <StateTableCell>
+                    <StateTableCell onClick={() => setOpenGenderDialog(true)}>
                         <AttributeChart option='gender' keyIdentity="State Total"
                             outputObj={{
                                 male: stateAttributeFinder('TOTAL: Male'),
                                 female: stateAttributeFinder('TOTAL: Female')
                             }} />
                     </StateTableCell>
-                    <StateTableCell onClick={() => setOpenAttributeDialog(true)}>
+                    <StateTableCell onClick={() => setOpenRaceDialog(true)}>
                         <AttributeChart option='race' keyIdentity="State Total"
                             outputObj={{
                                 white: stateAttributeFinder('TOTAL: White'),
@@ -111,14 +112,14 @@ const StateTable: FC = () => {
                             actualVal={totalCSStudentNum}
                             percentage={totalCSStudentNum / totalStudentNum}
                             tooltip={`${format(',.1%')(totalCSStudentNum / totalStudentNum)} out of all HS students`} /></StateTableCell>
-                    <StateTableCell>
+                    <StateTableCell onClick={() => setOpenGenderDialog(true)}>
                         <AttributeChart option='gender' keyIdentity="CS"
                             outputObj={{
                                 male: stateAttributeFinder(`${store.currentShownCSType}: Male`),
                                 female: stateAttributeFinder(`${store.currentShownCSType}: Female`)
                             }} />
                     </StateTableCell>
-                    <StateTableCell onClick={() => setOpenAttributeDialog(true)}>
+                    <StateTableCell onClick={() => setOpenRaceDialog(true)}>
                         <AttributeChart option='race' keyIdentity="CS"
                             outputObj={{
                                 white: stateAttributeFinder(`${store.currentShownCSType}: White`),
@@ -149,8 +150,8 @@ const StateTable: FC = () => {
                 </TableRow>
             </TableBody>
         </Table>
-        <AttributeDialog option='Race' openDialog={openAttributeDialog}
-            setDialogVisibility={(bol: boolean) => setOpenAttributeDialog(bol)}
+        <AttributeDialog option='Race' openDialog={openRaceDialog}
+            setDialogVisibility={(bol: boolean) => setOpenRaceDialog(bol)}
             CSAttributeOutput={{
                 white: stateAttributeFinder(`${store.currentShownCSType}: White`),
                 hispanic: stateAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`),
@@ -167,6 +168,16 @@ const StateTable: FC = () => {
                 native: stateAttributeFinder("TOTAL: American Indian or Alaska Native"),
                 pacific: stateAttributeFinder('TOTAL: Native Hawaiian or Pacific Islander'),
                 other: stateAttributeFinder('TOTAL: Two or more races')
+            }} />
+        <AttributeDialog option='Gender' openDialog={openGenderDialog}
+            setDialogVisibility={(bol: boolean) => setOpenGenderDialog(bol)}
+            CSAttributeOutput={{
+                male: stateAttributeFinder(`${store.currentShownCSType}: Male`),
+                female: stateAttributeFinder(`${store.currentShownCSType}: Female`)
+            }}
+            stateAttributeOutput={{
+                male: stateAttributeFinder('TOTAL: Male'),
+                female: stateAttributeFinder('TOTAL: Female')
             }} />
     </TableContainer>);
 };
