@@ -1,6 +1,6 @@
 import { TableRow, Checkbox } from "@mui/material";
 import { FC, useContext } from "react";
-import GenderRatioChart from "../CellComponents/GenderRatioChart";
+import AttributeChart from "../CellComponents/AttributeChart";
 import Store from "../../Interface/Store";
 import { observer } from "mobx-react-lite";
 import { FunctionCell, TextCell } from "../GeneralComponents";
@@ -42,12 +42,11 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
                 percentage={districtAttributeFinder(`${store.currentShownCSType}: Total`) / districtAttributeFinder('TOTAL: Total')} />
         </TextCell>
         <TextCell>
-            <GenderRatioChart
-                // femaleNum={districtAttributeFinder('TOTAL: Female')}
-                // maleNum={districtAttributeFinder('TOTAL: Male')}
-                totalStudent={districtAttributeFinder(`${store.currentShownCSType}: Total`)}
-                femaleNum={districtAttributeFinder(`${store.currentShownCSType}: Female`)}
-                maleNum={districtAttributeFinder(`${store.currentShownCSType}: Male`)}
+            <AttributeChart option='gender' keyIdentity="CSDistrict"
+                outputObj={{
+                    female: districtAttributeFinder(`${store.currentShownCSType}: Female`),
+                    male: districtAttributeFinder(`${store.currentShownCSType}: Male`)
+                }}
             />
         </TextCell>
     </TableRow>
