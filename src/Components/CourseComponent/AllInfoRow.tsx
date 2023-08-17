@@ -16,7 +16,7 @@ type Prop = {
 
 const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
 
-    const [openAttributeDialog, setOpenAttributeDialog] = useState(false);
+    const [openRaceDialog, setOpenRaceDialog] = useState(false);
 
     const courseAttributeFinder = (attributeName: string) => findAttribute(attributeName, titleEntry, courseEntry);
 
@@ -30,13 +30,14 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
                 {isNaN(+courseAttributeFinder('Total')) ? courseAttributeFinder('Total') : format(',')(courseAttributeFinder('Total'))}
             </TextCell>
             <TextCell>
-                <GenderRatioChart
-                    femaleNum={courseAttributeFinder(`Female`)}
-                    maleNum={courseAttributeFinder(`Male`)}
-                    totalStudent={courseAttributeFinder('Total')}
-                />
+                <AttributeChart option='gender'
+                    keyIdentity={String(courseAttributeFinder('Course Name'))}
+                    outputObj={{
+                        female: courseAttributeFinder(`Female`),
+                        male: courseAttributeFinder(`Male`)
+                    }} />
             </TextCell>
-            <TextCell onClick={() => setOpenAttributeDialog(true)} >
+            <TextCell onClick={() => setOpenRaceDialog(true)} >
                 <AttributeChart option='race'
                     keyIdentity={String(courseAttributeFinder('Course Name'))}
                     outputObj={{
@@ -64,8 +65,8 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
                     actualVal={courseAttributeFinder(`Eng. Learners`)}
                     percentage={(+courseAttributeFinder(`Eng. Learners`)) / (+courseAttributeFinder('Total'))} />
             </TextCell>
-            <AttributeDialog option='Race' openDialog={openAttributeDialog}
-                setDialogVisibility={(bol: boolean) => setOpenAttributeDialog(bol)}
+            <AttributeDialog option='Race' openDialog={openRaceDialog}
+                setDialogVisibility={(bol: boolean) => setOpenRaceDialog(bol)}
                 CSAttributeOutput={{
                     white: courseAttributeFinder('White'),
                     hispanic: courseAttributeFinder('Hispanic or Latino'),

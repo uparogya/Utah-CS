@@ -114,8 +114,8 @@ const CourseTable: FC = () => {
                     isSortUp={sortUp} />
             </TableHead>
             <TableBody>
-                {sortedData.map((courseEntry) => {
-                    return <AllInfoRow courseEntry={courseEntry} titleEntry={courseData[1] as string[]} />;
+                {sortedData.map((sortedCourseEntry) => {
+                    return <AllInfoRow courseEntry={sortedCourseEntry} titleEntry={courseData[1] as string[]} />;
                 })}
 
             </TableBody>
