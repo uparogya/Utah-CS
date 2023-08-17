@@ -17,7 +17,7 @@ const CategoryTitle = styled(Typography)({
 const CategoryCard = styled(Card)({
     width: '200px',
     margin: 10
-})
+});
 
 const CourseDefinitionTab: FC = () => {
 
