@@ -10,7 +10,7 @@ import Store from './Interface/Store';
 import { observer } from 'mobx-react-lite';
 import readXlsxFile from 'read-excel-file';
 import { stateUpdateWrapperUseJSON } from './Interface/StateChecker';
-import { linkToData } from './Preset/Constants';
+import { linkToData, PossibleCategories } from './Preset/Constants';
 import CourseTable from './Components/CourseComponent/CourseTable';
 import OverviewTab from './Components/OverviewTab';
 import TrendContainer from './Components/TrendComponent/TrendContainer';
@@ -88,6 +88,8 @@ function App() {
 
     const [stateData, setStateData] = useState<Array<number | string>[]>([]);
     const [courseCategorization, setCourseCategorization] = useState([]);
+
+    const currentCSTypeShortName = PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName;
 
     useEffect(() => {
         // fetch state data
@@ -258,6 +260,7 @@ function App() {
 
                     <TabPanel value={tabVal} index={3}>
                         <Container>
+                            <SectionTitle>Table of {currentCSTypeShortName} Courses</SectionTitle>
                             {/* <TableTitle color={'primary'} children='Course List' /> */}
                             <CourseTable />
                         </Container>

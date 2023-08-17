@@ -7,7 +7,15 @@ import { StickyTableContainer, TextCell } from "../GeneralComponents";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import { findAttribute } from "../../Interface/AttributeFinder";
+import Store from "../../Interface/Store";
 
+const categoryMatch: { [key: string]: string[] } = {
+    CSB: ['BASIC'],
+    CSA: ['ADVANCED'],
+    CSR: ['RELATED'],
+    CSC: ['BASIC', 'ADVANCED'],
+    CS: ['BASIC', 'ADVANCED', 'RELATED']
+};
 
 const CourseTable: FC = () => {
 
@@ -18,12 +26,15 @@ const CourseTable: FC = () => {
     const [sortedData, setSortedData] = useState(courseData);
     const [sortPercentage, setSortPercentage] = useState(true);
 
+    const store = useContext(Store);
+
     const courseAttributeFinder = (attributeName: string, selectedRow: (string | number)[]) =>
         findAttribute(attributeName, courseData[1], selectedRow);
 
 
     useEffect(() => {
-        let newSortedData = [...courseData.slice(2, -1)];
+        let newSortedData = [...courseData.filter(row =>
+            categoryMatch[store.currentShownCSType].includes((row[0] as string)))];
         newSortedData.sort((a, b) => {
             if (sortAttribute === 'Course Name') {
                 return sortUp ? (a[3] as string).localeCompare((b[3] as string)) : (b[3] as string).localeCompare((a[3] as string));
@@ -40,7 +51,7 @@ const CourseTable: FC = () => {
         });
         stateUpdateWrapperUseJSON(sortedData, newSortedData, setSortedData);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [courseData, sortAttribute, sortUp]);
+    }, [courseData, sortAttribute, sortUp, store.currentShownCSType]);
 
     const toggleSort = (inputName: string) => {
         // if the sort attribute is already the same
