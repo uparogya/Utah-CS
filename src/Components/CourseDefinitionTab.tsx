@@ -7,9 +7,6 @@ import { observer } from "mobx-react-lite";
 import ArticleIcon from '@mui/icons-material/Article';
 import styled from '@emotion/styled';
 
-const generalCategoryColor = '#ff0000';
-const specificCategoryColor = '#0000ff';
-
 const CategoryTitle = styled(Typography)({
     fontSize: '1.5rem'
 });
