@@ -17,7 +17,7 @@ type Prop = {
 
 const OverviewCard: FC<Prop> = ({ mainText, subText, height }: Prop) => {
     return (
-        <Card variant="outlined" sx={{ minHeight: height, maxHeight: height, textAlign: 'center' }}>
+        <Card variant="outlined" sx={{ minHeight: '100%', maxHeight: '100%', textAlign: 'center' }}>
             <CardContent>
                 {/* <Typography variant="h5" component="h2">
                     {title}
