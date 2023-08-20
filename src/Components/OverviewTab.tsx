@@ -27,10 +27,19 @@ const OverviewTab: FC = () => {
     useEffect(() => {
 
         async function drawMap() {
-
+            // map scaling code sources:
+            // https://www.geeksforgeeks.org/best-way-to-make-a-d3-js-visualization-layout-responsive/
+            // https://stackoverflow.com/questions/55972289/how-can-i-scale-my-map-to-fit-my-svg-size-with-d3-and-geojson-path-data
+            // https://observablehq.com/@d3/new-jersey-state-plane
             const svgSelection = select(mapRef.current);
-            const svgWidth = (svgSelection.node() as any).clientWidth;
-            const svgHeight = (svgSelection.node() as any).clientHeight;
+            const svgNode: any = svgSelection.node();
+            const svgWidth = svgNode.parentNode.clientWidth;
+            const svgHeight = svgNode.parentNode.clientHeight;
+
+            svgSelection.attr('width', svgWidth)
+                .attr('height', svgHeight)
+                .attr('viewBox', `0 0 ${svgWidth} ${svgHeight}`)
+                .attr('style', 'max-width: 100%; height: auto;');
 
             const tooltip = select(tooltipRef.current);
 
@@ -39,7 +48,7 @@ const OverviewTab: FC = () => {
                 .center([-111.950684, 39.419220])
                 .translate([svgWidth / 2, svgHeight / 2])
                 // .scale(100);
-                .scale(3000);
+                .fitExtent([[0, 30], [svgWidth, svgHeight]], (file as any));
 
             const highestDistrictPercent = allData.district.filter((row) => {
                     const totalStudents = findAttribute('TOTAL: Total', allData.district[0], row);
@@ -89,7 +98,7 @@ const OverviewTab: FC = () => {
             // draw legend
             svgSelection.select('#legend')
                 .select('rect')
-                .attr('x', svgWidth - 80)
+                .attr('x', '75%')
                 .attr('y', 50)
                 .attr('width', 80)
                 .attr('height', 30)
@@ -99,13 +108,13 @@ const OverviewTab: FC = () => {
                 .selectAll('text')
                 .data([0, highestDistrictPercent])
                 .join('text')
-                .attr('x', (_, i) => svgWidth - 80 + i * 80)
+                .attr('x', (_, i) => 0.75*svgWidth + i * 80)
                 .attr('y', 90)
                 .text(d => format(',.0%')(d))
                 .attr('alignment-baseline', 'hanging')
                 .attr('font-size', 'smaller')
                 .attr('text-anchor', d => d ? 'end' : 'start');
-                
+
         };
 
         if (mapRef.current && tooltipRef.current) {
@@ -193,33 +202,35 @@ const OverviewTab: FC = () => {
                 </OverviewGridItem>
 
             </Grid>
-            <Grid container item xs={12} md={6}>
-                <svg ref={mapRef} width='100%' height='100%'>
-                    <linearGradient id='legend-gradient' x1="0" x2="1" y1="0" y2="0" colorInterpolation="CIE-LCHab">
-                        <stop offset="0%" stopColor={interpolateBlues(0)} />
-                        <stop offset="50%" stopColor={interpolateBlues(0.5)} />
-                        <stop offset="100%" stopColor={interpolateBlues(1)} />
-                    </linearGradient>
-                    <text x='50%' y={20} textAnchor="middle" alignmentBaseline="hanging">
-                        Percentage of Students in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} by District
-                    </text>
-                    <g id='map' />
-                    <g id='legend'>
-                        <rect />
-                    </g>
+            <Grid container item xs={12} md={6} minHeight={{ xs: 500, md: 0 }}>
+                <Container fixed>
+                    <svg ref={mapRef}>
+                        <linearGradient id='legend-gradient' x1="0" x2="1" y1="0" y2="0" colorInterpolation="CIE-LCHab">
+                            <stop offset="0%" stopColor={interpolateBlues(0)} />
+                            <stop offset="50%" stopColor={interpolateBlues(0.5)} />
+                            <stop offset="100%" stopColor={interpolateBlues(1)} />
+                        </linearGradient>
+                        <text x='50%' y={20} textAnchor="middle" alignmentBaseline="hanging">
+                            Percentage of Students in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} by District
+                        </text>
+                        <g id='map' />
+                        <g id='legend'>
+                            <rect />
+                        </g>
 
-                </svg>
-                <div
-                    id="tooltip"
-                    ref={tooltipRef}
-                    style={{
-                        position: 'absolute',
-                        background: '#f4f1d6',
-                        borderRadius: '8px',
-                        pointerEvents: 'none',
-                        padding: '5px',
-                        textAlign: 'center',
-                    }} />
+                    </svg>
+                    <div
+                        id="tooltip"
+                        ref={tooltipRef}
+                        style={{
+                            position: 'absolute',
+                            background: '#f4f1d6',
+                            borderRadius: '8px',
+                            pointerEvents: 'none',
+                            padding: '5px',
+                            textAlign: 'center',
+                        }} />
+                </Container>
             </Grid>
         </Grid>
     </Container>;
