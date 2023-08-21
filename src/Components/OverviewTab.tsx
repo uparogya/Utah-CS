@@ -1,7 +1,7 @@
 import { Container, Grid, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, ReactNode, useRef, useEffect, useState } from "react";
-import { DataContext } from "../App";
+import { DataContext, SectionTitle } from "../App";
 import { findAttribute } from "../Interface/AttributeFinder";
 import Store from "../Interface/Store";
 import OverviewCard from "./CellComponents/OverviewCard";
@@ -23,6 +23,8 @@ const OverviewTab: FC = () => {
 
     const mapRef = useRef(null);
     const tooltipRef = useRef(null);
+
+    const currentCSTypeShortName = PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName;
 
     useEffect(() => {
 
@@ -48,7 +50,7 @@ const OverviewTab: FC = () => {
                 .center([-111.950684, 39.419220])
                 .translate([svgWidth / 2, svgHeight / 2])
                 // .scale(100);
-                .fitExtent([[0, 30], [svgWidth, svgHeight]], (file as any));
+                .fitExtent([[0, 0], [svgWidth, svgHeight]], (file as any));
 
             const highestDistrictPercent = allData.district.filter((row) => {
                     const totalStudents = findAttribute('TOTAL: Total', allData.district[0], row);
@@ -99,7 +101,7 @@ const OverviewTab: FC = () => {
             svgSelection.select('#legend')
                 .select('rect')
                 .attr('x', '75%')
-                .attr('y', 50)
+                .attr('y', 0)
                 .attr('width', 80)
                 .attr('height', 30)
                 .attr('fill', 'url(#legend-gradient)');
@@ -109,7 +111,7 @@ const OverviewTab: FC = () => {
                 .data([0, highestDistrictPercent])
                 .join('text')
                 .attr('x', (_, i) => 0.75*svgWidth + i * 80)
-                .attr('y', 90)
+                .attr('y', 40)
                 .text(d => format(',.0%')(d))
                 .attr('alignment-baseline', 'hanging')
                 .attr('font-size', 'smaller')
@@ -175,7 +177,7 @@ const OverviewTab: FC = () => {
                 <OverviewGridItem item xs={6} >
                     <OverviewCard
                         mainText={generateCourseList(store.currentShownCSType, allData.courseList).length}
-                        subText={`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses`} />
+                        subText={`${currentCSTypeShortName} Courses`} />
                 </OverviewGridItem>
 
                 <OverviewGridItem item xs={6} >
@@ -186,7 +188,7 @@ const OverviewTab: FC = () => {
                                 {findCSCOfferings()}
                             </span>
                         }
-                        subText={<span>Schools <b>Offering</b> {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses
+                        subText={<span>Schools <b>Offering</b> {currentCSTypeShortName} Courses
                         </span>} />
                 </OverviewGridItem>
                 <OverviewGridItem item xs={6} >
@@ -197,22 +199,22 @@ const OverviewTab: FC = () => {
                             </span>
                         }
                         subText={
-                            <span>Students <b>Participating</b> in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses
+                            <span>Students <b>Participating</b> in {currentCSTypeShortName} Courses
                             </span>} />
                 </OverviewGridItem>
 
             </Grid>
             <Grid container item xs={12} md={6} minHeight={{ xs: 500, md: 0 }}>
-                <Container fixed>
+                <Grid item xs={12}>
+                    <SectionTitle align='center'>Percentage of Students in {currentCSTypeShortName} by District</SectionTitle>
+                </Grid>
+                <Grid item xs={12}>
                     <svg ref={mapRef}>
                         <linearGradient id='legend-gradient' x1="0" x2="1" y1="0" y2="0" colorInterpolation="CIE-LCHab">
                             <stop offset="0%" stopColor={interpolateBlues(0)} />
                             <stop offset="50%" stopColor={interpolateBlues(0.5)} />
                             <stop offset="100%" stopColor={interpolateBlues(1)} />
                         </linearGradient>
-                        <text x='50%' y={20} textAnchor="middle" alignmentBaseline="hanging">
-                            Percentage of Students in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} by District
-                        </text>
                         <g id='map' />
                         <g id='legend'>
                             <rect />
@@ -230,7 +232,7 @@ const OverviewTab: FC = () => {
                             padding: '5px',
                             textAlign: 'center',
                         }} />
-                </Container>
+                </Grid>
             </Grid>
         </Grid>
     </Container>;

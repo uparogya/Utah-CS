@@ -24,11 +24,9 @@ interface TabPanelProps {
     value: number;
 }
 
-const SectionTitle = styled(Typography)({
+export const SectionTitle = styled(Typography)({
     color: '#2f1600',
-    fontWeight: 800,
-    paddingLeft: 15,
-    paddingBottom: 15
+    fontWeight: 800
 });
 
 // Tabs styling source and inspiration: https://mui-treasury.com/styles/tabs/#Chrome (Chrome tabs)
