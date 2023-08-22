@@ -140,7 +140,7 @@ const TrendContainer: FC = () => {
 
             const tableG = svgSelection.select('#table');
 
-            tableG.attr('transform', `translate(0,${svgHeight - Margin.bottom + RowHeight+20})`);
+            tableG.attr('transform', `translate(0,${svgHeight - Margin.bottom + RowHeight+30})`);
 
             tableG.select('#header')
                 .attr('transform', 'translate(2,0)')
@@ -191,7 +191,6 @@ const TrendContainer: FC = () => {
 
             // below line removes any old labels before making new ones
             svgSelection.select('#labels').html("");
-
             svgSelection.select('#labels')
                 .attr('font-size', '1rem')
                 .selectAll()
@@ -203,6 +202,22 @@ const TrendContainer: FC = () => {
                 .each(function() {
                     select(this).attr('text-anchor', 'middle').attr('dy', '1em');
                 });
+            
+            svgSelection.select('#studentAxisTitle').html(""); // clear title
+            svgSelection.select('#studentAxisTitle')
+                .append('text')
+                .attr('font-size', '0.75rem')
+                .attr('x', Margin.left+5)
+                .attr('y', Margin.top+5)
+                .text(`Total Students in ${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses`);
+
+            svgSelection.select('#yearAxisTitle').html(""); // clear title
+            svgSelection.select('#yearAxisTitle')
+                .append('text')
+                .attr('font-size', '0.75rem')
+                .attr('x', (svgWidth-Margin.right)/2)
+                .attr('y', svgHeight - Margin.bottom+35)
+                .text('School Year');
             
             tableG.select('#rowgrid')
                 .selectAll('line')
@@ -262,7 +277,9 @@ const TrendContainer: FC = () => {
         <Grid item xs={8}>
             <svg width='100%' height='100%' ref={svgRef}>
                 <g id='yearAxis' />
+                <g id='yearAxisTitle' />
                 <g id='studentAxis' />
+                <g id='studentAxisTitle' />
                 <g id='lines' />
                 <g id='circles' />
                 <g id='labels' />
