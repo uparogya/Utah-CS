@@ -14,7 +14,6 @@ export const StickyTableContainer = styled(TableContainer)({
 });
 
 export const TextCell = styled(TableCell)({
-    textAlign: 'center',
     padding: '8px'
 });
 
