@@ -1,4 +1,4 @@
-import { Table, TableHead, TableRow, TableBody, Checkbox } from "@mui/material";
+import { Table, TableHead, TableRow, TableBody, Checkbox, FormControlLabel } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useContext, useEffect, useState } from "react";
 import { findAttribute } from "../../Interface/AttributeFinder";
@@ -100,16 +100,22 @@ const DistrictTable: FC = () => {
                 <TableHead>
                     <TableRow>
                         <FunctionCell>
-                            <Checkbox
-                                color="primary"
-                                indeterminate={store.selectedDistricts.length > 0 && store.selectedDistricts.length < sortedData.length}
-                                checked={sortedData.length > 0 && store.selectedDistricts.length === sortedData.length}
-                                onChange={onSelectAllClick}
-                                inputProps={{
-                                    'aria-label': 'select all desserts',
-                                }}
-                            />
-
+                            <FormControlLabel control={
+                                <Checkbox
+                                    color="primary"
+                                    indeterminate={store.selectedDistricts.length > 0 && store.selectedDistricts.length < sortedData.length}
+                                    checked={sortedData.length > 0 && store.selectedDistricts.length === sortedData.length}
+                                    onChange={onSelectAllClick}
+                                    inputProps={{
+                                        'aria-label': 'select all desserts',
+                                    }}
+                                />
+                                }
+                                label='All'
+                                sx={{ marginLeft: '1px',
+                                '& .MuiFormControlLabel-label': {
+                                    fontSize: '1em'
+                                }}}/>
                         </FunctionCell>
 
                         <SortableHeader
