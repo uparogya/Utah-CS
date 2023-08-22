@@ -243,11 +243,11 @@ function App() {
                     <TabPanel value={tabVal} index={1}>
                         <Grid container>
                             <BasicGrid xs={6} >
-                                <TableTitle color={'primary'} children='District List' />
+                                <SectionTitle>District List</SectionTitle>
                                 <DistrictTable />
                             </BasicGrid>
                             <BasicGrid xs={6} >
-                                <TableTitle color={'primary'} children='Schools in Selected Districts' />
+                                <SectionTitle>Schools in Selected Districts</SectionTitle>
                                 <SchoolTable />
                             </BasicGrid>
                         </Grid>
