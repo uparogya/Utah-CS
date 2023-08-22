@@ -1,6 +1,6 @@
 import { FC, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { select } from 'd3-selection';
-import { DataContext, TableTitle } from "../../App";
+import { DataContext, TableTitle, SectionTitle } from "../../App";
 import { scaleLinear, scalePoint } from "d3-scale";
 import { PossibleCategories, PossibleSchoolYears } from "../../Preset/Constants";
 import { findAttribute } from "../../Interface/AttributeFinder";
@@ -53,7 +53,7 @@ const TrendContainer: FC = () => {
 
     const RequiredDemographic = ['TotalStudents', 'Female', 'Hispanic', 'Disability', 'EconDisadvantaged', 'ESL'];
     const RowHeight = 30;
-    const Margin = { top: 50, left: 100, right: 50, bottom: (RequiredDemographic.length + 0.5) * RowHeight };
+    const Margin = { top: 50, left: 100, right: 50, bottom: (RequiredDemographic.length + 0.5) * RowHeight+20 };
 
 
     const courseCateData = useContext(DataContext).courseList;
@@ -110,10 +110,11 @@ const TrendContainer: FC = () => {
 
             svgSelection.select('#yearAxis')
                 .selectAll('text')
-                .attr('font-size', 'small');
+                .attr('font-size', '1rem');
 
             // draw student axis
             svgSelection.select('#studentAxis')
+                .attr('font-size', '1rem')
                 .attr('transform', `translate(${Margin.left},0)`)
                 .transition()
                 .duration(function () {
@@ -139,7 +140,7 @@ const TrendContainer: FC = () => {
 
             const tableG = svgSelection.select('#table');
 
-            tableG.attr('transform', `translate(0,${svgHeight - Margin.bottom + RowHeight})`);
+            tableG.attr('transform', `translate(0,${svgHeight - Margin.bottom + RowHeight+20})`);
 
             tableG.select('#header')
                 .attr('transform', 'translate(2,0)')
@@ -148,7 +149,7 @@ const TrendContainer: FC = () => {
                 .join('text')
                 .text(d => addSpaces(d))
                 .attr('alignment-baseline', 'hanging')
-                .attr('font-size', 'small')
+                .attr('font-size', '1rem')
                 .attr('y', (_, i) => (i) * RowHeight);
 
             const columns = tableG.select('#body')
@@ -163,7 +164,7 @@ const TrendContainer: FC = () => {
                 .join('text')
                 .text(t => format(`,${store.showPercentage ? '.1%' : ''}`)(t as number))
                 .attr('alignment-baseline', 'hanging')
-                .attr('font-size', 'small')
+                .attr('font-size', '1rem')
                 .attr('text-anchor', 'middle')
                 .attr('y', (_, i) => (i) * RowHeight);
 
@@ -177,14 +178,40 @@ const TrendContainer: FC = () => {
                 .attr('y2', RowHeight * RequiredDemographic.length)
                 .attr('stroke', LightGray);
 
+            // line graph circles and labels code source: https://observablehq.com/@d3/connected-scatterplot/2?intent=fork
+            
+            svgSelection.select('#circles')
+                .attr('fill', CourseCategoryColor[store.currentShownCSType])
+                .selectAll('circle')
+                .data(tempData)
+                .join('circle')
+                .attr('cy', d => studentEnrollmentAxis((d.TotalStudents as number)))
+                .attr('cx', d => yearScale(typeof d.year === "string" ? d.year : d.year.toString()) as any)
+                .attr('r', 3);
+
+            // below line removes any old labels before making new ones
+            svgSelection.select('#labels').html("");
+
+            svgSelection.select('#labels')
+                .attr('font-size', '1rem')
+                .selectAll()
+                .data(tempData)
+                .join('text')
+                .attr('transform', d => `translate(${yearScale((d.year as string))},${studentEnrollmentAxis((d.TotalStudents as number))})`)
+                .text(d => typeof d.TotalStudents === "number" ? d.TotalStudents.toLocaleString("en-US") : d.TotalStudents)
+                .attr('fill', 'black')
+                .each(function() {
+                    select(this).attr('text-anchor', 'middle').attr('dy', '1em');
+                });
+            
             tableG.select('#rowgrid')
                 .selectAll('line')
                 .data(RequiredDemographic)
                 .join('line')
                 .attr('x1', 2)
                 .attr('x2', svgWidth)
-                .attr('y1', (_, i) => RowHeight * (i - 0.25))
-                .attr('y2', (_, i) => RowHeight * (i - 0.25))
+                .attr('y1', (_, i) => RowHeight * (i - 0.6))
+                .attr('y2', (_, i) => RowHeight * (i - 0.6))
                 .attr('stroke', LightGray);
 
             stateUpdateWrapperUseJSON(dataToVisualize, tempData, setData);
@@ -208,7 +235,7 @@ const TrendContainer: FC = () => {
                 .join('text')
                 .text(t => t)
                 .attr('alignment-baseline', 'hanging')
-                .attr('font-size', 'small')
+                .attr('font-size', '1rem')
                 .attr('text-anchor', 'middle')
                 .attr('y', (_, i) => (i) * RowHeight);
         }
@@ -217,9 +244,9 @@ const TrendContainer: FC = () => {
 
 
     return <Grid container>
-        <Grid xs={3}>
+        <Grid item xs={4}>
 
-            <TableTitle color={'primary'} children='Select Category to Show' />
+            <SectionTitle>Select Category to Show</SectionTitle>
             <FormControl variant="standard" style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {/* <InputLabel>Course Category</InputLabel> */}
                 <Select value={store.currentShownCSType} onChange={(e) => store.updateSelectedCategory(e.target.value)} label='Course Category' style={{ paddingLeft: '5px' }}>
@@ -228,15 +255,17 @@ const TrendContainer: FC = () => {
                     ))}
                 </Select>
             </FormControl>
-            <List style={{ maxHeight: '45vh', overflow: 'auto' }}>
+            <List style={{ maxHeight: '55vh', overflow: 'auto' }}>
                 {generateList()}
             </List>
         </Grid>
-        <Grid xs={9}>
-            <svg width='100%' height='55vh' ref={svgRef}>
+        <Grid item xs={8}>
+            <svg width='100%' height='100%' ref={svgRef}>
                 <g id='yearAxis' />
                 <g id='studentAxis' />
                 <g id='lines' />
+                <g id='circles' />
+                <g id='labels' />
                 <g id='legend' />
                 <g id='table'>
                     <g id='header' />
