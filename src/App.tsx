@@ -267,6 +267,7 @@ function App() {
                         <CourseDefinitionTab />
                     </TabPanel>
                 </Box>
+                <footer style={{ backgroundColor: '#003789', minHeight: '50px' }}></footer>
             </div>
             <DataLoadingModal />
         </DataContext.Provider>
