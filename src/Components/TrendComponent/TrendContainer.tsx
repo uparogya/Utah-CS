@@ -8,7 +8,7 @@ import { max } from "d3-array";
 import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from "d3-shape";
 import { CourseCategoryColor, LightGray } from "../../Preset/Colors";
-import { FormControl, Grid, List, ListItem, MenuItem, Select } from "@mui/material";
+import { FormControl, Grid, List, ListItem, MenuItem, Select, Container } from "@mui/material";
 import 'd3-transition';
 import Store from "../../Interface/Store";
 import { observer } from "mobx-react-lite";
@@ -53,7 +53,7 @@ const TrendContainer: FC = () => {
 
     const RequiredDemographic = ['TotalStudents', 'Female', 'Hispanic', 'Disability', 'EconDisadvantaged', 'ESL'];
     const RowHeight = 30;
-    const Margin = { top: 50, left: 100, right: 50, bottom: (RequiredDemographic.length + 0.5) * RowHeight+20 };
+    const Margin = { top: 50, left: 100, right: 50, bottom: (RequiredDemographic.length + 0.5) * RowHeight };
 
 
     const courseCateData = useContext(DataContext).courseList;
@@ -75,9 +75,15 @@ const TrendContainer: FC = () => {
 
     useEffect(() => {
         if (svgRef.current) {
+            // code is similar to Overview Tab map code
             const svgSelection = select(svgRef.current);
-            const svgWidth = (svgSelection.node() as any).clientWidth;
-            const svgHeight = (svgSelection.node() as any).clientHeight;
+            const svgWidth = (svgSelection.node() as any).parentNode.clientWidth;
+            const svgHeight = (svgSelection.node() as any).parentNode.clientHeight;
+
+            svgSelection.attr('width', svgWidth)
+                .attr('height', svgHeight)
+                .attr('viewBox', `0 0 ${svgWidth} ${svgHeight+20}`)
+                .attr('style', 'max-width: 100%; height: auto;');
 
             //Construct the data to visualize
             const tempData: { [key: string]: number | string, }[] = PossibleSchoolYears.map((year) => ({
@@ -140,7 +146,7 @@ const TrendContainer: FC = () => {
 
             const tableG = svgSelection.select('#table');
 
-            tableG.attr('transform', `translate(0,${svgHeight - Margin.bottom + RowHeight+30})`);
+            tableG.attr('transform', `translate(0,${(svgHeight - Margin.bottom + RowHeight)+30})`);
 
             tableG.select('#header')
                 .attr('transform', 'translate(2,0)')
@@ -258,24 +264,8 @@ const TrendContainer: FC = () => {
     }, [store.showPercentage]);
 
 
-    return <Grid container>
-        <Grid item xs={4}>
-
-            <SectionTitle>Select Category to Show</SectionTitle>
-            <FormControl variant="standard" style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* <InputLabel>Course Category</InputLabel> */}
-                <Select value={store.currentShownCSType} onChange={(e) => store.updateSelectedCategory(e.target.value)} label='Course Category' style={{ paddingLeft: '5px' }}>
-                    {PossibleCategories.map((category) => (
-                        <MenuItem key={`${category.name}-mi-trend`} value={category.key}>{category.name}</MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <List style={{ maxHeight: '55vh', overflow: 'auto' }}>
-                {generateList()}
-            </List>
-        </Grid>
-        <Grid item xs={8}>
-            <svg width='100%' height='100%' ref={svgRef}>
+    return <Container sx={{ minHeight: 600 }}>
+            <svg ref={svgRef}>
                 <g id='yearAxis' />
                 <g id='yearAxisTitle' />
                 <g id='studentAxis' />
@@ -290,8 +280,7 @@ const TrendContainer: FC = () => {
                     <g id='rowgrid' />
                 </g>
             </svg>
-        </Grid>
-    </Grid>;
+    </Container>;
 
 };
 
