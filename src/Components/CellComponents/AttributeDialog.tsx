@@ -90,13 +90,13 @@ const AttributeDialog: FC<Props> = ({ option, openDialog, setDialogVisibility, C
 export default observer(AttributeDialog);
 
 const DialogText = styled.text({
-    fontSize: '0.75rem',
+    fontSize: '0.9rem',
     alignmentBaseline: 'central',
     textAnchor: 'start'
 });
 
 const NumberLabText = styled.text({
-    fontSize: '0.75rem',
+    fontSize: '0.9rem',
     alignmentBaseline: 'central',
     textAnchor: 'end'
 });
