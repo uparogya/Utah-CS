@@ -24,11 +24,11 @@ const AttributeDialog: FC<Props> = ({ option, openDialog, setDialogVisibility, C
 
     const dialogSVGWidth = 300;
     const dialogSVGHeight = 500;
-    const leftPadding = 50;
+    const leftPadding = 60;
 
 
-    const barChartScale = scaleLinear().domain([0, 1]).range([leftPadding, dialogSVGWidth]);
-    const barChartHeightScale = scaleBand().domain(Object.keys(CSAttributeOutput)).range([0, dialogSVGHeight]).padding(0.3);
+    const barChartScale = scaleLinear().domain([0, 1]).range([leftPadding, dialogSVGWidth*0.6]);
+    const barChartHeightScale = scaleBand().domain(Object.keys(CSAttributeOutput)).range([0, dialogSVGHeight]).padding(0.4);
 
     const currentCSTypeShortName = PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName;
 
@@ -90,13 +90,13 @@ const AttributeDialog: FC<Props> = ({ option, openDialog, setDialogVisibility, C
 export default observer(AttributeDialog);
 
 const DialogText = styled.text({
-    fontSize: 'small',
+    fontSize: '0.75rem',
     alignmentBaseline: 'central',
     textAnchor: 'start'
 });
 
 const NumberLabText = styled.text({
-    fontSize: 'x-small',
+    fontSize: '0.75rem',
     alignmentBaseline: 'central',
     textAnchor: 'end'
 });
