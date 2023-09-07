@@ -17,6 +17,7 @@ import TrendContainer from './Components/TrendComponent/TrendContainer';
 import SettingBar from './Components/SettingBar';
 import DataLoadingModal from './Components/DataLoadingModal';
 import CourseDefinitionTab from './Components/CourseDefinitionTab';
+import SchoolAndDistrictTab from './Components/SchoolAndDistrictTab';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -241,16 +242,7 @@ function App() {
                     </TabPanel>
 
                     <TabPanel value={tabVal} index={1}>
-                        <Grid container>
-                            <BasicGrid xs={6} >
-                                <SectionTitle>District List</SectionTitle>
-                                <DistrictTable />
-                            </BasicGrid>
-                            <BasicGrid xs={6} >
-                                <SectionTitle>Schools in Selected Districts</SectionTitle>
-                                <SchoolTable />
-                            </BasicGrid>
-                        </Grid>
+                        <SchoolAndDistrictTab />
                     </TabPanel>
                     <TabPanel value={tabVal} index={2}>
                         <TrendContainer />
