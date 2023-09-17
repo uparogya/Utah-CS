@@ -68,8 +68,8 @@ const StateTable: FC = () => {
                     <StateTableCell onClick={() => setOpenGenderDialog(true)}>
                         <AttributeChart option='gender' keyIdentity="State Total"
                             outputObj={{
-                                male: stateAttributeFinder('TOTAL: Male'),
-                                female: stateAttributeFinder('TOTAL: Female')
+                                female: stateAttributeFinder('TOTAL: Female'),
+                                male: stateAttributeFinder('TOTAL: Male')
                             }} />
                     </StateTableCell>
                     <StateTableCell onClick={() => setOpenRaceDialog(true)}>
@@ -115,8 +115,8 @@ const StateTable: FC = () => {
                     <StateTableCell onClick={() => setOpenGenderDialog(true)}>
                         <AttributeChart option='gender' keyIdentity="CS"
                             outputObj={{
-                                male: stateAttributeFinder(`${store.currentShownCSType}: Male`),
-                                female: stateAttributeFinder(`${store.currentShownCSType}: Female`)
+                                female: stateAttributeFinder(`${store.currentShownCSType}: Female`),
+                                male: stateAttributeFinder(`${store.currentShownCSType}: Male`)
                             }} />
                     </StateTableCell>
                     <StateTableCell onClick={() => setOpenRaceDialog(true)}>
