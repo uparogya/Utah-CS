@@ -143,7 +143,7 @@ function App() {
                 const tempDistrictData: Array<number | string>[] = [];
                 //organize the data and add a row for charter
                 data.slice(2, -1).forEach((row) => {
-                    if ((row[0] as string).includes('District')) {
+                    if ((row[0] as string).includes('District') || (row[0] as string).includes('Schools')) {
                         tempDistrictData.push(row as Array<number | string>);
                     } else {
                         row.forEach((dataItem, i) => {

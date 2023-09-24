@@ -45,7 +45,7 @@ const SchoolTable: FC = () => {
             .filter(d => store.selectedDistricts.includes(d[6] as string));
         // look here for how schools are organized
         if (store.selectedDistricts.includes('Charter')) {
-            filteredDistrict = filteredDistrict.concat(newSortedSchool.filter(d => !((d[6] as string).includes('District'))));
+            filteredDistrict = filteredDistrict.concat(newSortedSchool.filter(d => !((d[6] as string).includes('District') || (d[6] as string).includes('Schools'))));
         }
 
         stateUpdateWrapperUseJSON(schoolDataToShow, filteredDistrict, setSchoolDataToShow);
