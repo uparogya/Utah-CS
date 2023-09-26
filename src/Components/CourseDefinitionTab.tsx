@@ -35,51 +35,51 @@ const CourseDefinitionTab: FC = () => {
         //         </List>
         //     </Grid>
         //     <Grid xs={9}>
-        <Grid container sx={{paddingTop: '20px'}}>
-            <Grid container item justifyContent="space-evenly">
-                <CategoryCard>
-                    <CardContent>
-                        <CategoryTitle>All CS Courses</CategoryTitle>
-                        <Typography>Includes all courses connected to computer science: Core CS and Related CS courses.</Typography>
-                    </CardContent>
-                </CategoryCard>
-                <CategoryCard>
-                    <CardContent>
-                        <CategoryTitle>Core CS Courses</CategoryTitle>
-                        <Typography>These courses directly teach fundamental computer science or programming skills. They are divided into two categories: Basic CS and Advanced CS.</Typography>
-                    </CardContent>
-                </CategoryCard>
-                <CategoryCard>
-                    <CardContent>
-                        <CategoryTitle>Basic CS Courses</CategoryTitle>
-                        <Typography>Introductory CS Courses for those with no prior experience in the area.</Typography>
-                    </CardContent>
-                </CategoryCard>
-            </Grid>
-            <Grid container item justifyContent="space-evenly">
-                <CategoryCard>
-                    <CardContent>
-                        <CategoryTitle>Advanced CS Courses</CategoryTitle>
-                        <Typography>Courses intended for those with prior experience.</Typography>
-                    </CardContent>
-                </CategoryCard>
-                <CategoryCard>
-                    <CardContent>
-                        <CategoryTitle>Related CS Courses</CategoryTitle>
-                        <Typography>The emphasis of these courses is on the application, rather than the skills, of computer science in a variety of settings.</Typography>
-                    </CardContent>
-                </CategoryCard>
-            </Grid>
-            <Grid container item padding={2} justifyContent="space-evenly">
-                <div>
-                    Link to <a href="https://docs.google.com/spreadsheets/d/1vjRWlFjWpiI3693YyfJjWGzG95QnKhzD3JTz2yuprtc/edit#gid=0"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' />Course Description</a>
-                </div>
-
-                <div>
-                    Link to  <a href="https://drive.google.com/file/d/1ALKifSimEcPzN3y_m_SU-PJ-yVO_K7tu/view"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' />Technical Report</a>
-                </div>
-            </Grid>
-        </Grid>
+       
+    <Grid container sx={{paddingTop: '20px'}}>
+    <Grid container item justifyContent="space-evenly">
+        <CategoryCard>
+            <CardContent>
+                <CategoryTitle>All CS Courses</CategoryTitle>
+                <Typography>Includes all courses connected to computer science: Core CS and Related CS courses.</Typography>
+            </CardContent>
+        </CategoryCard>
+        <CategoryCard>
+            <CardContent>
+                <CategoryTitle>Core CS Courses</CategoryTitle>
+                <Typography>These courses directly teach fundamental computer science or programming skills. They are divided into two categories: Basic CS and Advanced CS.</Typography>
+            </CardContent>
+        </CategoryCard>
+    </Grid>
+    <Grid container item justifyContent="space-evenly">
+        <CategoryCard>
+            <CardContent>
+                <CategoryTitle>Related CS Courses</CategoryTitle>
+                <Typography>The emphasis of these courses is on the application, rather than the skills, of computer science in a variety of settings.</Typography>
+            </CardContent>
+        </CategoryCard>
+        <CategoryCard>
+            <CardContent>
+                <CategoryTitle>Basic CS Courses</CategoryTitle>
+                <Typography>Introductory CS Courses for those with no prior experience in the area.</Typography>
+            </CardContent>
+        </CategoryCard>
+        <CategoryCard>
+            <CardContent>
+                <CategoryTitle>Advanced CS Courses</CategoryTitle>
+                <Typography>Courses intended for those with prior experience.</Typography>
+            </CardContent>
+        </CategoryCard>
+    </Grid>
+    <Grid container item padding={2} justifyContent="space-evenly">
+        <div>
+            Link to <a href="https://docs.google.com/spreadsheets/d/1vjRWlFjWpiI3693YyfJjWGzG95QnKhzD3JTz2yuprtc/edit#gid=0"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' />Course Description</a>
+        </div>
+        <div>
+            Link to  <a href="https://drive.google.com/file/d/1ALKifSimEcPzN3y_m_SU-PJ-yVO_K7tu/view"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' />Technical Report</a>
+        </div>
+    </Grid>
+</Grid>
     );
 };
 

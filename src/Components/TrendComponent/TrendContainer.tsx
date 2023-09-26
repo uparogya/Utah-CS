@@ -26,6 +26,8 @@ const generateIncludedCat = (category: string) => {
     return includedCateList;
 };
 
+
+
 export const generateCourseList = (category: string, courseCategorization: (string | number)[][]) => {
     // if (openCategoryDialog === '')
     let includedCateList = generateIncludedCat(category);
@@ -48,10 +50,15 @@ const TrendContainer: FC = () => {
 
     const svgRef = useRef(null);
     const stateData = useContext(DataContext).state;
+    const spaceBetweenChartAndTable = 70;
+    //const chartHeight = 300;
 
     const store = useContext(Store);
+    
+    const courseCategoryLabel = `${PossibleCategories.find(d => d.key === store.currentShownCSType)?.shortName}`;
 
-    const RequiredDemographic = ['TotalStudents', 'Female', 'Hispanic', 'Disability', 'EconDisadvantaged', 'ESL'];
+    //Students enrolled in ${courseCategoryLabel}
+    const RequiredDemographic = [`TotalStudents`, 'Female', 'Hispanic', 'EconDisadvantaged', 'Disability','ESL'];
     const RowHeight = 30;
     const Margin = { top: 50, left: 100, right: 50, bottom: (RequiredDemographic.length + 0.5) * RowHeight };
 
@@ -78,7 +85,8 @@ const TrendContainer: FC = () => {
             // code is similar to Overview Tab map code
             const svgSelection = select(svgRef.current);
             const svgWidth = (svgSelection.node() as any).parentNode.clientWidth;
-            const svgHeight = (svgSelection.node() as any).parentNode.clientHeight;
+            //const svgHeight = (svgSelection.node() as any).parentNode.clientHeight;
+            const svgHeight = 550; 
 
             svgSelection.attr('width', svgWidth)
                 .attr('height', svgHeight)
@@ -91,12 +99,14 @@ const TrendContainer: FC = () => {
                 TotalStudents: stateAttributeFinder(`${store.currentShownCSType}: Total`, year),
                 Female: stateAttributeFinder(`${store.currentShownCSType}: Female`, year),
                 Hispanic: stateAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`, year),
-                Disability: stateAttributeFinder(`${store.currentShownCSType}: Disability`, year),
                 EconDisadvantaged: stateAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`, year),
+                Disability: stateAttributeFinder(`${store.currentShownCSType}: Disability`, year),
                 ESL: stateAttributeFinder(`${store.currentShownCSType}: Eng. Learners`, year),
                 StateTotal: stateAttributeFinder(`TOTAL: Total`, year),
             })
             );
+
+
 
             // PossibleSchoolYears.map((y) = stateData.filter(row => row[0] === store.schoolYearShowing)[0])
             const studentEnrollmentAxis = scaleLinear()
@@ -146,7 +156,7 @@ const TrendContainer: FC = () => {
 
             const tableG = svgSelection.select('#table');
 
-            tableG.attr('transform', `translate(0,${(svgHeight - Margin.bottom + RowHeight)+30})`);
+            tableG.attr('transform', `translate(0,${(svgHeight - Margin.bottom + RowHeight) + spaceBetweenChartAndTable})`);
 
             tableG.select('#header')
                 .attr('transform', 'translate(2,0)')
@@ -156,7 +166,7 @@ const TrendContainer: FC = () => {
                 .text(d => addSpaces(d))
                 .attr('alignment-baseline', 'hanging')
                 .attr('font-size', '1rem')
-                .attr('y', (_, i) => (i) * RowHeight);
+                .attr('y', (_, i) => (i) * RowHeight)
 
             const columns = tableG.select('#body')
                 .selectAll('g')
@@ -208,19 +218,34 @@ const TrendContainer: FC = () => {
                 .each(function() {
                     select(this).attr('text-anchor', 'middle').attr('dy', '1em');
                 });
+
+
+                svgSelection.select('#graphTitle').html(""); // Clear the previous title
+                svgSelection.select('#graphTitle')
+                    .append('text')
+                    .attr('font-size', '1.5rem') // Set the font size to your desired size
+                    .attr('x', Margin.left / 2 + 200) // Adjust the X position to position it above the Y-axis
+                    .attr('y', Margin.top / 2 - 5) // Adjust the Y position to position it above the Y-axis
+                    .style('text-anchor', 'middle')
+                    .attr('fill', CourseCategoryColor[store.currentShownCSType]) // Set the fill color based on the selected course category
+                    .text(`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Statewide Enrollment Trends`); // Change the title text
+                
             
+
             svgSelection.select('#studentAxisTitle').html(""); // clear title
             svgSelection.select('#studentAxisTitle')
                 .append('text')
-                .attr('font-size', '0.75rem')
-                .attr('x', Margin.left+5)
-                .attr('y', Margin.top+5)
+                .attr('font-size', '0.98rem')
+                .attr('x', -((svgHeight - Margin.bottom + Margin.top) / 2)) 
+                .attr('y', Margin.left + 15)  
+                .attr('transform', 'rotate(-90)') 
+                .style('text-anchor', 'middle') 
                 .text(`Total Students in ${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses`);
-
+                
             svgSelection.select('#yearAxisTitle').html(""); // clear title
             svgSelection.select('#yearAxisTitle')
                 .append('text')
-                .attr('font-size', '0.75rem')
+                .attr('font-size', '0.98rem')
                 .attr('x', (svgWidth-Margin.right)/2)
                 .attr('y', svgHeight - Margin.bottom+35)
                 .text('School Year');
@@ -266,6 +291,7 @@ const TrendContainer: FC = () => {
 
     return <Container sx={{ minHeight: 600 }}>
             <svg ref={svgRef}>
+                <g id='graphTitle' />
                 <g id='yearAxis' />
                 <g id='yearAxisTitle' />
                 <g id='studentAxis' />
@@ -285,3 +311,4 @@ const TrendContainer: FC = () => {
 };
 
 export default observer(TrendContainer);
+
