@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import ArticleIcon from '@mui/icons-material/Article';
 import styled from '@emotion/styled';
 
+
 const CategoryTitle = styled(Typography)({
     fontSize: '1.5rem'
 });
@@ -73,11 +74,16 @@ const CourseDefinitionTab: FC = () => {
     </Grid>
     <Grid container item padding={2} justifyContent="space-evenly">
         <div>
-            Link to <a href="https://docs.google.com/spreadsheets/d/1vjRWlFjWpiI3693YyfJjWGzG95QnKhzD3JTz2yuprtc/edit#gid=0"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' />Course Description</a>
+        Link to <a href="https://docs.google.com/spreadsheets/d/1vjRWlFjWpiI3693YyfJjWGzG95QnKhzD3JTz2yuprtc/edit#gid=0" target="_blank" rel="noopener noreferrer">
+            <ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' />Course Description
+        </a>
         </div>
         <div>
-            Link to  <a href="https://drive.google.com/file/d/1ALKifSimEcPzN3y_m_SU-PJ-yVO_K7tu/view"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' />Technical Report</a>
-        </div>
+        Link to  <a href="https://drive.google.com/file/d/1ALKifSimEcPzN3y_m_SU-PJ-yVO_K7tu/view" target="_blank" rel="noopener noreferrer">
+            <ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' />Technical Report
+        </a>
+    </div>
+
     </Grid>
 </Grid>
     );

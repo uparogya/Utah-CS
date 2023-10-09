@@ -1,7 +1,7 @@
 {
     "name": "utah-cs",
     "version": "0.1.0",
-    "homepage": "https://omaroaalj.github.io/Utah-CS",
+    "homepage": "https://chxhana.github.io/Utah-CS",
     "private": true,
     "dependencies": {
         "@emotion/react": "^11.9.3",
@@ -27,7 +27,7 @@
         "d3-selection": "^3.0.0",
         "d3-shape": "^3.2.0",
         "d3-transition": "^3.0.1",
-        "gh-pages": "^5.0.0",
+        "gh-pages": "^6.0.0",
         "mobx": "^6.6.1",
         "mobx-react-lite": "^3.4.0",
         "react": "^18.2.0",

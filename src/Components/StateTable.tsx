@@ -11,6 +11,8 @@ import AttributeDialog from "./CellComponents/AttributeDialog";
 import styled from "@emotion/styled";
 import { DataContext } from "../App";
 import { PossibleCategories } from "../Preset/Constants";
+import { CourseCategoryColor, LightGray } from "../Preset/Colors";
+
 
 
 const StateTable: FC = () => {
@@ -29,6 +31,7 @@ const StateTable: FC = () => {
     const [totalStudentNum, setTotalStudentNum] = useState(0);
 
     const [totalCSStudentNum, setTotalCSStudentNum] = useState(0);
+    
 
     useEffect(() => {
 
@@ -104,6 +107,7 @@ const StateTable: FC = () => {
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <StateTableCell component="th"
                         scope="row"
+                        style={{ color: CourseCategoryColor[store.currentShownCSType] }}
                     >
                         Utah Students in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses
                     </StateTableCell>

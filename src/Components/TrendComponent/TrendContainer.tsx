@@ -223,12 +223,12 @@ const TrendContainer: FC = () => {
                 svgSelection.select('#graphTitle').html(""); // Clear the previous title
                 svgSelection.select('#graphTitle')
                     .append('text')
-                    .attr('font-size', '1.5rem') // Set the font size to your desired size
-                    .attr('x', Margin.left / 2 + 200) // Adjust the X position to position it above the Y-axis
-                    .attr('y', Margin.top / 2 - 5) // Adjust the Y position to position it above the Y-axis
+                    .attr('font-size', '1.5rem') 
+                    .attr('x', Margin.left / 2 + 200) 
+                    .attr('y', Margin.top / 2 - 5) 
                     .style('text-anchor', 'middle')
                     .attr('fill', CourseCategoryColor[store.currentShownCSType]) // Set the fill color based on the selected course category
-                    .text(`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Statewide Enrollment Trends`); // Change the title text
+                    .text(`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Statewide Enrollment Trends`); 
                 
             
 
@@ -237,7 +237,7 @@ const TrendContainer: FC = () => {
                 .append('text')
                 .attr('font-size', '0.98rem')
                 .attr('x', -((svgHeight - Margin.bottom + Margin.top) / 2)) 
-                .attr('y', Margin.left + 15)  
+                .attr('y', Margin.left - 70)  
                 .attr('transform', 'rotate(-90)') 
                 .style('text-anchor', 'middle') 
                 .text(`Total Students in ${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses`);

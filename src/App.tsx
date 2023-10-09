@@ -43,8 +43,20 @@ const FolderTabs = styled(Tabs)({
 
 const FolderTab = styled(Tab)({
     textTransform: 'none',
-    fontSize: '1rem'
+    fontSize: '1rem',
+   
+    '&.selectedTab': {
+        fontWeight: 'bold',
+        color: 'black',
+    },
+    '&.unselectedTab': {
+        fontWeight: 'bold',
+        color: 'gray',
+    },
 });
+
+
+
 
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -73,7 +85,6 @@ export const DataContext = createContext<{ [key: string]: Array<number | string>
 
 export const EnrollmentDataContext = createContext<{ [key: string]: string; }[]>([]);
 function App() {
-
 
     const store = useContext(Store);
 
@@ -229,13 +240,29 @@ function App() {
                     </Grid>
                 </Box>
                 <Box sx={{ padding: 2 }}>
-                    <FolderTabs value={tabVal} variant='scrollable' onChange={tabChange}>
-                        <FolderTab label='Overview' />
-                        <FolderTab label='District & School Table' />
-                        <FolderTab label='Statewide Trends' />
-                        <FolderTab label='Course Table' />
-                        <FolderTab label='Course Categories' />
-                    </FolderTabs>
+                <FolderTabs value={tabVal} variant="scrollable" onChange={tabChange}>
+                    <FolderTab
+                        label="Overview"
+                        className={tabVal === 0 ? 'selectedTab' : 'unselectedTab'}
+                    />
+                    <FolderTab
+                        label="District & School Data"
+                        className={tabVal === 1 ? 'selectedTab' : 'unselectedTab'}
+                    />
+                    <FolderTab
+                        label="Statewide Trends"
+                        className={tabVal === 2 ? 'selectedTab' : 'unselectedTab'}
+                    />
+                    <FolderTab
+                        label="Course Data"
+                        className={tabVal === 3 ? 'selectedTab' : 'unselectedTab'}
+                    />
+                    <FolderTab
+                        label="Course Categories"
+                        className={tabVal === 4 ? 'selectedTab' : 'unselectedTab'}
+                    />
+                </FolderTabs>
+
                     <TabPanel value={tabVal} index={0}>
                         <OverviewTab />
                     </TabPanel>
