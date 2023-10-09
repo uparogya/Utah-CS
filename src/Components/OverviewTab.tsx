@@ -203,58 +203,61 @@ const OverviewTab: FC = () => {
     return <Container style={{ paddingTop: '20px' }}>
         <Grid container>
             <Grid container item xs={12} md={6}>
-                <OverviewGridItem item xs={12} >
+            <OverviewGridItem item xs={12} >
                     <OverviewCard subText={CourseExplainText[store.currentShownCSType]} mainText={''} />
-                </OverviewGridItem>
-                <OverviewGridItem item xs={6} >
-                    <OverviewCard
-                        mainText={
-                            <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
-                                {allData.school.slice(2).length}
-                            </span>
-                        }
-
-                        subText={<>
-                            <span>Public Schools With 9-12 Graders</span>
-                        </>} />
-                </OverviewGridItem>
-                <OverviewGridItem item xs={6}>
-                    <OverviewCard
-                        mainText={
-                            <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
-                                {generateCourseList(store.currentShownCSType, allData.courseList).length}
-                            </span>
-                        }
-                        subText={`${currentCSTypeShortName} Courses`}
-                    />
-                </OverviewGridItem>
-
-                <OverviewGridItem item xs={6} >
-                    <OverviewCard
-
-                        mainText={
-                            <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
-                            <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
-                                {findCSCOfferings()}
-                            </span>
-                            </span>
-                        }
-                        subText={<span>Schools <b>Offering</b> {currentCSTypeShortName} Courses
-                        </span>} />
-                </OverviewGridItem>
-                <OverviewGridItem item xs={6} >
-                    <OverviewCard
-                        mainText={
-                            <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
-                            <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
-                                {findCSStudents()}
-                            </span>
-                            </span>
-                        }
-                        subText={
-                            <span>Students <b>Participating</b> in {currentCSTypeShortName} Courses
-                            </span>} />
-                </OverviewGridItem>
+            </OverviewGridItem>
+            <OverviewGridItem item xs={6}>
+            <OverviewCard
+                mainText={
+                    <span>Public Schools With 9-12 Graders</span>
+                }
+                subText={
+                    <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
+                        {allData.school.slice(2).length}
+                    </span>
+                }
+            />
+        </OverviewGridItem>
+        <OverviewGridItem item xs={6}>
+            <OverviewCard
+                mainText={
+                    <span>{currentCSTypeShortName} Courses</span>
+                }
+                subText={
+                    <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
+                        {generateCourseList(store.currentShownCSType, allData.courseList).length}
+                    </span>
+                }
+            />
+        </OverviewGridItem>
+        <OverviewGridItem item xs={6}>
+            <OverviewCard
+                mainText={
+                    <span>Schools <b>Offering</b> {currentCSTypeShortName} Courses</span>
+                }
+                subText={
+                    <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
+                        <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
+                            {findCSCOfferings()}
+                        </span>
+                    </span>
+                }
+            />
+        </OverviewGridItem>
+        <OverviewGridItem item xs={6}>
+            <OverviewCard
+                mainText={
+                    <span>Students <b>Participating</b> in {currentCSTypeShortName} Courses</span>
+                }
+                subText={
+                    <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
+                        <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
+                            {findCSStudents()}
+                        </span>
+                    </span>
+                }
+            />
+        </OverviewGridItem>
 
             </Grid>
             <Grid container item xs={12} md={6} minHeight={{ xs: 500, md: 0 }}>

@@ -247,7 +247,7 @@ const TrendContainer: FC = () => {
                 .append('text')
                 .attr('font-size', '0.98rem')
                 .attr('x', (svgWidth-Margin.right)/2)
-                .attr('y', svgHeight - Margin.bottom+35)
+                .attr('y', svgHeight - Margin.bottom+45)
                 .text('School Year');
             
             tableG.select('#rowgrid')
