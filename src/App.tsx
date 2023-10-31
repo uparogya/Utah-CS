@@ -244,22 +244,27 @@ function App() {
                     <FolderTab
                         label="Overview"
                         className={tabVal === 0 ? 'selectedTab' : 'unselectedTab'}
+                        style={{ fontSize: '20px' }} 
                     />
                     <FolderTab
                         label="District & School Data"
                         className={tabVal === 1 ? 'selectedTab' : 'unselectedTab'}
+                        style={{ fontSize: '20px' }} 
                     />
                     <FolderTab
                         label="Statewide Trends"
                         className={tabVal === 2 ? 'selectedTab' : 'unselectedTab'}
+                        style={{ fontSize: '20px' }} 
                     />
                     <FolderTab
                         label="Course Data"
                         className={tabVal === 3 ? 'selectedTab' : 'unselectedTab'}
+                        style={{ fontSize: '20px' }} 
                     />
                     <FolderTab
                         label="Course Categories"
                         className={tabVal === 4 ? 'selectedTab' : 'unselectedTab'}
+                        style={{ fontSize: '20px' }} 
                     />
                 </FolderTabs>
 

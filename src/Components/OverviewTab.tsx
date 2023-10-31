@@ -262,7 +262,7 @@ const OverviewTab: FC = () => {
             </Grid>
             <Grid container item xs={12} md={6} minHeight={{ xs: 500, md: 0 }}>
                 <Grid item xs={12}>
-                    <SectionTitle align='center'style={{ color: CourseCategoryColor[store.currentShownCSType]}}>Percentage of Students in {currentCSTypeShortName} by District</SectionTitle>
+                    <SectionTitle align='center'style={{ color: CourseCategoryColor[store.currentShownCSType],  marginBottom: '20px' }}>Percentage of Students in {currentCSTypeShortName} by District for {store.schoolYearShowing}</SectionTitle>
                 </Grid>
                 <Grid item xs={12}>
                     <svg ref={mapRef}>
