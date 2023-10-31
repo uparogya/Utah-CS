@@ -17,6 +17,7 @@ import TrendContainer from './Components/TrendComponent/TrendContainer';
 import SettingBar from './Components/SettingBar';
 import DataLoadingModal from './Components/DataLoadingModal';
 import CourseDefinitionTab from './Components/CourseDefinitionTab';
+import { CourseCategoryColor, LightGray } from "./Preset/Colors";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -275,11 +276,11 @@ function App() {
                     <TabPanel value={tabVal} index={1}>
                         <Grid container>
                             <BasicGrid xs={6} >
-                                <SectionTitle>District List</SectionTitle>
+                                <SectionTitle style={{ marginTop: '20px' }} >District List</SectionTitle>
                                 <DistrictTable />
                             </BasicGrid>
                             <BasicGrid xs={6} >
-                                <SectionTitle>Schools in Selected Districts</SectionTitle>
+                                <SectionTitle style={{ marginTop: '20px' }} >Schools in Selected Districts</SectionTitle>
                                 <SchoolTable />
                             </BasicGrid>
                         </Grid>
@@ -289,11 +290,12 @@ function App() {
                     </TabPanel>
 
                     <TabPanel value={tabVal} index={3}>
-                        <Container>
-                            <SectionTitle>Table of {currentCSTypeShortName} Courses</SectionTitle>
-                            {/* <TableTitle color={'primary'} children='Course List' /> */}
-                            <CourseTable />
-                        </Container>
+                        < Grid container>
+                            <BasicGrid xs={12}>
+                                <SectionTitle style={{ marginTop: '20px', color: CourseCategoryColor[store.currentShownCSType] }} >Table of {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses</SectionTitle>
+                                <CourseTable />
+                            </BasicGrid>
+                        </Grid>
                     </TabPanel>
                     <TabPanel value={tabVal} index={4}>
                         <CourseDefinitionTab />
