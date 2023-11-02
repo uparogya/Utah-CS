@@ -1,15 +1,13 @@
-import { CourseCategoryColor, LightGray } from "../Preset/Colors";
-
 export const CellSVGHeight = 40;
 export const CellSVGWidth = 100;
 
 
 export const PossibleCategories = [
-    { name: 'Basic CS', key: 'BCS', shortName: 'Basic CS', color: CourseCategoryColor.BCS },
-    { name: 'Advanced CS', key: 'ACS', shortName: 'Advanced CS', color: CourseCategoryColor.ACS },
-    { name: 'Related CS', key: 'CSR', shortName: 'Related CS', color: CourseCategoryColor.CSR },
-    { name: 'Core CS (Basic + Advanced)', key: 'CSC', shortName: 'Core CS', color: CourseCategoryColor.CSC },
-    { name: 'All CS (Core + Related)', key: 'CS', shortName: 'All CS', color: CourseCategoryColor.CS }
+    { name: 'Basic CS', key: 'CSB', shortName: 'Basic CS' },
+    { name: 'Advanced CS', key: 'CSA', shortName: 'Advanced CS' },
+    { name: 'Related CS', key: 'CSR', shortName: 'Related CS' },
+    { name: 'Core CS (Basic + Advanced)', key: 'CSC', shortName: 'Core CS' },
+    { name: 'All CS (Core + Related)', key: 'CS', shortName: 'All CS' }
 ];
 
 // Add a cut off for smallest student category to be shown
@@ -30,8 +28,8 @@ export const GenderDictionary: { [key: string]: string; } = {
 };
 
 export const DefaultEnrollment = {
-    BCS: { Total: 0, Female: 0 },
-    ACS: { Total: 0, Female: 0 },
+    CSB: { Total: 0, Female: 0 },
+    CSA: { Total: 0, Female: 0 },
     CSR: { Total: 0, Female: 0 }
 };
 

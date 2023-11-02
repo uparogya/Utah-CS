@@ -15,19 +15,13 @@ import { observer } from "mobx-react-lite";
 import { stateUpdateWrapperUseJSON } from "../../Interface/StateChecker";
 import { format } from "d3-format";
 import { computeTextOutcome } from "../CellComponents/PercentageChart";
-import { StickyTableContainer } from "../GeneralComponents";
-import SortableHeader from "../CellComponents/SortableHeader";
-import { Table, TableHead, TableRow, TableBody } from "@mui/material";
-
-
 
 const generateIncludedCat = (category: string) => {
     let includedCateList = [category];
     if (category === 'CS') {
-        includedCateList = ['ACS', 'CSR', 'BCS'];
+        includedCateList = ['CSA', 'CSR', 'CSB'];
     } else if (category === 'CSC') {
-
-        includedCateList = ['ACS', 'BCS'];
+        includedCateList = ['CSA', 'CSB'];
     }
     return includedCateList;
 };
@@ -51,78 +45,6 @@ function addSpaces(inputString: string): string {
 
     return inputString.replace(/([a-z])([A-Z])/g, '$1 $2');
 }
-
-//implemented by chahana
-const TrendTable: FC = () => {
-    const store = useContext(Store);
-    const [sortUp, setSortUp] = useState(true);
-    const [sortAttribute, setSortAttribute] = useState('Course Name');
-    //const [sortedData, setSortedData] = useState(courseData);
-    const [sortCSPercentage, setSortPercentage] = useState(true);
-
-
-    const resetSort = () => {
-        setSortUp(true);
-        setSortPercentage(false);
-        setSortAttribute('School Name');
-    };
-
-
-    const toggleSort = (inputName: string) => {
-        // if the sort attribute is already the same
-        if (sortAttribute === inputName) {
-            // if sort attribute is enrollment
-            if (sortAttribute === 'School Name' || sortAttribute === 'TOTAL: Total') {
-                if (sortUp) setSortUp(false);
-                else resetSort();
-
-            } else {
-                if (!sortCSPercentage && !sortUp) {
-                    setSortPercentage(true);
-                    setSortUp(true);
-                } else if (!sortUp && sortCSPercentage) {
-                    resetSort();
-                } else {
-                    setSortUp(false);
-                }
-            }
-        } else {
-            resetSort();
-            setSortAttribute(inputName);
-        }
-    };
-
-    return (
-        <StickyTableContainer>
-            <Table stickyHeader aria-label="sticky table" style={{ paddingLeft: '10px', paddingRight: '10px', paddingTop: '10px' }}>
-                <TableHead>
-                    <TableRow>
-                        <SortableHeader
-                            headerName="Year"
-                            isSorting={sortAttribute === 'Year'}
-                            isSortUp={sortUp}
-                            onClick={() => toggleSort('Year')}
-                        />
-                        <SortableHeader
-                            headerName="Total Students"
-                            onClick={() => toggleSort('TotalStudents')}
-                            isSorting={sortAttribute === 'TotalStudents'}
-                            isSortUp={sortUp}
-                        />
-                        <SortableHeader
-                            headerName={`${store.currentShownCSType} Enrollment`}
-                            onClick={() => toggleSort(`${store.currentShownCSType}: Total`)}
-                            isSorting={sortAttribute === `${store.currentShownCSType}: Total`}
-                            isSortUp={sortUp}
-                            isSortPercentage={sortCSPercentage}
-                        />
-                        {/* Add more table headers for other demographics if needed */}
-                    </TableRow>
-                </TableHead>
-            </Table>
-        </StickyTableContainer>
-    );
-};
 
 const TrendContainer: FC = () => {
 

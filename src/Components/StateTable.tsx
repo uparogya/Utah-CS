@@ -156,7 +156,7 @@ const StateTable: FC = () => {
         </Table>
         <AttributeDialog option='Race' openDialog={openRaceDialog}
             setDialogVisibility={(bol: boolean) => setOpenRaceDialog(bol)}
-            ACSttributeOutput={{
+            CSAttributeOutput={{
                 white: stateAttributeFinder(`${store.currentShownCSType}: White`),
                 hispanic: stateAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`),
                 asian: stateAttributeFinder(`${store.currentShownCSType}: Asian`),
@@ -175,7 +175,7 @@ const StateTable: FC = () => {
             }} />
         <AttributeDialog option='Gender' openDialog={openGenderDialog}
             setDialogVisibility={(bol: boolean) => setOpenGenderDialog(bol)}
-            ACSttributeOutput={{
+            CSAttributeOutput={{
                 male: stateAttributeFinder(`${store.currentShownCSType}: Male`),
                 female: stateAttributeFinder(`${store.currentShownCSType}: Female`)
             }}

@@ -14,9 +14,9 @@ type Props = {
     openDialog: boolean,
     setDialogVisibility: (value: boolean) => void,
     stateAttributeOutput?: { [key: string]: number; },
-    ACSttributeOutput: { [key: string]: number; };
+    CSAttributeOutput: { [key: string]: number; };
 };
-const AttributeDialog: FC<Props> = ({ option, openDialog, setDialogVisibility, ACSttributeOutput, stateAttributeOutput }) => {
+const AttributeDialog: FC<Props> = ({ option, openDialog, setDialogVisibility, CSAttributeOutput, stateAttributeOutput }) => {
 
 
 
@@ -28,7 +28,7 @@ const AttributeDialog: FC<Props> = ({ option, openDialog, setDialogVisibility, A
 
 
     const barChartScale = scaleLinear().domain([0, 1]).range([leftPadding, dialogSVGWidth*0.6]);
-    const barChartHeightScale = scaleBand().domain(Object.keys(ACSttributeOutput)).range([0, dialogSVGHeight]).padding(0.4);
+    const barChartHeightScale = scaleBand().domain(Object.keys(CSAttributeOutput)).range([0, dialogSVGHeight]).padding(0.4);
 
     const currentCSTypeShortName = PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName;
 
@@ -36,7 +36,7 @@ const AttributeDialog: FC<Props> = ({ option, openDialog, setDialogVisibility, A
         <DialogTitle children={`${currentCSTypeShortName} ${option} Breakdown`} />
         <DialogContent>
             <svg width={dialogSVGWidth} height={dialogSVGHeight}>
-                {Object.keys(ACSttributeOutput).map((d) => (
+                {Object.keys(CSAttributeOutput).map((d) => (
                     <g key={`${d}`}>
                         {stateAttributeOutput ? <rect x={leftPadding}
                             fill={option === 'Race' ? RaceColor[d] : GenderColor[d]}
@@ -48,7 +48,7 @@ const AttributeDialog: FC<Props> = ({ option, openDialog, setDialogVisibility, A
                             fill={option === 'Race' ? RaceColor[d] : GenderColor[d]}
                             height={barChartHeightScale.bandwidth() * 0.45}
                             y={(barChartHeightScale(d) || 0) + barChartHeightScale.bandwidth() * (0.55 - (stateAttributeOutput ? 0 : 0.25))}
-                            width={barChartScale(ACSttributeOutput[d] / sum(Object.values(ACSttributeOutput))) - leftPadding} />
+                            width={barChartScale(CSAttributeOutput[d] / sum(Object.values(CSAttributeOutput))) - leftPadding} />
 
                         <g>
                             {stateAttributeOutput ? <DialogText x={0}
@@ -74,7 +74,7 @@ const AttributeDialog: FC<Props> = ({ option, openDialog, setDialogVisibility, A
                             </NumberLabText> : <></>}
 
                             <NumberLabText x={dialogSVGWidth} y={(barChartHeightScale(d) || 0) + (0.5 + (stateAttributeOutput ? 0.25 : 0)) * barChartHeightScale.bandwidth()}>
-                                {`${ACSttributeOutput[d].toLocaleString("en-US")} (${format(',.1%')(ACSttributeOutput[d] / sum(Object.values(ACSttributeOutput)))})`}
+                                {`${CSAttributeOutput[d].toLocaleString("en-US")} (${format(',.1%')(CSAttributeOutput[d] / sum(Object.values(CSAttributeOutput)))})`}
                             </NumberLabText>
                         </g>
                     </g>

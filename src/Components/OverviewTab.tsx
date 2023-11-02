@@ -153,7 +153,7 @@ const OverviewTab: FC = () => {
                 </Typography>
             </>
         ),
-        BCS: (
+        CSB: (
             <>
                 <Typography variant="h6" gutterBottom style={{ color: CourseCategoryColor[store.currentShownCSType], fontWeight: 'bold' }}>
                     Basic CS Courses
@@ -163,7 +163,7 @@ const OverviewTab: FC = () => {
                 </Typography>
             </>
         ),
-        ACS: (
+        CSA: (
             <>
                 <Typography variant="h6" gutterBottom style={{ color: CourseCategoryColor[store.currentShownCSType], fontWeight: 'bold' }}>
                     Advanced CS Courses

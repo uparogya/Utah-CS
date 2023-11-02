@@ -8,7 +8,7 @@ import SortableHeader from "../CellComponents/SortableHeader";
 import { FunctionCell, StickyTableContainer } from "../GeneralComponents";
 import DistrictRow from "./DistrictRow";
 import { DataContext } from "../../App";
-import { CourseCategoryColor, LightGray } from "../../Preset/Colors";
+
 
 
 const DistrictTable: FC = () => {
@@ -134,16 +134,13 @@ const DistrictTable: FC = () => {
                             onClick={() => toggleSort(`${store.currentShownCSType}: Total`)}
                             isSortUp={sortUp}
                             headerName={`${store.currentShownCSType} Enrollment`}
-                            isSortPercentage={sortCSPercentage}
-                           
-                             />
+                            isSortPercentage={sortCSPercentage} />
                         <SortableHeader
                             isSorting={sortAttribute === `${store.currentShownCSType}: Female`}
                             onClick={() => toggleSort(`${store.currentShownCSType}: Female`)}
                             isSortUp={sortUp}
                             isSortPercentage={sortCSPercentage}
-                            headerName={`${store.currentShownCSType} Gender`} 
-                            />
+                            headerName={`${store.currentShownCSType} Gender`} />
 
                     </TableRow>
                 </TableHead>

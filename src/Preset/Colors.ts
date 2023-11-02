@@ -22,14 +22,14 @@ export const MediumGray = '#adadad';
 export const DarkGray = '#878787';
 export const XDarkGray = '#252525';
 
-// export const BACSsicColor = '#cc7a00';
+// export const CSBasicColor = '#cc7a00';
 // export const CSRelatedColor = '#1400cc';
-// export const ACSdvancedColor = '#00b8cc';
+// export const CSAdvancedColor = '#00b8cc';
 
 export const CourseCategoryColor: { [key: string]: string; } = {
-    CSR: '#EF3B39',
-    ACS: '#6D95CE',
-    BCS: '#253D81',
-    CSC: '#A21E22',
-    CS: '#70030B'
+    CSR: '#1f77b4',
+    CSA: '#ff7f0e',
+    CSB: '#2ca02c',
+    CSC: '#d62728',
+    CS: '#9467bd'
 };
