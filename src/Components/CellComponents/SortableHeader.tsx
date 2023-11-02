@@ -4,7 +4,7 @@ import { XDarkGray } from "../../Preset/Colors";
 import { TextCell } from "../GeneralComponents";
 
 type Props = {
-    headerName: string,
+    headerName: string|boolean,
     isSorting: boolean,
     isSortUp: boolean,
     onClick: () => void,

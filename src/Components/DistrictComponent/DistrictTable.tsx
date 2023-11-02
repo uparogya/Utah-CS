@@ -8,8 +8,8 @@ import SortableHeader from "../CellComponents/SortableHeader";
 import { FunctionCell, StickyTableContainer } from "../GeneralComponents";
 import DistrictRow from "./DistrictRow";
 import { DataContext } from "../../App";
-
-
+import { PossibleCategories} from "../../Preset/Constants";
+import { CourseCategoryColor, LightGray } from "../../Preset/Colors";
 
 const DistrictTable: FC = () => {
 
@@ -18,6 +18,9 @@ const DistrictTable: FC = () => {
     const districtData = useContext(DataContext).district;
 
     const store = useContext(Store);
+    const currentCSTypeShortName = PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName;
+    
+    
 
     const [sortAttribute, setSortAttribute] = useState('District Name');
     const [sortCSPercentage, setSortPercentage] = useState(true);
@@ -133,14 +136,20 @@ const DistrictTable: FC = () => {
                             isSorting={sortAttribute === `${store.currentShownCSType}: Total`}
                             onClick={() => toggleSort(`${store.currentShownCSType}: Total`)}
                             isSortUp={sortUp}
-                            headerName={`${store.currentShownCSType} Enrollment`}
-                            isSortPercentage={sortCSPercentage} />
+                            headerName={`${currentCSTypeShortName} Enrollment`}
+                            isSortPercentage={sortCSPercentage} 
+                            additionalStyle={{ color: CourseCategoryColor[store.currentShownCSType] }}
+
+                            />
                         <SortableHeader
                             isSorting={sortAttribute === `${store.currentShownCSType}: Female`}
                             onClick={() => toggleSort(`${store.currentShownCSType}: Female`)}
                             isSortUp={sortUp}
                             isSortPercentage={sortCSPercentage}
-                            headerName={`${store.currentShownCSType} Gender`} />
+                            headerName={`${currentCSTypeShortName} Gender`}//style={{ color: CourseCategoryColor[store.currentShownCSType] }}
+                            additionalStyle={{ color: CourseCategoryColor[store.currentShownCSType] }}
+
+                      />
 
                     </TableRow>
                 </TableHead>
