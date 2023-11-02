@@ -5,6 +5,7 @@ import NumbersIcon from '@mui/icons-material/Numbers';
 import PercentIcon from '@mui/icons-material/Percent';
 import { observer } from "mobx-react-lite";
 import { PossibleCategories, PossibleSchoolYears } from "../Preset/Constants";
+import { CourseCategoryColor, LightGray } from "../Preset/Colors";
 
 
 const SettingBar: FC = () => {
@@ -40,9 +41,8 @@ const SettingBar: FC = () => {
             <Grid item xs={12} md={5}>
 
                 <FormControl variant="standard" style={{ flexDirection: 'row', alignItems: 'center' }}>
-
-                    <span>Course Category</span>
-                    <Select value={store.currentShownCSType} onChange={handleCSChange} label='Course Category' style={{ paddingLeft: '5px' }}>
+                <span> Course Category</span>
+                            <Select value={store.currentShownCSType} onChange={handleCSChange} label='Course Category'  style={{ color: CourseCategoryColor[store.currentShownCSType] ,paddingLeft: '5px' }}>
                         {PossibleCategories.map((category) => (
                             <MenuItem key={`${category.name}-mi`} value={category.key}>{category.name}</MenuItem>
                         ))}

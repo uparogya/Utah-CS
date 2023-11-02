@@ -67,7 +67,7 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
             </TextCell>
             <AttributeDialog option='Race' openDialog={openRaceDialog}
                 setDialogVisibility={(bol: boolean) => setOpenRaceDialog(bol)}
-                CSAttributeOutput={{
+                ACSttributeOutput={{
                     white: courseAttributeFinder('White'),
                     hispanic: courseAttributeFinder('Hispanic or Latino'),
                     asian: courseAttributeFinder('Asian'),

@@ -10,8 +10,8 @@ import { findAttribute } from "../../Interface/AttributeFinder";
 import Store from "../../Interface/Store";
 
 const categoryMatch: { [key: string]: string[] } = {
-    CSB: ['BASIC'],
-    CSA: ['ADVANCED'],
+    BCS: ['BASIC'],
+    ACS: ['ADVANCED'],
     CSR: ['RELATED'],
     CSC: ['BASIC', 'ADVANCED'],
     CS: ['BASIC', 'ADVANCED', 'RELATED']

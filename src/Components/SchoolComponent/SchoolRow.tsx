@@ -40,5 +40,5 @@ const SchoolRow: FC<Props> = ({ schoolEntry, titleEntry }: Props) => {
 export default observer(SchoolRow);
 
 // const findSpecialCase = (input: Enrollment) => {
-//     return input.CSA.Total === 'n<10' || input.CSB.Total === 'n<10' || input.CSR.Total === 'n<10';
+//     return input.ACS.Total === 'n<10' || input.BCS.Total === 'n<10' || input.CSR.Total === 'n<10';
 // };
