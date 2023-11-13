@@ -124,7 +124,7 @@ const TrendContainer: FC = () => {
 
             const studentEnrollmentAxis = scaleLinear()
                 .domain([0, max(tempData, d => d.TotalStudents as number) || 0])
-                .range([svgHeight - Margin.bottom, Margin.top])
+                .range([svgHeight - Margin.bottom, Margin.top + 20])
                 .nice();
 
             const yearScale = scalePoint()
@@ -195,7 +195,7 @@ const TrendContainer: FC = () => {
                     .append('text')
                     .attr('font-size', '1.5rem') 
                     .attr('x', Margin.left / 2 + 200) 
-                    .attr('y', Margin.top /1.5) 
+                    .attr('y', Margin.top /1.25) 
                     .style('text-anchor', 'middle')
                     .attr('fill', CourseCategoryColor[store.currentShownCSType]) // Set the fill color based on the selected course category
                     .text(`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Statewide Enrollment Trends`); 
@@ -228,63 +228,16 @@ const TrendContainer: FC = () => {
 
     // // // update text based on state
 
-    /*   <TableRow>
-              <TableCell>Female</TableCell>
-                  {dataToVisualize.map((row, index) => (
-                    <TableCell key={index} align="left">
-                      {row.Female}
-                    </TableCell>
-                  ))}
-                </TableRow>
-                <TableRow>
-                  <TableCell>Hispanic</TableCell>
-                  {dataToVisualize.map((row, index) => (
-                    <TableCell key={index} align="left">
-                      {row.Hispanic}
-                    </TableCell>
-                  ))}
-                </TableRow>
-                <TableRow>
-                  <TableCell>Econ Disadvantaged</TableCell>
-                  {dataToVisualize.map((row, index) => (
-                    <TableCell key={index} align="left">
-                      {row.EconDisadvantaged}
-                    </TableCell>
-                  ))}
-                </TableRow>
-                <TableRow>
-                  <TableCell>Disability</TableCell>
-                  {dataToVisualize.map((row, index) => (
-                    <TableCell key={index} align="left">
-                      {row.Disability}
-                    </TableCell>
-                  ))}
-                </TableRow>
-                <TableRow>
-                  <TableCell>ESL</TableCell>
-                  {dataToVisualize.map((row, index) => (
-                    <TableCell key={index} align="left">
-                      {row.ESL}
-                    </TableCell>
-                  ))}
-                </TableRow>
-                <TableRow>
-                  <TableCell>State Total</TableCell>
-                  {dataToVisualize.map((row, index) => (
-                    <TableCell key={index} align="left">
-                      {row.StateTotal}
-                    </TableCell>
-                  ))}
-                </TableRow> */
+    
     const generateTable = () => {
         return (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Year</TableCell>
+                  <TableCell></TableCell>
                   {dataToVisualize.map((row, index) => (
-                    <TableCell key={index}>{row.year}</TableCell>
+                    <TableCell key={index}><strong>{row.year}</strong></TableCell>
                   ))}
                 </TableRow>
               </TableHead>
@@ -299,7 +252,7 @@ const TrendContainer: FC = () => {
                   </TableCell>
                 ))}
               </TableRow>
-              {RequiredDemographic.map((demoName: string, rowIndex: number) => (
+              {RequiredDemographic.slice(1).map((demoName: string, rowIndex: number) => (
             <TableRow key={rowIndex}>
               <TableCell>% of {addSpaces(demoName)} <span style={{ color: currentCSTypeColor }}>{currentCSTypeShortName}</span> Students</TableCell>
               {dataToVisualize.map((row, colIndex) => (
