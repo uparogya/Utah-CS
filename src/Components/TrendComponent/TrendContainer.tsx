@@ -18,6 +18,8 @@ import { computeTextOutcome } from "../CellComponents/PercentageChart";
 import SortableHeader from "../CellComponents/SortableHeader";
 import { FunctionCell, StickyTableContainer } from "../GeneralComponents";
 import { Table, TableHead, TableRow, TableBody,TableCell, TableContainer, FormControlLabel, Paper } from "@mui/material";
+import PercentageChart from "../CellComponents/PercentageChart";
+
 
 
 const generateIncludedCat = (category: string) => {
@@ -243,23 +245,27 @@ const TrendContainer: FC = () => {
               </TableHead>
               <TableBody>
               <TableRow>
-                <TableCell >% of Total Utah Students Enrolled in <span style={{ color: currentCSTypeColor }}>{currentCSTypeShortName}</span></TableCell>
+                <TableCell > {store.showPercentage ? "%" : "#"} of Total Utah Students Enrolled in <span style={{ color: currentCSTypeColor }}>{currentCSTypeShortName}</span></TableCell>
                 {dataToVisualize.map((row, index) => (
                   <TableCell key={index} align="left">
                     {typeof row.TotalStudents === 'number' && typeof row.StateTotal === 'number'
-                      ? `${((row.TotalStudents / row.StateTotal) * 100).toFixed(2)}%`
-                      : 'N/A'}
+                      ? store.showPercentage ?  `${((row.TotalStudents / row.StateTotal) * 100).toFixed(2)}%`
+                      : (row.TotalStudents)
+                      :'N/A'}
                   </TableCell>
                 ))}
               </TableRow>
+
               {RequiredDemographic.slice(1).map((demoName: string, rowIndex: number) => (
-            <TableRow key={rowIndex}>
-              <TableCell>% of {addSpaces(demoName)} <span style={{ color: currentCSTypeColor }}>{currentCSTypeShortName}</span> Students</TableCell>
+              <TableRow key={rowIndex}>
+              <TableCell> {store.showPercentage ? "%" : "#"}  of {addSpaces(demoName)} <span style={{ color: currentCSTypeColor }}>{currentCSTypeShortName}</span> Students</TableCell>
               {dataToVisualize.map((row, colIndex) => (
                 <TableCell key={colIndex} align="left">
-                  {typeof row[demoName] === 'number' && typeof row.TotalStudents === 'number'
-                    ? `${((row[demoName] as number / row.TotalStudents as number) * 100).toFixed(2)}%`
+                    {typeof row[demoName] === 'number' && typeof row.TotalStudents === 'number'
+                    ? store.showPercentage ? `${((row[demoName] as number / row.TotalStudents as number) * 100).toFixed(2)}%`
+                    : (row[demoName] as number)
                     : 'N/A'}
+                
                 </TableCell>
               ))}
             </TableRow>
@@ -270,15 +276,11 @@ const TrendContainer: FC = () => {
           </TableContainer>
         );
       };
-/*
-<TableRow>
-  <TableCell>
-    <span style={{ color: currentCSTypeColor }}>{currentCSTypeShortName}</span> Students
-  </TableCell>
-  {dataToVisualize.map((row, index) => (
-    <TableCell key={index}>{row.year}</TableCell>
-  )}
-</TableRow>
+/* use showPercentage to check if it is # or % then perform calculation accordingly
+  {typeof row[demoName] === 'number' && typeof row.TotalStudents === 'number'
+                    ? `${((row[demoName] as number / row.TotalStudents as number) * 100).toFixed(2)}%`
+                    : 'N/A'} 
+
 */
     useEffect(() => {
         if (svgRef.current && dataToVisualize.length) {
