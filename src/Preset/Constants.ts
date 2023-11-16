@@ -39,7 +39,7 @@ export const PossibleSchoolYears = [
 ];
 
 // The link to the data, probably need to change once the project is updated to the new domain name
-export const linkToData = 'https://omaroaalj.github.io/Utah-CS/updated_data/all_data.xlsx';
+export const linkToData = 'https://chxhana.github.io/Utah-CS/updated_data/all_data.xlsx';
 
-export const linkToGeoJson = 'https://omaroaalj.github.io/Utah-CS/updated_data/Utah_School_District_Boundaries.geojson'
+export const linkToGeoJson = 'https://chxhana.github.io/Utah-CS/updated_data/Utah_School_District_Boundaries.geojson'
 

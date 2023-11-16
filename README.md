@@ -1,6 +1,6 @@
 # Utah CS Dashboard
 
-This is the repo for the [Utah CS Dashboard](https://omaroaalj.github.io/Utah-CS/).
+This is the repo for the [Utah CS Dashboard](https://chxhana.github.io/Utah-CS/).
 
 ## Tech Stack
 

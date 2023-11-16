@@ -17,7 +17,9 @@ import TrendContainer from './Components/TrendComponent/TrendContainer';
 import SettingBar from './Components/SettingBar';
 import DataLoadingModal from './Components/DataLoadingModal';
 import CourseDefinitionTab from './Components/CourseDefinitionTab';
-import SchoolAndDistrictTab from './Components/SchoolAndDistrictTab';
+
+import { CourseCategoryColor, LightGray } from "./Preset/Colors";
+
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -44,8 +46,20 @@ const FolderTabs = styled(Tabs)({
 
 const FolderTab = styled(Tab)({
     textTransform: 'none',
-    fontSize: '1rem'
+    fontSize: '1rem',
+   
+    '&.selectedTab': {
+        fontWeight: 'bold',
+        color: 'black',
+    },
+    '&.unselectedTab': {
+        fontWeight: 'bold',
+        color: 'gray',
+    },
 });
+
+
+
 
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -74,7 +88,6 @@ export const DataContext = createContext<{ [key: string]: Array<number | string>
 
 export const EnrollmentDataContext = createContext<{ [key: string]: string; }[]>([]);
 function App() {
-
 
     const store = useContext(Store);
 
@@ -230,30 +243,63 @@ function App() {
                     </Grid>
                 </Box>
                 <Box sx={{ padding: 2 }}>
-                    <FolderTabs value={tabVal} variant='scrollable' onChange={tabChange}>
-                        <FolderTab label='Overview' />
-                        <FolderTab label='District & School Table' />
-                        <FolderTab label='Statewide Trends' />
-                        <FolderTab label='Course Table' />
-                        <FolderTab label='Course Categories' />
-                    </FolderTabs>
+                <FolderTabs value={tabVal} variant="scrollable" onChange={tabChange}>
+                    <FolderTab
+                        label="Overview"
+                        className={tabVal === 0 ? 'selectedTab' : 'unselectedTab'}
+                        style={{ fontSize: '20px' }} 
+                    />
+                    <FolderTab
+                        label="District & School Data"
+                        className={tabVal === 1 ? 'selectedTab' : 'unselectedTab'}
+                        style={{ fontSize: '20px' }} 
+                    />
+                    <FolderTab
+                        label="Statewide Trends"
+                        className={tabVal === 2 ? 'selectedTab' : 'unselectedTab'}
+                        style={{ fontSize: '20px' }} 
+                    />
+                    <FolderTab
+                        label="Course Data"
+                        className={tabVal === 3 ? 'selectedTab' : 'unselectedTab'}
+                        style={{ fontSize: '20px' }} 
+                    />
+                    <FolderTab
+                        label="Course Categories"
+                        className={tabVal === 4 ? 'selectedTab' : 'unselectedTab'}
+                        style={{ fontSize: '20px' }} 
+                    />
+                </FolderTabs>
+
                     <TabPanel value={tabVal} index={0}>
                         <OverviewTab />
                     </TabPanel>
 
                     <TabPanel value={tabVal} index={1}>
-                        <SchoolAndDistrictTab />
+
+                        <Grid container>
+                            <BasicGrid xs={6} >
+                                <SectionTitle style={{ marginTop: '20px' }} >District List</SectionTitle>
+                                <DistrictTable />
+                            </BasicGrid>
+                            <BasicGrid xs={6} >
+                                <SectionTitle style={{ marginTop: '20px' }} >Schools in Selected Districts</SectionTitle>
+                                <SchoolTable />
+                            </BasicGrid>
+                        </Grid>
+
                     </TabPanel>
                     <TabPanel value={tabVal} index={2}>
                         <TrendContainer />
                     </TabPanel>
 
                     <TabPanel value={tabVal} index={3}>
-                        <Container>
-                            <SectionTitle>Table of {currentCSTypeShortName} Courses</SectionTitle>
-                            {/* <TableTitle color={'primary'} children='Course List' /> */}
-                            <CourseTable />
-                        </Container>
+                        < Grid container>
+                            <BasicGrid xs={12}>
+                                <SectionTitle style={{ marginTop: '20px', color: CourseCategoryColor[store.currentShownCSType] }} >Table of {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses</SectionTitle>
+                                <CourseTable />
+                            </BasicGrid>
+                        </Grid>
                     </TabPanel>
                     <TabPanel value={tabVal} index={4}>
                         <CourseDefinitionTab />

@@ -23,10 +23,10 @@ const OverviewCard: FC<Prop> = ({ mainText, subText, height }: Prop) => {
                     {title}
                 </Typography> */}
 
-                <Typography color="#3d3d3d" variant="body2" component="p">
+                <Typography color="#3d3d3d" variant="h2" component="p">
                     {subText}
                 </Typography>
-                <Typography variant="h3" component="h1">
+                <Typography variant="subtitle1" component="h1">
                     {mainText}
                 </Typography>
             </CardContent>

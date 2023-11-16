@@ -6,6 +6,7 @@ import { findAttribute } from "../Interface/AttributeFinder";
 import Store from "../Interface/Store";
 import OverviewCard from "./CellComponents/OverviewCard";
 import { PossibleCategories, linkToGeoJson } from "../Preset/Constants";
+import { CourseCategoryColor, LightGray } from "../Preset/Colors";
 import styled from "@emotion/styled";
 import { generateCourseList } from "./TrendComponent/TrendContainer";
 import { computeTextOutcome } from "./CellComponents/PercentageChart";
@@ -142,71 +143,126 @@ const OverviewTab: FC = () => {
     };
 
     const CourseExplainText: { [key: string]: ReactNode; } = {
-        CSC: <span>
-            <b>Core CS Courses</b> directly teach <b>fundamental</b> computer science or programming skills. They are divided into two categories: Basic and Advanced. Refer to Course Categories for more information.
-        </span>,
-        CSB: <span>
-            <b>Basic CS Courses</b> are a subcategory of Core CS Courses. These are <b>introductory</b> CS Courses for students with no prior experience in the area. Refer to Course Categories for more information.
-        </span>,
-        CSA: <span>
-            <b>Advanced CS Courses</b> are a subcategory of Core CS Courses intended for students with prior programming experience. Refer to Course Categories for more information.</span>,
-        CSR: <span>
-            <b>Related CS Courses</b> emphasize the <b>application</b>, rather than the skills of computer science in a variety of settings. Refer to Course Categories for more information.</span>,
-        CS: <span>
-            <b>All CS courses</b>, includes Basic CS, Advanced CS, and Related CS Courses. Refer to Course Categories for more information.
-        </span>,
-
+        CSC: (
+            <>
+                <Typography variant="h6" gutterBottom style={{ color: CourseCategoryColor[store.currentShownCSType], fontWeight: 'bold' }}>
+                    Core CS Courses
+                </Typography>
+                <Typography>
+                    Core CS Courses directly teach fundamental computer science or programming skills. They are divided into two categories: Basic and Advanced. Refer to Course Categories for more information.
+                </Typography>
+            </>
+        ),
+        CSB: (
+            <>
+                <Typography variant="h6" gutterBottom style={{ color: CourseCategoryColor[store.currentShownCSType], fontWeight: 'bold' }}>
+                    Basic CS Courses
+                </Typography>
+                <Typography>
+                    Basic CS Courses are a subcategory of Core CS Courses. These are introductory CS Courses for students with no prior experience in the area. Refer to Course Categories for more information.
+                </Typography>
+            </>
+        ),
+        CSA: (
+            <>
+                <Typography variant="h6" gutterBottom style={{ color: CourseCategoryColor[store.currentShownCSType], fontWeight: 'bold' }}>
+                    Advanced CS Courses
+                </Typography>
+                <Typography>
+                    Advanced CS Courses are a subcategory of Core CS Courses intended for students with prior programming experience. Refer to Course Categories for more information.
+                </Typography>
+            </>
+        ),
+        CSR: (
+            <>
+                <Typography variant="h6" gutterBottom style={{ color: CourseCategoryColor[store.currentShownCSType], fontWeight: 'bold' }}>
+                    Related CS Courses
+                </Typography>
+                <Typography>
+                    Related CS Courses emphasize the application, rather than the skills of computer science in a variety of settings. Refer to Course Categories for more information.
+                </Typography>
+            </>
+        ),
+        CS: (
+            <>
+                <Typography variant="h6" gutterBottom style={{ color: CourseCategoryColor[store.currentShownCSType], fontWeight: 'bold' }}>
+                    All CS Courses
+                </Typography>
+                <Typography>
+                    All CS courses include Basic CS, Advanced CS, and Related CS Courses. Refer to Course Categories for more information.
+                </Typography>
+            </>
+        ),
     };
+    
+    
+    
 
 
 
     return <Container style={{ paddingTop: '20px' }}>
         <Grid container>
             <Grid container item xs={12} md={6}>
-                <OverviewGridItem item xs={12} >
+            <OverviewGridItem item xs={12} >
                     <OverviewCard subText={CourseExplainText[store.currentShownCSType]} mainText={''} />
-                </OverviewGridItem>
-                <OverviewGridItem item xs={6} >
-                    <OverviewCard
-                        mainText={allData.school.slice(2).length}
-
-                        subText={<>
-                            <span>Public Schools With 9-12 Graders</span>
-                        </>} />
-                </OverviewGridItem>
-                <OverviewGridItem item xs={6} >
-                    <OverviewCard
-                        mainText={generateCourseList(store.currentShownCSType, allData.courseList).length}
-                        subText={`${currentCSTypeShortName} Courses`} />
-                </OverviewGridItem>
-
-                <OverviewGridItem item xs={6} >
-                    <OverviewCard
-
-                        mainText={
-                            <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
-                                {findCSCOfferings()}
-                            </span>
-                        }
-                        subText={<span>Schools <b>Offering</b> {currentCSTypeShortName} Courses
-                        </span>} />
-                </OverviewGridItem>
-                <OverviewGridItem item xs={6} >
-                    <OverviewCard
-                        mainText={
-                            <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
-                                {findCSStudents()}
-                            </span>
-                        }
-                        subText={
-                            <span>Students <b>Participating</b> in {currentCSTypeShortName} Courses
-                            </span>} />
-                </OverviewGridItem>
+            </OverviewGridItem>
+            <OverviewGridItem item xs={6}>
+            <OverviewCard
+                mainText={
+                    <span>Public Schools With 9-12 Graders</span>
+                }
+                subText={
+                    <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
+                        {allData.school.slice(2).length}
+                    </span>
+                }
+            />
+        </OverviewGridItem>
+        <OverviewGridItem item xs={6}>
+            <OverviewCard
+                mainText={
+                    <span>{currentCSTypeShortName} Courses</span>
+                }
+                subText={
+                    <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
+                        {generateCourseList(store.currentShownCSType, allData.courseList).length}
+                    </span>
+                }
+            />
+        </OverviewGridItem>
+        <OverviewGridItem item xs={6}>
+            <OverviewCard
+                mainText={
+                    <span>Schools <b>Offering</b> {currentCSTypeShortName} Courses</span>
+                }
+                subText={
+                    <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
+                        <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
+                            {findCSCOfferings()}
+                        </span>
+                    </span>
+                }
+            />
+        </OverviewGridItem>
+        <OverviewGridItem item xs={6}>
+            <OverviewCard
+                mainText={
+                    <span>Students <b>Participating</b> in {currentCSTypeShortName} Courses</span>
+                }
+                subText={
+                    <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
+                        <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
+                            {findCSStudents()}
+                        </span>
+                    </span>
+                }
+            />
+        </OverviewGridItem>
 
             </Grid>
             <Grid container item xs={12} md={6} minHeight={{ xs: 500, md: 0 }}>
                 <Grid item xs={12}>
-                    <SectionTitle align='center'>Percentage of Students in {currentCSTypeShortName} by District</SectionTitle>
+                    <SectionTitle align='center'style={{ color: CourseCategoryColor[store.currentShownCSType],  marginBottom: '20px' }}>Percentage of Students in {currentCSTypeShortName} by District for {store.schoolYearShowing}</SectionTitle>
                 </Grid>
                 <Grid item xs={12}>
                     <svg ref={mapRef}>
