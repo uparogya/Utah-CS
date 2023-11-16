@@ -17,7 +17,9 @@ import TrendContainer from './Components/TrendComponent/TrendContainer';
 import SettingBar from './Components/SettingBar';
 import DataLoadingModal from './Components/DataLoadingModal';
 import CourseDefinitionTab from './Components/CourseDefinitionTab';
+
 import { CourseCategoryColor, LightGray } from "./Preset/Colors";
+
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -154,7 +156,7 @@ function App() {
                 const tempDistrictData: Array<number | string>[] = [];
                 //organize the data and add a row for charter
                 data.slice(2, -1).forEach((row) => {
-                    if ((row[0] as string).includes('District')) {
+                    if ((row[0] as string).includes('District') || (row[0] as string).includes('Schools')) {
                         tempDistrictData.push(row as Array<number | string>);
                     } else {
                         row.forEach((dataItem, i) => {
@@ -274,6 +276,7 @@ function App() {
                     </TabPanel>
 
                     <TabPanel value={tabVal} index={1}>
+
                         <Grid container>
                             <BasicGrid xs={6} >
                                 <SectionTitle style={{ marginTop: '20px' }} >District List</SectionTitle>
@@ -284,6 +287,7 @@ function App() {
                                 <SchoolTable />
                             </BasicGrid>
                         </Grid>
+
                     </TabPanel>
                     <TabPanel value={tabVal} index={2}>
                         <TrendContainer />
