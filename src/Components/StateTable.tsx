@@ -46,7 +46,7 @@ const StateTable: FC = () => {
             <TableHead>
                 <TableRow>
                     <TableCell>Student Type</TableCell>
-                    <TableCell>{store.showPercentage ? "%" : "#"} of Students</TableCell>
+                    <TableCell>{store.showPercentage ? "%" : "#"}  of Students</TableCell>
                     <TableCell >
                         {/* <GenderHeaderSVG > */}
                         Gender
