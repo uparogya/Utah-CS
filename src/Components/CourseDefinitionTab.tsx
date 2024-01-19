@@ -1,26 +1,64 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useState } from "react";
 import Store from "../Interface/Store";
-import { Grid, List, ListItem, Typography, Card, CardContent } from "@mui/material";
+import { Grid, List, ListItem, Typography, Card, CardContent, Button } from "@mui/material";
 import { DataContext, TableTitle } from "../App";
 import { generateCourseList } from "./TrendComponent/TrendContainer";
 import { observer } from "mobx-react-lite";
 import ArticleIcon from '@mui/icons-material/Article';
 import styled from '@emotion/styled';
+import { CourseCategoryColor } from "../Preset/Colors";
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
 
+import CourseInfoModal from "./CourseDescriptionComponent/CourseInfoModal";
 
-const CategoryTitle = styled(Typography)({
-    fontSize: '1.5rem'
-});
+interface CategoryCardProps {
+    categoryKey: string;
+}
 
-const CategoryCard = styled(Card)({
-    width: '200px',
-    margin: 10
-});
+const CategoryTitle = styled(Typography)((props: CategoryCardProps) => ({
+    fontSize: '1.1rem',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: '15px',
+    color: CourseCategoryColor[props.categoryKey],
+}));
+
+const CategoryDescription = styled(Typography)({
+    fontSize: '14px',
+    fontWeight: 'lighter'
+})
+
+const CategoryCard = styled(Card)((props: CategoryCardProps) => ({
+    width: '220px',
+    height: '220px',
+    padding: '20px',
+    margin: '20px',
+    borderRadius: '8px',
+    borderWidth: '2px',
+    borderStyle: 'solid',
+    borderColor: CourseCategoryColor[props.categoryKey],
+}));
+
+const RevealData = styled(IconButton)((props: CategoryCardProps) => ({
+    marginTop: '-5px',
+    color: CourseCategoryColor[props.categoryKey],
+}));
 
 const CourseDefinitionTab: FC = () => {
 
     const store = useContext(Store);
     const courseCateData = useContext(DataContext).courseList;
+
+    const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
+
+    const openModal = (courseType: string) => {
+        setSelectedCourse(courseType);
+      };
+    
+      const closeModal = () => {
+        setSelectedCourse(null);
+      };
 
 
     const generateList = () => {
@@ -28,64 +66,92 @@ const CourseDefinitionTab: FC = () => {
     };
 
     return (
-        // <Grid container>
-        //     <Grid xs={3} style={{ padding: '5px' }}>
-        //         <TableTitle color={'primary'} children={`${store.currentShownCSType} Courses`} />
-        //         <List style={{ maxHeight: '45vh', overflow: 'auto' }}>
-        //             {generateList()}
-        //         </List>
-        //     </Grid>
-        //     <Grid xs={9}>
-       
-    <Grid container sx={{paddingTop: '20px'}}>
-    <Grid container item justifyContent="space-evenly">
-        <CategoryCard>
-            <CardContent>
-                <CategoryTitle>All CS Courses</CategoryTitle>
-                <Typography>Includes all courses connected to computer science: Core CS and Related CS courses.</Typography>
-            </CardContent>
-        </CategoryCard>
-        <CategoryCard>
-            <CardContent>
-                <CategoryTitle>Core CS Courses</CategoryTitle>
-                <Typography>These courses directly teach fundamental computer science or programming skills. They are divided into two categories: Basic CS and Advanced CS.</Typography>
-            </CardContent>
-        </CategoryCard>
-    </Grid>
-    <Grid container item justifyContent="space-evenly">
-        <CategoryCard>
-            <CardContent>
-                <CategoryTitle>Related CS Courses</CategoryTitle>
-                <Typography>The emphasis of these courses is on the application, rather than the skills, of computer science in a variety of settings.</Typography>
-            </CardContent>
-        </CategoryCard>
-        <CategoryCard>
-            <CardContent>
-                <CategoryTitle>Basic CS Courses</CategoryTitle>
-                <Typography>Introductory CS Courses for those with no prior experience in the area.</Typography>
-            </CardContent>
-        </CategoryCard>
-        <CategoryCard>
-            <CardContent>
-                <CategoryTitle>Advanced CS Courses</CategoryTitle>
-                <Typography>Courses intended for those with prior experience.</Typography>
-            </CardContent>
-        </CategoryCard>
-    </Grid>
-    <Grid container item padding={2} justifyContent="space-evenly">
-        <div>
-        Link to <a href="https://docs.google.com/spreadsheets/d/1vjRWlFjWpiI3693YyfJjWGzG95QnKhzD3JTz2yuprtc/edit#gid=0" target="_blank" rel="noopener noreferrer">
-            <ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' />Course Description
-        </a>
-        </div>
-        <div>
-        Link to  <a href="https://drive.google.com/file/d/1ALKifSimEcPzN3y_m_SU-PJ-yVO_K7tu/view" target="_blank" rel="noopener noreferrer">
-            <ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' />Technical Report
-        </a>
-    </div>
+    <Grid container direction="row" justifyContent={'center'} alignContent={'center'}>
+        <Grid item md={4}>
+            <Grid container direction="column" alignContent={'center'} justifyContent={'space-around'} style={{'height':'100%'}}>
+                <Grid item>
+                    <CategoryCard categoryKey='CS'>
+                        <CardContent>
+                            <CategoryTitle categoryKey='CS'>All CS Courses</CategoryTitle>
+                            <CategoryDescription>
+                                Includes all courses connected to computer science: <b style={{color:CourseCategoryColor['CSC']}}>Core CS</b> and <b style={{color:CourseCategoryColor['CSR']}}>Related CS</b> courses. 
+                                <br></br><br></br>
+                                <a href="https://docs.google.com/spreadsheets/d/1vjRWlFjWpiI3693YyfJjWGzG95QnKhzD3JTz2yuprtc/edit#gid=0" target="_blank" rel="noopener noreferrer"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' /> Course Description</a>
+                                <br></br>
+                                <a href="https://drive.google.com/file/d/1ALKifSimEcPzN3y_m_SU-PJ-yVO_K7tu/view" target="_blank" rel="noopener noreferrer"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' /> Technical Report</a>
+                            </CategoryDescription>
+                        </CardContent>
+                    </CategoryCard>
+                </Grid>
+            </Grid>
+        </Grid>
 
+        <Grid item md={4}>
+            <Grid container direction="column" alignContent={'center'}>
+                <Grid item>
+                    <CategoryCard categoryKey='CSC'>
+                        <CardContent>
+                            <CategoryTitle categoryKey='CSC'>
+                                Core CS
+                                <RevealData categoryKey='CSC' onClick={() => openModal('CSC')} aria-label="info">
+                                    <InfoIcon />
+                                </RevealData>
+                            </CategoryTitle>
+                            <CategoryDescription>These courses directly teach fundamental computer science or programming skills. They are divided into two categories: <b style={{color:CourseCategoryColor['CSB']}}>Basic CS</b> and <b style={{color:CourseCategoryColor['CSA']}}>Advanced CS</b>.</CategoryDescription>
+                        </CardContent>
+                    </CategoryCard>
+                </Grid>
+                <Grid item>
+                    <CategoryCard categoryKey='CSR'>
+                        <CardContent>
+                            <CategoryTitle categoryKey='CSR'>
+                                Related CS
+                                <RevealData categoryKey='CSR' onClick={() => openModal('CSR')} aria-label="info">
+                                    <InfoIcon />
+                                </RevealData>
+                            </CategoryTitle>
+                            <CategoryDescription>The emphasis of these courses is on the application, rather than the skills, of computer science in a variety of settings.</CategoryDescription>
+                        </CardContent>
+                    </CategoryCard>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid item md={4}>
+            <Grid container direction="column" alignContent={'center'}>
+                <Grid item>
+                    <CategoryCard categoryKey='CSB'>
+                        <CardContent>
+                            <CategoryTitle categoryKey='CSB'>
+                                Basic CS
+                                <RevealData categoryKey='CSB' onClick={() => openModal('CSB')} aria-label="info">
+                                    <InfoIcon />
+                                </RevealData>
+                            </CategoryTitle>
+                            <CategoryDescription>Introductory CS Courses for those with no prior experience in the area.</CategoryDescription>
+                        </CardContent>
+                    </CategoryCard>
+                </Grid>
+                <Grid item>
+                    <CategoryCard categoryKey='CSA'>
+                        <CardContent>
+                            <CategoryTitle categoryKey='CSA'>
+                                Advanced CS
+                                <RevealData categoryKey="CSA" onClick={() => openModal('CSA')} aria-label="info">
+                                    <InfoIcon />
+                                </RevealData>
+                            </CategoryTitle>
+                            <CategoryDescription>Courses intended for those with prior experience.</CategoryDescription>
+                        </CardContent>
+                    </CategoryCard>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        {selectedCourse && (
+            <CourseInfoModal courseType={selectedCourse} onClose={closeModal} />
+        )}
     </Grid>
-</Grid>
     );
 };
 

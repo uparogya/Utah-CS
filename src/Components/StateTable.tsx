@@ -12,6 +12,7 @@ import styled from "@emotion/styled";
 import { DataContext } from "../App";
 import { PossibleCategories } from "../Preset/Constants";
 import { CourseCategoryColor, LightGray } from "../Preset/Colors";
+import { courseTitle } from "./CourseDescriptionComponent/CourseInfoModal";
 
 
 
@@ -45,23 +46,19 @@ const StateTable: FC = () => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
-                    <TableCell>Student Type</TableCell>
-                    <TableCell>{store.showPercentage ? "%" : "#"}  of Students</TableCell>
-                    <TableCell >
-                        {/* <GenderHeaderSVG > */}
-                        Gender
-                        {/* </GenderHeaderSVG> */}
-                    </TableCell>
-                    <TableCell>Race</TableCell>
-                    <TableCell>Econ Disadvantaged</TableCell>
-                    <TableCell >Disability</TableCell>
-                    <TableCell>ESL</TableCell>
+                    <TableCell style={{fontWeight:'bolder'}}>Student Type</TableCell>
+                    <TableCell style={{fontWeight:'bolder'}}>{store.showPercentage ? "%" : "#"}  of Students</TableCell>
+                    <TableCell style={{fontWeight:'bolder'}}> Gender </TableCell>
+                    <TableCell style={{fontWeight:'bolder'}}>Race</TableCell>
+                    <TableCell style={{fontWeight:'bolder'}}>Econ Disadvantaged</TableCell>
+                    <TableCell style={{fontWeight:'bolder'}}>Disability</TableCell>
+                    <TableCell style={{fontWeight:'bolder'}}>ESL</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <StateTableCell component="th" scope="row">
-                        Statewide Student Population
+                        Total 9-12 Student Population
                     </StateTableCell>
                     <StateTableCell>
                         <PercentageChart
@@ -107,9 +104,10 @@ const StateTable: FC = () => {
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <StateTableCell component="th"
                         scope="row"
-                        style={{ color: CourseCategoryColor[store.currentShownCSType] }}
+                        style={{ color: CourseCategoryColor[store.currentShownCSType], fontWeight:'bolder' }}
                     >
-                        Utah Students in {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses
+                        {/* {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses */}
+                        <div style={{borderBottom:'5px solid', borderColor:CourseCategoryColor[store.currentShownCSType]}}>{courseTitle(store.currentShownCSType)}</div>
                     </StateTableCell>
                     <StateTableCell>
                         <PercentageChart

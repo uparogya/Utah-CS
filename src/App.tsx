@@ -27,7 +27,9 @@ interface TabPanelProps {
 
 export const SectionTitle = styled(Typography)({
     color: '#2f1600',
-    fontWeight: 800
+    fontWeight: 600,
+    marginLeft: '20px',
+    marginTop: '20px',
 });
 
 // Tabs styling source and inspiration: https://mui-treasury.com/styles/tabs/#Chrome (Chrome tabs)
@@ -233,7 +235,7 @@ function App() {
                     <SettingBar />
                 </Box>
                 <Box sx={{ margin: 2, padding: 2, backgroundColor: '#f5f3f3' }}>
-                    <SectionTitle>Statewide Student Population</SectionTitle>
+                    <SectionTitle>Student Population</SectionTitle>
                     <Grid container>
                         <Grid id="state-view" xs={12} style={{ padding: '2' }}>
                             <StateTable />
@@ -276,29 +278,36 @@ function App() {
                     <TabPanel value={tabVal} index={1}>
                         <Grid container>
                             <BasicGrid xs={6} >
-                                <SectionTitle style={{ marginTop: '20px' }} >District List</SectionTitle>
+                                <SectionTitle style={{ fontSize: '1.3rem', color: CourseCategoryColor[store.currentShownCSType] }}>District List</SectionTitle>
                                 <DistrictTable />
                             </BasicGrid>
                             <BasicGrid xs={6} >
-                                <SectionTitle style={{ marginTop: '20px' }} >Schools in Selected Districts</SectionTitle>
+                                <SectionTitle style={{ fontSize: '1.3rem', color: CourseCategoryColor[store.currentShownCSType] }}>Schools in Selected Districts</SectionTitle>
                                 <SchoolTable />
                             </BasicGrid>
                         </Grid>
                     </TabPanel>
                     <TabPanel value={tabVal} index={2}>
-                        <TrendContainer />
+                        < Grid container>
+                            <BasicGrid xs={12}>
+                                <SectionTitle style={{ fontSize: '1.3rem', color: CourseCategoryColor[store.currentShownCSType] }} >{PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Statewide Enrollment Trends</SectionTitle>
+                                <TrendContainer />
+                            </BasicGrid>
+                        </Grid>
                     </TabPanel>
 
                     <TabPanel value={tabVal} index={3}>
                         < Grid container>
                             <BasicGrid xs={12}>
-                                <SectionTitle style={{ marginTop: '20px', color: CourseCategoryColor[store.currentShownCSType] }} >Table of {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses</SectionTitle>
+                                <SectionTitle style={{ fontSize: '1.3rem', color: CourseCategoryColor[store.currentShownCSType] }} >Table of {PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Courses</SectionTitle>
                                 <CourseTable />
                             </BasicGrid>
                         </Grid>
                     </TabPanel>
                     <TabPanel value={tabVal} index={4}>
-                        <CourseDefinitionTab />
+                        < Grid container>
+                            <CourseDefinitionTab />
+                        </Grid>
                     </TabPanel>
                 </Box>
                 <footer style={{ backgroundColor: '#003789', minHeight: '50px' }}></footer>
