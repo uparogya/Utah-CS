@@ -193,14 +193,15 @@ const TrendContainer: FC = () => {
 
 
                 svgSelection.select('#graphTitle').html(""); // Clear the previous title
-                svgSelection.select('#graphTitle')
-                    .append('text')
-                    .attr('font-size', '1.5rem') 
-                    .attr('x', Margin.left / 2 + 200) 
-                    .attr('y', Margin.top /1.25) 
-                    .style('text-anchor', 'middle')
-                    .attr('fill', CourseCategoryColor[store.currentShownCSType]) // Set the fill color based on the selected course category
-                    .text(`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Statewide Enrollment Trends`); 
+                // svgSelection.select('#graphTitle')
+                //     .append('text')
+                //     .attr('font-size', '1.3rem') 
+                //     .attr('font-weight', 'bolder') 
+                //     .attr('x', Margin.left / 2 + 200) 
+                //     .attr('y', Margin.top /1.25) 
+                //     .style('text-anchor', 'middle')
+                //     .attr('fill', CourseCategoryColor[store.currentShownCSType]) // Set the fill color based on the selected course category
+                //     .text(`${PossibleCategories.filter(d => d.key === store.currentShownCSType)[0].shortName} Statewide Enrollment Trends`);
                 
             
 
