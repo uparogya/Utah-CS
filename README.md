@@ -37,10 +37,10 @@ Currently, data is in `./public/updated_data`, and it is named `all_data.xlsx`. 
 4. IF new year is added, update the array in `./src/Preset/Constants.ts`, named `PossibleSchoolYears`, and add the new school year. For example, if the new data include 2022-2023 academic year:
 ```tsx
 <!-- the original variable might look like this -->
-export const PossibleSchoolYears = ['2019-20', '2020-21', '2021-22'];
+export const PossibleSchoolYears = ['2019-20', '2020-21', '2021-22', '2022-23'];
 
 <!-- Change it to -->
-export const PossibleSchoolYears = ['2019-20', '2020-21', '2021-22', '2022-23'];
+export const PossibleSchoolYears = ['2019-20', '2020-21', '2021-22', '2022-23', '2023-24'];
 ```
 ## Project Structure
 
