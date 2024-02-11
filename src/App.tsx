@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, createContext, useContext, useEffect, useState } from 'react';
 import './App.css';
 import { Box, Container, Tab, Tabs, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
@@ -18,6 +18,7 @@ import SettingBar from './Components/SettingBar';
 import DataLoadingModal from './Components/DataLoadingModal';
 import CourseDefinitionTab from './Components/CourseDefinitionTab';
 import { CourseCategoryColor, LightGray } from "./Preset/Colors";
+import TabsComponent from './Components/TabsComponent/Tabs';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -93,9 +94,9 @@ function App() {
 
     const [tabVal, setTabVal] = useState(0);
 
-    const tabChange = (_: React.SyntheticEvent, newValue: number) => {
+    const tabChange = (event: ChangeEvent<{}>, newValue: number) => {
         setTabVal(newValue);
-    };
+      };
 
 
     const [stateData, setStateData] = useState<Array<number | string>[]>([]);
@@ -243,33 +244,7 @@ function App() {
                     </Grid>
                 </Box>
                 <Box sx={{ padding: 2 }}>
-                <FolderTabs value={tabVal} variant="scrollable" onChange={tabChange}>
-                    <FolderTab
-                        label="Overview"
-                        className={tabVal === 0 ? 'selectedTab' : 'unselectedTab'}
-                        style={{ fontSize: '20px' }} 
-                    />
-                    <FolderTab
-                        label="District & School Data"
-                        className={tabVal === 1 ? 'selectedTab' : 'unselectedTab'}
-                        style={{ fontSize: '20px' }} 
-                    />
-                    <FolderTab
-                        label="Statewide Trends"
-                        className={tabVal === 2 ? 'selectedTab' : 'unselectedTab'}
-                        style={{ fontSize: '20px' }} 
-                    />
-                    <FolderTab
-                        label="Course Data"
-                        className={tabVal === 3 ? 'selectedTab' : 'unselectedTab'}
-                        style={{ fontSize: '20px' }} 
-                    />
-                    <FolderTab
-                        label="Course Categories"
-                        className={tabVal === 4 ? 'selectedTab' : 'unselectedTab'}
-                        style={{ fontSize: '20px' }} 
-                    />
-                </FolderTabs>
+                <TabsComponent tabVal={tabVal} tabChange={tabChange} />
 
                     <TabPanel value={tabVal} index={0}>
                         <OverviewTab />
