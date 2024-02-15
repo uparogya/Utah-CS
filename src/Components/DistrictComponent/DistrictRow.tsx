@@ -44,8 +44,8 @@ const DistrictRow: FC<Props> = ({ districtEntry, titleEntry }: Props) => {
         <TextCell>
             <AttributeChart option='gender' keyIdentity="CSDistrict"
                 outputObj={{
+                    male: districtAttributeFinder(`${store.currentShownCSType}: Male`),
                     female: districtAttributeFinder(`${store.currentShownCSType}: Female`),
-                    male: districtAttributeFinder(`${store.currentShownCSType}: Male`)
                 }}
             />
         </TextCell>

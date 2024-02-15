@@ -98,7 +98,10 @@ const TrendContainer: FC = () => {
         if (svgRef.current) {
             // code is similar to Overview Tab map code
             const svgSelection = select(svgRef.current);
-            const svgWidth = (svgSelection.node() as any).parentNode.clientWidth;
+            // const svgWidth = (svgSelection.node() as any).parentNode.clientWidth;
+                const parentWidth = (svgSelection.node() as any).parentNode.clientWidth;
+                const thresholdWidth = 900;
+                const svgWidth = Math.max(parentWidth, thresholdWidth);
             //const svgHeight = (svgSelection.node() as any).parentNode.clientHeight;
             const svgHeight = 550; 
 

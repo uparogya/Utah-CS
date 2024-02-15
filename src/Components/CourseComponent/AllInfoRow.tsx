@@ -33,8 +33,8 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
                 <AttributeChart option='gender'
                     keyIdentity={String(courseAttributeFinder('Course Name'))}
                     outputObj={{
+                        male: courseAttributeFinder(`Male`),
                         female: courseAttributeFinder(`Female`),
-                        male: courseAttributeFinder(`Male`)
                     }} />
             </TextCell>
             <TextCell onClick={() => setOpenRaceDialog(true)} >
