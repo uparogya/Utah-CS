@@ -83,13 +83,20 @@ const CourseDefinitionTab: FC = () => {
                 <Grid item>
                     <CategoryCard categoryKey='CS'>
                         <CardContent>
-                            <CategoryTitle categoryKey='CS'>All CS Courses</CategoryTitle>
+                            <CategoryTitle categoryKey='CS'>
+                                <RevealData categoryKey='CS' onClick={() => openPieChart('CS')} aria-label="info">
+                                    <PieChartIcon />
+                                </RevealData>
+                                All CS
+                                <RevealData categoryKey='CS' onClick={() => openModal('CS')} aria-label="info">
+                                    <InfoIcon />
+                                </RevealData>
+                            </CategoryTitle>
                             <CategoryDescription>
                                 Includes all courses connected to computer science: <b style={{color:CourseCategoryColor['CSC']}}>Core CS</b> and <b style={{color:CourseCategoryColor['CSR']}}>Related CS</b> courses. 
                                 <br></br><br></br>
                                 <a href="https://docs.google.com/spreadsheets/d/1vjRWlFjWpiI3693YyfJjWGzG95QnKhzD3JTz2yuprtc/edit#gid=0" target="_blank" rel="noopener noreferrer"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' /> Course Description</a>
                                 <br></br>
-                                {/* <a href="https://drive.google.com/file/d/1ALKifSimEcPzN3y_m_SU-PJ-yVO_K7tu/view" target="_blank" rel="noopener noreferrer"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' /> Technical Report</a> */}
                                 <a href="https://drive.google.com/drive/folders/1s7HDlOPJdgttVf39jmB4OwiipTal5jht" target="_blank" rel="noopener noreferrer"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' /> Infographics From Funded LEAs</a>
                             </CategoryDescription>
                         </CardContent>
