@@ -15,6 +15,7 @@ import { GeoPath, GeoPermissibleObjects, geoAlbers, geoAlbersUsa, geoMercator, g
 import { json } from "d3-fetch";
 import { interpolateBlues } from 'd3-scale-chromatic';
 import { format } from "d3-format";
+import CourseInfoModal from "./CourseDescriptionComponent/CourseInfoModal";
 
 const OverviewTab: FC = () => {
 
@@ -194,7 +195,16 @@ const OverviewTab: FC = () => {
             </>
         ),
     };
+
+    const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
+
+    const openModal = (courseType: string) => {
+        setSelectedCourse(courseType);
+    };
     
+    const closeModal = () => {
+        setSelectedCourse(null);
+    };
     
     
 
@@ -218,8 +228,8 @@ const OverviewTab: FC = () => {
                 }
             />
         </OverviewGridItem>
-        <OverviewGridItem item xs={6}>
-            <OverviewCard
+        <OverviewGridItem item xs={6} onClick={() => openModal(store.currentShownCSType)} style={{'cursor':'pointer'}}>
+            <OverviewCard 
                 mainText={
                     <span>{currentCSTypeShortName} Courses</span>
                 }
@@ -291,6 +301,9 @@ const OverviewTab: FC = () => {
                 </Grid>
             </Grid>
         </Grid>
+        {selectedCourse && (
+            <CourseInfoModal courseType={selectedCourse} onClose={closeModal} />
+        )}
     </Container>;
 };
 

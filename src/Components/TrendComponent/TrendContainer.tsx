@@ -65,7 +65,7 @@ const TrendContainer: FC = () => {
     const courseCategoryLabel = `${PossibleCategories.find(d => d.key === store.currentShownCSType)?.shortName}`;
 
     //Students enrolled in ${courseCategoryLabel}
-    const RequiredDemographic = [`TotalStudents`, 'Female', 'Hispanic', 'EconDisadvantaged', 'Disability','ESL'];
+    const RequiredDemographic = [`TotalStudents`, 'Male', 'Female', 'White', 'Hispanic', 'EconDisadvantaged', 'Disability','ESL'];
     const RowHeight = 30;
     const Margin = { top: 50, left: 100, right: 50, bottom: (RequiredDemographic.length + 0.5) * 10};
     const currentCSType = PossibleCategories.find(d => d.key === store.currentShownCSType);
@@ -98,7 +98,10 @@ const TrendContainer: FC = () => {
         if (svgRef.current) {
             // code is similar to Overview Tab map code
             const svgSelection = select(svgRef.current);
-            const svgWidth = (svgSelection.node() as any).parentNode.clientWidth;
+            // const svgWidth = (svgSelection.node() as any).parentNode.clientWidth;
+                const parentWidth = (svgSelection.node() as any).parentNode.clientWidth;
+                const thresholdWidth = 900;
+                const svgWidth = Math.max(parentWidth, thresholdWidth);
             //const svgHeight = (svgSelection.node() as any).parentNode.clientHeight;
             const svgHeight = 550; 
 
@@ -111,7 +114,9 @@ const TrendContainer: FC = () => {
             const tempData: { [key: string]: number | string, }[] = PossibleSchoolYears.map((year) => ({
                 year: year,
                 TotalStudents: stateAttributeFinder(`${store.currentShownCSType}: Total`, year),
+                Male: stateAttributeFinder(`${store.currentShownCSType}: Male`, year),
                 Female: stateAttributeFinder(`${store.currentShownCSType}: Female`, year),
+                White: stateAttributeFinder(`${store.currentShownCSType}: White`, year),
                 Hispanic: stateAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`, year),
                 EconDisadvantaged: stateAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`, year),
                 Disability: stateAttributeFinder(`${store.currentShownCSType}: Disability`, year),

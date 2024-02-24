@@ -39,7 +39,7 @@ const AttributeChart: FC<Props> = ({ option, keyIdentity, outputObj }: Props) =>
     const [topThree, setTopThree] = useState(defaultAttributes);
     useEffect(() => {
         const topAttributes = outputObjKeys.length <= 3 ? outputObjKeys 
-            : Object.keys(outputObj).sort((a, b) => outputObj[b] - outputObj[a]).filter(r => r !== 'white' && (outputObj[r] as any) !== 'n<10')!.slice(0, 3);
+            : Object.keys(outputObj).sort((a, b) => outputObj[b] - outputObj[a]).filter(r => (outputObj[r] as any) !== 'n<10')!.slice(0, 3);
         // setOutput(output);
         topAttributes.length === 0 ? setTopThree(defaultAttributes) : setTopThree(topAttributes);
         setTotal(sum(Object.values(outputObj)));
