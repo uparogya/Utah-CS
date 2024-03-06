@@ -1,5 +1,5 @@
 import { TableRow } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import PercentageChart from "../CellComponents/PercentageChart";
 import { TextCell } from "../GeneralComponents";
 import { findAttribute } from "../../Interface/AttributeFinder";
@@ -8,11 +8,19 @@ import GenderRatioChart from "../CellComponents/GenderRatioChart";
 import AttributeChart from "../CellComponents/AttributeChart";
 import AttributeDialog from "../CellComponents/AttributeDialog";
 import { format } from "d3-format";
+import { listOfCoursesWithDescriptionPDFs } from "../../Preset/Constants";
 
 type Prop = {
     courseEntry: (number | string)[];
     titleEntry: string[];
 };
+
+function checkPDF(courseCode: number){
+    var hasPDF = listOfCoursesWithDescriptionPDFs.some(element => {
+        return element == courseCode;
+    })
+    return hasPDF;
+}
 
 const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
 
@@ -24,7 +32,20 @@ const AllInfoRow: FC<Prop> = ({ courseEntry, titleEntry }: Prop) => {
         <TableRow key={`course-row-${courseAttributeFinder('Course Name')}`}>
 
             <TextCell style={{ maxWidth: '20vw' }}>
-                {courseAttributeFinder('Course Name')}
+            {checkPDF(courseAttributeFinder('Course Code')) ? (
+                <a href={process.env.PUBLIC_URL + '/strands/' + courseAttributeFinder('Course Code') + '.pdf'} target="_blank" rel="noopener noreferrer">
+                    {courseAttributeFinder('Course Name')}
+                </a>
+            ) : (
+                checkPDF(courseAttributeFinder('Course Code') - 13000) ? (
+                    <a href={process.env.PUBLIC_URL + '/strands/' + (courseAttributeFinder('Course Code') - 13000) + '.pdf'} target="_blank" rel="noopener noreferrer">
+                        {courseAttributeFinder('Course Name')}
+                    </a>
+                ) : (
+                    <span>{courseAttributeFinder('Course Name')}</span>
+                )
+            )}
+                
             </TextCell>
             <TextCell >
                 {isNaN(+courseAttributeFinder('Total')) ? courseAttributeFinder('Total') : format(',')(courseAttributeFinder('Total'))}
