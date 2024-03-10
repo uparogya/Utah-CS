@@ -251,7 +251,7 @@ const TrendContainer: FC = () => {
               </TableHead>
               <TableBody>
               <TableRow>
-                <TableCell > {store.showPercentage ? "%" : "#"} of Total Utah Students Enrolled in <span style={{ color: currentCSTypeColor }}>{currentCSTypeShortName}</span></TableCell>
+                <TableCell > {store.showPercentage ? "%" : "#"} of <b>Total Utah Students</b> enrolled in <span style={{ color: currentCSTypeColor }}>{currentCSTypeShortName}</span></TableCell>
                 {dataToVisualize.map((row, index) => (
                   <TableCell key={index} align="left">
                     {typeof row.TotalStudents === 'number' && typeof row.StateTotal === 'number'
@@ -264,7 +264,7 @@ const TrendContainer: FC = () => {
 
               {RequiredDemographic.slice(1).map((demoName: string, rowIndex: number) => (
               <TableRow key={rowIndex}>
-              <TableCell> {store.showPercentage ? "%" : "#"}  of {addSpaces(demoName)} <span style={{ color: currentCSTypeColor }}>{currentCSTypeShortName}</span> Students</TableCell>
+              <TableCell> {store.showPercentage ? "%" : "#"}  of <span style={{ color: currentCSTypeColor }}>{currentCSTypeShortName}</span> students that are <b>{addSpaces(demoName)}</b> </TableCell>
               {dataToVisualize.map((row, colIndex) => (
                 <TableCell key={colIndex} align="left">
                     {typeof row[demoName] === 'number' && typeof row.TotalStudents === 'number'

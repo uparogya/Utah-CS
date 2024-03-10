@@ -1,7 +1,7 @@
 {
     "name": "utah-cs",
     "version": "0.1.0",
-    "homepage": "https://uparogya.github.io/Utah-CS",
+    "homepage": "https://uparogya.github.io/",
     "private": true,
     "dependencies": {
         "@emotion/react": "^11.9.3",
