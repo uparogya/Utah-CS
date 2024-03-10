@@ -39,7 +39,7 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const marginLeft = isMobile ? '-60vw' : '-10vw';
+    const marginLeft = isMobile ? '-60vw' : '-20vw';
 
     const courseData = useContext(DataContext).course;
     const courseAttributeFinder = (attributeName: string, selectedRow: (string | number)[]) =>
@@ -49,6 +49,7 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
     const [sortedData, setSortedData] = useState(courseData);
     const [sortedOtherData, setOtherData] = useState(courseData);
 
+    var AllCoursesTotal = 0;
 
     useEffect(() => {
         let newSortedData = [...courseData.filter(row =>
@@ -58,6 +59,7 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
         newSortedData.sort((a, b) => {
             let aTotal = +courseAttributeFinder('Total', a);
             let bTotal = +courseAttributeFinder('Total', b);
+            AllCoursesTotal += sortUp ? bTotal - aTotal : aTotal - bTotal;
             return sortUp ? bTotal - aTotal : aTotal - bTotal;
         });
     
@@ -69,6 +71,9 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
         setSortedData(topFiveCourses);
         setOtherData(otherCourses);
     }, [courseData, sortUp, courseType]); // Removed sortPercentage from dependency array
+
+    // console.log("All = " + AllCoursesTotal)
+    // console.log(sortedData);
 
     interface DataItem {
       id: number;
@@ -83,22 +88,30 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
     for (const otherCourse of sortedOtherData) {
       const thisTotal = typeof otherCourse[4] === 'number' ? otherCourse[4] : 0
       totalOtherCoursesValue += thisTotal;
+      AllCoursesTotal += thisTotal;
+  }
+
+  for (let index = 0; index < sortedData.length; index++) {
+    const element = sortedData[index];
+    AllCoursesTotal += typeof element[4] === 'number' ? element[4] : Number(element[4]);
   }
 
     useEffect(() => {
       const newDataArray: DataItem[] = sortedData.map((course, index) => {
         const label = course[3] !== null ? course[3].toString() : '';
+        var thisCourseTotal = typeof course[4] === 'number' ? course[4] : Number(course[4]);
+        var thisCoursePercentage = ((thisCourseTotal/AllCoursesTotal)*100).toFixed(2);
         return {
           id: index,
           value: typeof course[4] === 'number' ? course[4] : Number(course[4]),
-          label: label
+          label: label + " - " + thisCoursePercentage + "%"
         };
       });
 
       const otherCoursesTotalDataItem: DataItem = {
         id: newDataArray.length,
         value: totalOtherCoursesValue,
-        label: 'Other Courses', 
+        label: 'Other Courses - ' + ((totalOtherCoursesValue/AllCoursesTotal)*100).toFixed(2) + "%", 
     };
 
     const updatedDataArray = [...newDataArray, otherCoursesTotalDataItem];
@@ -106,7 +119,7 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
       setData(updatedDataArray);
     }, [sortedData]);
 
-    console.log(totalOtherCoursesValue)
+    // console.log(totalOtherCoursesValue)
 
 
     
@@ -131,7 +144,7 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
                 data: data,
               },
             ]}
-            width={750}
+            width={900}
             height={200}
           />
           </div>
