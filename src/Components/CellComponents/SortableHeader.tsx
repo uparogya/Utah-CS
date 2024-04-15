@@ -22,7 +22,7 @@ const SortableHeader: FC<Props> = ({ headerName, isSortUp, isSorting, isSortPerc
     return (
         <TextCell onClick={onClick} >
             <TableSortLabel
-                style={{ color: XDarkGray, fontWeight: isSorting ? 'bold' : undefined, ...additionalStyle }} hideSortIcon direction={isSortUp ? 'desc' : 'asc'} active={isSorting} children={findHeaderName()} />
+                style={{ color: XDarkGray, fontWeight: isSorting ? 'bold' : 'bold', ...additionalStyle }} hideSortIcon direction={isSortUp ? 'desc' : 'asc'} active={isSorting} children={findHeaderName()} />
         </TextCell>
     );
 };

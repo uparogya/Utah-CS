@@ -261,7 +261,7 @@ const OverviewTab: FC = () => {
                 }
                 subText={
                     <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
-                        <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer' }}>
+                        <span onClick={() => store.updateShowPercentage()} style={{ cursor: 'pointer', fontSize: '3.2rem', textAlign: 'center' }}>
                             {findCSStudents()}
                         </span>
                     </span>

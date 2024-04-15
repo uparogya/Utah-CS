@@ -7,6 +7,7 @@ import { courseTitle } from './CourseInfoModal';
 import { DataContext } from "../../App";
 import { findAttribute } from '../../Interface/AttributeFinder';
 import { PieChart } from '@mui/x-charts/PieChart';
+import CourseInfoModal from "../CourseDescriptionComponent/CourseInfoModal"
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -35,6 +36,16 @@ const categoryMatch: { [key: string]: string[] } = {
 };
 
 const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onClose }) => {
+
+  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
+
+  const openModal = (courseType: string) => {
+    setSelectedCourse(courseType);
+  };
+
+  const closeModal = () => {
+    setSelectedCourse(null);
+  };
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -148,9 +159,14 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
             height={200}
           />
           </div>
+          <br></br><span onClick={() => openModal(courseType)} style={{color:'blue',textDecoration:'underline',cursor:'pointer'}}>Show Courses</span>
         </Box>
       </Modal>
+      {selectedCourse && (
+        <CourseInfoModal courseType={selectedCourse} onClose={closeModal} />
+      )}
     </div>
+    
   );
 }
 

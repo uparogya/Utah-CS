@@ -40,9 +40,6 @@ const TabsComponent: FC<TabsComponentProps> = ({ tabVal, tabChange }) => {
     <div>
     <div style={{ display: 'flex', flexDirection: 'row',justifyContent: 'space-between'}}>
       <Hidden mdUp>
-        <IconButton onClick={toggleSidebar}>
-          <MenuIcon />
-        </IconButton>
         <h3 style={{color: CourseCategoryColor[store.currentShownCSType]}}>
         {
             tabVal === 0 ? (
@@ -60,11 +57,14 @@ const TabsComponent: FC<TabsComponentProps> = ({ tabVal, tabChange }) => {
             )
         }
       </h3>
+      <IconButton onClick={toggleSidebar}>
+          <MenuIcon />
+        </IconButton>
       </Hidden>
     </div>
 
       <Drawer
-        anchor="left"
+        anchor="right"
         open={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       >
