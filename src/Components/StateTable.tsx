@@ -65,14 +65,14 @@ const StateTable: FC = () => {
                             actualVal={totalStudentNum}
                             percentage={1} />
                     </StateTableCell>
-                    <StateTableCell onClick={() => setOpenGenderDialog(true)}>
+                    <StateTableCell onClick={() => setOpenGenderDialog(true)} style={{color:'blue', textDecoration:'underline'}}>
                         <AttributeChart option='gender' keyIdentity="State Total"
                             outputObj={{
                                 male: stateAttributeFinder('TOTAL: Male'),
                                 female: stateAttributeFinder('TOTAL: Female'),
                             }} />
                     </StateTableCell>
-                    <StateTableCell onClick={() => setOpenRaceDialog(true)}>
+                    <StateTableCell onClick={() => setOpenRaceDialog(true)} style={{color:'blue', textDecoration:'underline'}}>
                         <AttributeChart option='race' keyIdentity="State Total"
                             outputObj={{
                                 white: stateAttributeFinder('TOTAL: White'),
@@ -114,14 +114,14 @@ const StateTable: FC = () => {
                             actualVal={totalCSStudentNum}
                             percentage={totalCSStudentNum / totalStudentNum}
                             tooltip={`${format(',.1%')(totalCSStudentNum / totalStudentNum)} out of all HS students`} /></StateTableCell>
-                    <StateTableCell onClick={() => setOpenGenderDialog(true)}>
+                    <StateTableCell onClick={() => setOpenGenderDialog(true)} style={{color:'blue', textDecoration:'underline'}}>
                         <AttributeChart option='gender' keyIdentity="CS"
                             outputObj={{
                                 male: stateAttributeFinder(`${store.currentShownCSType}: Male`),
                                 female: stateAttributeFinder(`${store.currentShownCSType}: Female`),
                             }} />
                     </StateTableCell>
-                    <StateTableCell onClick={() => setOpenRaceDialog(true)}>
+                    <StateTableCell onClick={() => setOpenRaceDialog(true)} style={{color:'blue', textDecoration:'underline'}}>
                         <AttributeChart option='race' keyIdentity="CS"
                             outputObj={{
                                 white: stateAttributeFinder(`${store.currentShownCSType}: White`),

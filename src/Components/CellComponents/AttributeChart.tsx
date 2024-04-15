@@ -64,7 +64,6 @@ const AttributeChart: FC<Props> = ({ option, keyIdentity, outputObj }: Props) =>
 
 const SmallerText = styled.span({
     fontSize: 'smaller',
-    textDecoration: 'underline'
 });
 
 export default observer(AttributeChart);

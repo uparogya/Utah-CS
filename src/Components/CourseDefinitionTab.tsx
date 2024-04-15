@@ -81,16 +81,16 @@ const CourseDefinitionTab: FC = () => {
         <Grid item md={4}>
             <Grid container direction="column" alignContent={'center'} justifyContent={'space-around'} style={{'height':'100%'}}>
                 <Grid item>
-                    <CategoryCard categoryKey='CS'>
+                    <CategoryCard categoryKey='CS' onClick={() => openPieChart('CS')}>
                         <CardContent>
                             <CategoryTitle categoryKey='CS'>
-                                <RevealData categoryKey='CS' onClick={() => openPieChart('CS')} aria-label="info">
+                                {/* <RevealData categoryKey='CS' onClick={() => openPieChart('CS')} aria-label="info">
                                     <PieChartIcon />
-                                </RevealData>
+                                </RevealData> */}
                                 All CS
-                                <RevealData categoryKey='CS' onClick={() => openModal('CS')} aria-label="info">
+                                {/* <RevealData categoryKey='CS' onClick={() => openModal('CS')} aria-label="info">
                                     <InfoIcon />
-                                </RevealData>
+                                </RevealData> */}
                             </CategoryTitle>
                             <CategoryDescription>
                                 Includes all courses connected to computer science: <b style={{color:CourseCategoryColor['CSC']}}>Core CS</b> and <b style={{color:CourseCategoryColor['CSR']}}>Related CS</b> courses. 
@@ -108,32 +108,32 @@ const CourseDefinitionTab: FC = () => {
         <Grid item md={4}>
             <Grid container direction="column" alignContent={'center'}>
                 <Grid item>
-                    <CategoryCard categoryKey='CSC'>
+                    <CategoryCard categoryKey='CSC' onClick={() => openPieChart('CSC')}>
                         <CardContent>
                             <CategoryTitle categoryKey='CSC'>
-                                <RevealData categoryKey='CSC' onClick={() => openPieChart('CSC')} aria-label="info">
+                                {/* <RevealData categoryKey='CSC' onClick={() => openPieChart('CSC')} aria-label="info">
                                     <PieChartIcon />
-                                </RevealData>
+                                </RevealData> */}
                                 Core CS
-                                <RevealData categoryKey='CSC' onClick={() => openModal('CSC')} aria-label="info">
+                                {/* <RevealData categoryKey='CSC' onClick={() => openModal('CSC')} aria-label="info">
                                     <InfoIcon />
-                                </RevealData>
+                                </RevealData> */}
                             </CategoryTitle>
                             <CategoryDescription>These courses directly teach fundamental computer science or programming skills. They are divided into two categories: <b style={{color:CourseCategoryColor['CSB']}}>Basic CS</b> and <b style={{color:CourseCategoryColor['CSA']}}>Advanced CS</b>.</CategoryDescription>
                         </CardContent>
                     </CategoryCard>
                 </Grid>
                 <Grid item>
-                    <CategoryCard categoryKey='CSR'>
+                    <CategoryCard categoryKey='CSR' onClick={() => openPieChart('CSR')}>
                         <CardContent>
                             <CategoryTitle categoryKey='CSR'>
-                                <RevealData categoryKey='CSR' onClick={() => openPieChart('CSR')} aria-label="info">
+                                {/* <RevealData categoryKey='CSR' onClick={() => openPieChart('CSR')} aria-label="info">
                                     <PieChartIcon />
-                                </RevealData>
+                                </RevealData> */}
                                 Related CS
-                                <RevealData categoryKey='CSR' onClick={() => openModal('CSR')} aria-label="info">
+                                {/* <RevealData categoryKey='CSR' onClick={() => openModal('CSR')} aria-label="info">
                                     <InfoIcon />
-                                </RevealData>
+                                </RevealData> */}
                             </CategoryTitle>
                             <CategoryDescription>The emphasis of these courses is on the application, rather than the skills, of computer science in a variety of settings.</CategoryDescription>
                         </CardContent>
@@ -145,32 +145,32 @@ const CourseDefinitionTab: FC = () => {
         <Grid item md={4}>
             <Grid container direction="column" alignContent={'center'}>
                 <Grid item>
-                    <CategoryCard categoryKey='CSB'>
+                    <CategoryCard categoryKey='CSB' onClick={() => openPieChart('CSB')}>
                         <CardContent>
                             <CategoryTitle categoryKey='CSB'>
-                                <RevealData categoryKey='CSB' onClick={() => openPieChart('CSB')} aria-label="info">
+                                {/* <RevealData categoryKey='CSB' onClick={() => openPieChart('CSB')} aria-label="info">
                                     <PieChartIcon />
-                                </RevealData>
+                                </RevealData> */}
                                 Basic CS
-                                <RevealData categoryKey='CSB' onClick={() => openModal('CSB')} aria-label="info">
+                                {/* <RevealData categoryKey='CSB' onClick={() => openModal('CSB')} aria-label="info">
                                     <InfoIcon />
-                                </RevealData>
+                                </RevealData> */}
                             </CategoryTitle>
                             <CategoryDescription>Introductory CS Courses for those with no prior experience in the area.</CategoryDescription>
                         </CardContent>
                     </CategoryCard>
                 </Grid>
                 <Grid item>
-                    <CategoryCard categoryKey='CSA'>
+                    <CategoryCard categoryKey='CSA' onClick={() => openPieChart('CSA')}>
                         <CardContent>
                             <CategoryTitle categoryKey='CSA'>
-                                <RevealData categoryKey='CSA' onClick={() => openPieChart('CSA')} aria-label="info">
+                                {/* <RevealData categoryKey='CSA' onClick={() => openPieChart('CSA')} aria-label="info">
                                     <PieChartIcon />
-                                </RevealData>
+                                </RevealData> */}
                                 Advanced CS
-                                <RevealData categoryKey="CSA" onClick={() => openModal('CSA')} aria-label="info">
+                                {/* <RevealData categoryKey="CSA" onClick={() => openModal('CSA')} aria-label="info">
                                     <InfoIcon />
-                                </RevealData>
+                                </RevealData> */}
                             </CategoryTitle>
                             <CategoryDescription>Courses intended for those with prior experience.</CategoryDescription>
                         </CardContent>
