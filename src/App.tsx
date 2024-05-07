@@ -168,7 +168,13 @@ function App() {
                     }
                 });
                 tempDistrictData.push(charterRow);
-                store.setSelectedDistrict(tempDistrictData.map(d => d[0] as string));
+                // store.setSelectedDistrict(tempDistrictData.map(d => d[0] as string));
+                // console.log(store.selectedDistricts);
+                if(store.selectedDistricts.length == 0){
+                    store.setSelectedDistrict(tempDistrictData.map(d => d[0] as string));
+                }else{
+                    store.setSelectedDistrict(store.selectedDistricts);
+                }
                 stateUpdateWrapperUseJSON(districtData, districtTitleEntry.concat(tempDistrictData), setDistrictData);
             });
 
