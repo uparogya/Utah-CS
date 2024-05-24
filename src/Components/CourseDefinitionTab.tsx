@@ -4,7 +4,6 @@ import { Grid, List, ListItem, Typography, Card, CardContent, Button } from "@mu
 import { DataContext, TableTitle } from "../App";
 import { generateCourseList } from "./TrendComponent/TrendContainer";
 import { observer } from "mobx-react-lite";
-import ArticleIcon from '@mui/icons-material/Article';
 import styled from '@emotion/styled';
 import { CourseCategoryColor } from "../Preset/Colors";
 import IconButton from '@mui/material/IconButton';
@@ -92,13 +91,7 @@ const CourseDefinitionTab: FC = () => {
                                     <InfoIcon />
                                 </RevealData> */}
                             </CategoryTitle>
-                            <CategoryDescription>
-                                Includes all courses connected to computer science: <b style={{color:CourseCategoryColor['CSC']}}>Core CS</b> and <b style={{color:CourseCategoryColor['CSR']}}>Related CS</b> courses. 
-                                <br></br><br></br>
-                                <a href="https://docs.google.com/spreadsheets/d/1vjRWlFjWpiI3693YyfJjWGzG95QnKhzD3JTz2yuprtc/edit#gid=0" target="_blank" rel="noopener noreferrer"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' /> Course Description</a>
-                                <br></br>
-                                <a href="https://drive.google.com/drive/folders/1s7HDlOPJdgttVf39jmB4OwiipTal5jht" target="_blank" rel="noopener noreferrer"><ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize='small' /> Infographics From Funded LEAs</a>
-                            </CategoryDescription>
+                            <CategoryDescription> Includes all courses connected to computer science: <b style={{color:CourseCategoryColor['CSC']}}>Core CS</b> and <b style={{color:CourseCategoryColor['CSR']}}>Related CS</b> courses. </CategoryDescription>
                         </CardContent>
                     </CategoryCard>
                 </Grid>

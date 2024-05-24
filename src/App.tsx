@@ -19,6 +19,7 @@ import DataLoadingModal from './Components/DataLoadingModal';
 import CourseDefinitionTab from './Components/CourseDefinitionTab';
 import { CourseCategoryColor, LightGray } from "./Preset/Colors";
 import TabsComponent from './Components/TabsComponent/Tabs';
+import Footer from './Components/Footer';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -291,7 +292,7 @@ function App() {
                         </Grid>
                     </TabPanel>
                 </Box>
-                <footer style={{ backgroundColor: '#003789', minHeight: '50px' }}></footer>
+                <Footer></Footer>
             </div>
             <DataLoadingModal />
         </DataContext.Provider>
