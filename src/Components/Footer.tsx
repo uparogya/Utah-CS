@@ -2,22 +2,16 @@ import React from 'react';
 import ArticleIcon from '@mui/icons-material/Article'
 
 const Footer = () => (
-  <footer style={{ backgroundColor: '#003789', padding: '4px', color: 'white', textAlign: 'center' }}>
-    <div style={{ margin: '0 auto' }}>
-      <h4>External Links:</h4>
+  <footer style={{ backgroundColor: '#003789', padding: '4px', color: 'whitesmoke', textAlign: 'center', fontSize: 'smaller' }}>
+      <p style={{padding: '0 10%'}}>This work is funded in part by a co-sponsorship from the Expanding Computing Education Pathways (ECEP) Alliance <a style={{color: 'whitesmoke'}} href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2137834&HistoricalAwards=false" target='_blank'>(NSF-CNS-2137834)</a>, an NSF-funded Broadening Participation in Computing Alliance.</p>
       <div style={{ cursor: 'pointer', display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
-        <a href="https://docs.google.com/spreadsheets/d/1vjRWlFjWpiI3693YyfJjWGzG95QnKhzD3JTz2yuprtc/edit#gid=0" target="_blank" rel="noopener noreferrer" style={{ color: 'white'}}>
-          <ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize="small" /> Course Description
-        </a>
-        <a href="https://drive.google.com/drive/folders/1s7HDlOPJdgttVf39jmB4OwiipTal5jht" target="_blank" rel="noopener noreferrer" style={{ color: 'white'}}>
+        <a href="https://drive.google.com/drive/folders/1s7HDlOPJdgttVf39jmB4OwiipTal5jht" target="_blank" rel="noopener noreferrer" style={{ color: 'whitesmoke'}}>
           <ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize="small" /> Infographics From Funded LEAs
         </a>
-        <a href="https://files.eric.ed.gov/fulltext/ED604662.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'white'}}>
+        <a href="https://files.eric.ed.gov/fulltext/ED604662.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'whitesmoke'}}>
           <ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize="small" /> 2019 Utah CS Landscape Report
         </a>
       </div> 
-      <h4>Acknowledgement:</h4>
-    </div>
     <br></br>
   </footer>
 );

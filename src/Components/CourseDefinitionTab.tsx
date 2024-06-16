@@ -11,6 +11,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import CourseInfoModal from "./CourseDescriptionComponent/CourseInfoModal";
 import CoursePieChartDisplay from "./CourseDescriptionComponent/CoursePieChartDisplay";
+import ArticleIcon from '@mui/icons-material/Article'
 
 interface CategoryCardProps {
     categoryKey: string;
@@ -91,7 +92,15 @@ const CourseDefinitionTab: FC = () => {
                                     <InfoIcon />
                                 </RevealData> */}
                             </CategoryTitle>
-                            <CategoryDescription> Includes all courses connected to computer science: <b style={{color:CourseCategoryColor['CSC']}}>Core CS</b> and <b style={{color:CourseCategoryColor['CSR']}}>Related CS</b> courses. </CategoryDescription>
+                            <CategoryDescription> 
+                                Includes all courses connected to computer science: <b style={{color:CourseCategoryColor['CSC']}}>Core CS</b> and <b style={{color:CourseCategoryColor['CSR']}}>Related CS</b> courses. 
+                                <br />
+                                <br />
+
+                                <a href="https://docs.google.com/spreadsheets/d/1vjRWlFjWpiI3693YyfJjWGzG95QnKhzD3JTz2yuprtc/edit#gid=0" target="_blank" rel="noopener noreferrer">
+                                <ArticleIcon style={{ verticalAlign: 'text-bottom' }} fontSize="small" /> Course Description
+                                </a>
+                            </CategoryDescription>
                         </CardContent>
                     </CategoryCard>
                 </Grid>

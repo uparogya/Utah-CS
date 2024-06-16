@@ -28,10 +28,134 @@ const style = {
   };
 
 const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEntry, onClose }) => {
+
+    // WHAT I AM DOING
+    // FIRST I AM FINDING THE TOP 2 RACES IN THE ENTIRE DISTRICT DESPITE OF WHAT COURSE CATEGORY IS CHOSEN (COLUMN H-N)
+    // THEN I AN KEEPING THOSE TWO RACES IN THE VARIABLE: TopTwoRace
+    // THEN I AM FINDING THE TOP 2 RACES IN THE COURSE CATEGORY: TopTwoRaceInDistrict
+    // THE IDEA IS:
+    // IF IT IS POSSILBE TO SHOW THE TOP 2 IN THE COURSE CATEGORY IN A DISTRICT, SHOW IT AND CALCULATE OTHER RACE POPULATION
+    // IF NOT, SHOW ONE OF THEM WITH NUMBER AND OTHER ONE WITHOUT NUMBER
+    // TO DECIDE WHAT TO SHOW WITHOUT NUMBER, SEE THE TopTwoRace AND USE THOSE TWO TO DISPLAY THE OTHER ROW
+    // IF THERE ARE NONE WITH NUMBER, USE BOTH FROM THE TopTwoRace
+    // IDEA IS: `${store.currentShownCSType}: TopTwoRace[0][0]` & `${store.currentShownCSType}: TopTwoRace[1][0]`
+    // THIS WILL GIVE THE NUMBER FROM THE SPECIFIC COURSE CATEGORY IN SPECIFIC DISTRICT
+    // BUT FIRST, MAKE SURE [0][0] OR [1][0] IS NOT ALREADY INCLUDED
+
     const store = useContext(Store);
 
     const districtAttributeFinder = (attributeName: string) =>
         findAttribute(attributeName, titleEntry, districtEntry);
+
+    // console.log(districtAttributeFinder(`TOTAL: Total`))
+    const Total_Column_H_to_N: Record<string, number> = {
+        'White': 0,
+        'Hispanic': 0,
+        'Asian': 0,
+        'Black': 0,
+        'Native American': 0,
+        'Pacific Islander': 0,
+        'Two or More Races': 0
+    };
+
+    const Total_Column_H_to_N_Attributes: Record<string, string> = {
+        'Native American': 'TOTAL: American Indian or Alaska Native',
+        'Asian': 'TOTAL: Asian',
+        'Black': 'TOTAL: Black or African American',
+        'Hispanic': 'TOTAL: Hispanic or Latino',
+        'Pacific Islander': 'TOTAL: Native Hawaiian or Pacific Islander',
+        'Two or More Races': 'TOTAL: Two or more races',
+        'White': 'TOTAL: White'
+    };
+
+    Object.keys(Total_Column_H_to_N_Attributes).forEach(key => {
+        Total_Column_H_to_N[key] = (districtAttributeFinder(Total_Column_H_to_N_Attributes[key])>0) ? districtAttributeFinder(Total_Column_H_to_N_Attributes[key]) : 0;
+    });
+
+    const sorted_Total_Column_H_to_N = Object.fromEntries(
+        Object.entries(Total_Column_H_to_N).sort(([, valueA], [, valueB]) => valueB - valueA)
+    );
+
+    const TopTwoRace = Object.entries(sorted_Total_Column_H_to_N).slice(0,2); //IN THE ENTIRE DISTRICT
+    // console.log(TopTwoRace)
+
+    //FINDING TOP IN THE COURSE CATEGORY
+    const Races_Students_Count: Record<string, number> = {
+        'White': 0,
+        'Hispanic': 0,
+        'Asian': 0,
+        'Black': 0,
+        'Native American': 0,
+        'Pacific Islander': 0,
+        'Two or More Races': 0
+    };
+
+    const Races_Students_Attributes: Record<string, string> = {
+        'Native American': `${store.currentShownCSType}: American Indian or Alaska Native`,
+        'Asian': `${store.currentShownCSType}: Asian`,
+        'Black': `${store.currentShownCSType}: Black or African American`,
+        'Hispanic': `${store.currentShownCSType}: Hispanic or Latino`,
+        'Pacific Islander': `${store.currentShownCSType}: Native Hawaiian or Pacific Islander`,
+        'Two or More Races': `${store.currentShownCSType}: Two or more races`,
+        'White': `${store.currentShownCSType}: White`
+    };
+
+    Object.keys(Races_Students_Attributes).forEach(key => {
+        Races_Students_Count[key] = (districtAttributeFinder(Races_Students_Attributes[key]))>0 ? districtAttributeFinder(Races_Students_Attributes[key]) : 0;
+    });
+
+    const sorted_Races_Students_Count = Object.fromEntries(
+        Object.entries(Races_Students_Count).sort(([, valueA], [, valueB]) => valueB - valueA)
+    )
+
+    const TopRaces = Object.fromEntries(
+        Object.entries(Races_Students_Count).filter(([_, value]) => value > 0) //IN THE COURSE CATEGORY
+    );
+
+    const TopTwoRaceInDistrict = Object.entries(TopRaces).slice(0,2);
+    // console.log(sorted_Races_Students_Count)
+    // console.log(TopTwoRaceInDistrict)
+
+    const TableRowContent = () => {
+        switch (TopTwoRaceInDistrict.length) {
+            case 2:
+                return (<>
+                    <TableRow>
+                        <TableCell>{TopTwoRaceInDistrict[0][0]}</TableCell>
+                        <TableCell>{format(',')(TopTwoRaceInDistrict[0][1])}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>{TopTwoRaceInDistrict[1][0]}</TableCell>
+                        <TableCell>{format(',')(TopTwoRaceInDistrict[1][1])}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Other Races</TableCell>
+                        <TableCell>{(districtAttributeFinder(`${store.currentShownCSType}: Total`) >= 0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: Total`) - TopTwoRaceInDistrict[0][1] - TopTwoRaceInDistrict[1][1]) : 'N/A')}</TableCell>
+                    </TableRow>
+                </>)
+            case 1:
+                return (<>
+                {/* 
+                if [0][0] is hispanic and toptworaceindistrict is hispanic do white else do hispanic
+                if [0][0] is white and toptworaceindistrict is white do hispanic else do white
+                */}
+                    <TableRow>
+                        <TableCell>{TopTwoRaceInDistrict[0][0]}</TableCell>
+                        <TableCell>{format(',')(TopTwoRaceInDistrict[0][1])}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>{TopTwoRaceInDistrict[0][0]}</TableCell>
+                        <TableCell>{}</TableCell>
+                    </TableRow>
+                </>)
+            default:
+                return (<>
+                {/* toptworaceindistrict[0][0] and toptworaceindistrict[1][0] from the course */}
+                CASE0
+                </>)
+        }
+    }
+
 
     return (
         <div>
@@ -51,15 +175,15 @@ const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEnt
                                 <TableHead style={{backgroundColor: 'dimgray'}}>
                                     <TableRow>
                                         <TableCell style={{fontWeight: 'bolder', color:CourseCategoryColor[store.currentShownCSType]}}>
-                                            Race/Category
+                                            Category
                                         </TableCell>
                                         <TableCell style={{fontWeight: 'bolder', color:CourseCategoryColor[store.currentShownCSType]}}>
-                                            Number of Students
+                                            Students
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    <TableRow>
+                                    {/* <TableRow>
                                         <TableCell>White</TableCell>
                                         <TableCell>{districtAttributeFinder(`${store.currentShownCSType}: White`) >= 0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: White`)) : (districtAttributeFinder(`${store.currentShownCSType}: White`))}</TableCell>
                                     </TableRow>
@@ -70,7 +194,8 @@ const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEnt
                                     <TableRow>
                                         <TableCell>Other Races</TableCell>
                                         <TableCell>{format(',')((districtAttributeFinder(`${store.currentShownCSType}: Total`) >= 0 ? districtAttributeFinder(`${store.currentShownCSType}: Total`) : 0) - (districtAttributeFinder(`${store.currentShownCSType}: White`) >= 0 ? districtAttributeFinder(`${store.currentShownCSType}: White`) : 0) - (districtAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`) >=0 ? districtAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`) : 0))}</TableCell>
-                                    </TableRow>
+                                    </TableRow> */}
+                                    {TableRowContent()}
                                     <TableRow style={{backgroundColor: CourseCategoryColor[store.currentShownCSType], color: 'white'}}>
                                         <TableCell style={{fontWeight: 'bolder', color: 'white'}}>Total {courseTitle(store.currentShownCSType)} Enrollment</TableCell>
                                         <TableCell style={{fontWeight: 'bolder', color: 'white'}}>{districtAttributeFinder(`${store.currentShownCSType}: Total`) >=0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: Total`)) : districtAttributeFinder(`${store.currentShownCSType}: Total`)}</TableCell>

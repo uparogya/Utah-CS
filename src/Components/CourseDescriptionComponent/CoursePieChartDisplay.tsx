@@ -160,7 +160,7 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
             margin={ {right: 400} }
           />
           </div>
-          <br></br><span onClick={() => openModal(courseType)} style={{color:'blue',textDecoration:'underline',cursor:'pointer'}}>Show Courses</span>
+          <br></br><span onClick={() => openModal(courseType)} style={{color:'blue',textDecoration:'underline',cursor:'pointer'}}>Course List</span>
         </Box>
       </Modal>
       {selectedCourse && (
