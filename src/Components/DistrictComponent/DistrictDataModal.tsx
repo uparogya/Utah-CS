@@ -139,19 +139,27 @@ const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEnt
                 if [0][0] is hispanic and toptworaceindistrict is hispanic do white else do hispanic
                 if [0][0] is white and toptworaceindistrict is white do hispanic else do white
                 */}
+                    {/* CASE1 */}
                     <TableRow>
                         <TableCell>{TopTwoRaceInDistrict[0][0]}</TableCell>
                         <TableCell>{format(',')(TopTwoRaceInDistrict[0][1])}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell>{TopTwoRaceInDistrict[0][0]}</TableCell>
-                        <TableCell>{}</TableCell>
+                        <TableCell>{TopTwoRaceInDistrict[0][0] == TopTwoRace[0][0] ? TopTwoRace[1][0] : TopTwoRace[0][0]}</TableCell>
+                        <TableCell>{TopTwoRaceInDistrict[0][0] == TopTwoRace[0][0] ? districtAttributeFinder(Races_Students_Attributes[TopTwoRace[1][0]]) : districtAttributeFinder(Races_Students_Attributes[TopTwoRace[0][0]])}</TableCell>
                     </TableRow>
                 </>)
             default:
                 return (<>
                 {/* toptworaceindistrict[0][0] and toptworaceindistrict[1][0] from the course */}
-                CASE0
+                <TableRow>
+                    <TableCell>{TopTwoRace[0][0]}</TableCell>
+                    <TableCell>{districtAttributeFinder(Races_Students_Attributes[TopTwoRace[0][0]])}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>{TopTwoRace[1][0]}</TableCell>
+                    <TableCell>{districtAttributeFinder(Races_Students_Attributes[TopTwoRace[1][0]])}</TableCell>
+                </TableRow>
                 </>)
         }
     }
