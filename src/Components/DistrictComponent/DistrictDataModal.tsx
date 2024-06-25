@@ -191,23 +191,11 @@ const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEnt
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {/* <TableRow>
-                                        <TableCell>White</TableCell>
-                                        <TableCell>{districtAttributeFinder(`${store.currentShownCSType}: White`) >= 0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: White`)) : (districtAttributeFinder(`${store.currentShownCSType}: White`))}</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>Hispanic</TableCell>
-                                        <TableCell>{districtAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`) >=0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`)) : districtAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`)}</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>Other Races</TableCell>
-                                        <TableCell>{format(',')((districtAttributeFinder(`${store.currentShownCSType}: Total`) >= 0 ? districtAttributeFinder(`${store.currentShownCSType}: Total`) : 0) - (districtAttributeFinder(`${store.currentShownCSType}: White`) >= 0 ? districtAttributeFinder(`${store.currentShownCSType}: White`) : 0) - (districtAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`) >=0 ? districtAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`) : 0))}</TableCell>
-                                    </TableRow> */}
-                                    {TableRowContent()}
                                     <TableRow style={{backgroundColor: CourseCategoryColor[store.currentShownCSType], color: 'white'}}>
                                         <TableCell style={{fontWeight: 'bolder', color: 'white'}}>Total {courseTitle(store.currentShownCSType)} Enrollment</TableCell>
                                         <TableCell style={{fontWeight: 'bolder', color: 'white'}}>{districtAttributeFinder(`${store.currentShownCSType}: Total`) >=0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: Total`)) : districtAttributeFinder(`${store.currentShownCSType}: Total`)}</TableCell>
                                     </TableRow>
+                                    {TableRowContent()}
                                     <TableRow>
                                         <TableCell>Econ. Disadvantaged</TableCell>
                                         <TableCell>{districtAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`) >=0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)) : districtAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)}</TableCell>
