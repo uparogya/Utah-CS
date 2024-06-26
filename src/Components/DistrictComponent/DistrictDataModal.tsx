@@ -5,7 +5,7 @@ import { findAttribute } from "../../Interface/AttributeFinder";
 import Store from "../../Interface/Store";
 import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { CourseCategoryColor } from "../../Preset/Colors";
-import { courseTitle } from "../CourseDescriptionComponent/CourseInfoModal";
+import { courseTitle, ModalTitleBar } from "../FrequentlyUsedComponents/FrequentlyUsedComponents";
 import { StickyTableContainer } from "../GeneralComponents";
 import { format } from "d3-format";
 
@@ -25,7 +25,7 @@ const style = {
     border: '2px solid dimgray',
     boxShadow: 50,
     p: 4,
-  };
+};
 
 const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEntry, onClose }) => {
 
@@ -170,13 +170,14 @@ const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEnt
             <Modal
                 open={true}
                 onClose={onClose}
-                aria-labelledby="Courses Under Category"
-                aria-describedby="All Courses & Codes"
+                aria-labelledby="District Data Modal"
+                aria-describedby="District Data Modal"
             >
                 <Box sx={style}>
-                    <Typography id="Courses Under Category" variant="h6" component="h2" style={{color:CourseCategoryColor[store.currentShownCSType], marginBottom: '25px'}}>
-                        {districtAttributeFinder('District Name')} {/*- {courseTitle(store.currentShownCSType)}*/}
-                    </Typography>
+                    {ModalTitleBar(districtAttributeFinder('District Name'), CourseCategoryColor[store.currentShownCSType], onClose)}
+                    {/* <Typography id="Courses Under Category" variant="h6" component="h2" style={{color:CourseCategoryColor[store.currentShownCSType], marginBottom: '25px'}}>
+                        {districtAttributeFinder('District Name')}
+                    </Typography> */}
                     <div style={{backgroundColor:'rgba(0,0,0,0.05)'}}>
                         <StickyTableContainer>
                             <Table style={{ padding: '0px', border: '1px solid rgba(0,0,0,0.05)' }} stickyHeader aria-label="sticky table">

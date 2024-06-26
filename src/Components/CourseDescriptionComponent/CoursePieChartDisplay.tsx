@@ -3,7 +3,7 @@ import { Typography, useTheme, useMediaQuery } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { FC, useContext, useEffect, useState } from "react";
 import { CourseCategoryColor } from "../../Preset/Colors";
-import { courseTitle } from './CourseInfoModal';
+import { courseTitle, ModalTitleBar } from '../FrequentlyUsedComponents/FrequentlyUsedComponents';
 import { DataContext } from "../../App";
 import { findAttribute } from '../../Interface/AttributeFinder';
 import { PieChart } from '@mui/x-charts/PieChart';
@@ -142,9 +142,10 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
         aria-describedby="All Courses & Codes"
       >
         <Box sx={style}>
-          <Typography id="Courses Under Category" variant="h6" component="h2" style={{color:CourseCategoryColor[courseType]}}>
+          {ModalTitleBar("Top 5 of " + courseTitle(courseType) + " Courses", CourseCategoryColor[courseType], onClose)}
+          {/* <Typography id="Courses Under Category" variant="h6" component="h2" style={{color:CourseCategoryColor[courseType]}}>
             Top 5 of {courseTitle(courseType)} Courses
-          </Typography>
+          </Typography> */}
           <div style={{ overflow: 'scroll'}}>
           <PieChart
             colors={['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']}

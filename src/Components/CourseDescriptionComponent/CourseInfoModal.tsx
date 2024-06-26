@@ -3,10 +3,11 @@ import { Typography, Table, TableHead, TableRow, TableBody, TableCell } from '@m
 import { StickyTableContainer } from "../GeneralComponents";
 import Modal from '@mui/material/Modal';
 import { FC, useContext } from "react";
-import Store from "../../Interface/Store";
+// import Store from "../../Interface/Store";
 import { DataContext } from "../../App";
 import { generateCourseList } from "../TrendComponent/TrendContainer";
 import { CourseCategoryColor } from "../../Preset/Colors";
+import { courseTitle, ModalTitleBar } from "../FrequentlyUsedComponents/FrequentlyUsedComponents";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -25,25 +26,25 @@ interface CourseInfoModalProps {
     onClose: () => void;
 }
 
-export const courseTitle = (courseType: string) => {
-  if(courseType == 'CSC'){
-    return 'Core CS';
-  }else if(courseType == 'CSB'){
-    return 'Basic CS';
-  }else if(courseType == 'CSA'){
-    return 'Advanced CS';
-  }else if(courseType == 'CSR'){
-    return 'Related CS';
-  }else if(courseType == 'CS'){
-    return 'All CS';
-  }else{
-    return null;
-  }
-}
+// export const courseTitle = (courseType: string) => {
+//   if(courseType == 'CSC'){
+//     return 'Core CS';
+//   }else if(courseType == 'CSB'){
+//     return 'Basic CS';
+//   }else if(courseType == 'CSA'){
+//     return 'Advanced CS';
+//   }else if(courseType == 'CSR'){
+//     return 'Related CS';
+//   }else if(courseType == 'CS'){
+//     return 'All CS';
+//   }else{
+//     return null;
+//   }
+// }
 
 const CourseInfoModal: FC<CourseInfoModalProps> = ({ courseType, onClose }) => {
 
-    const store = useContext(Store);
+    // const store = useContext(Store);
     const courseCateData = useContext(DataContext).courseList;
 
     const generateList = () => {
@@ -68,9 +69,10 @@ const CourseInfoModal: FC<CourseInfoModalProps> = ({ courseType, onClose }) => {
         aria-describedby="All Courses & Codes"
       >
         <Box sx={style}>
-          <Typography id="Courses Under Category" variant="h6" component="h2" style={{color:CourseCategoryColor[courseType]}}>
+          {ModalTitleBar(courseTitle(courseType) + " Courses", CourseCategoryColor[courseType], onClose)}
+          {/* <Typography id="Courses Under Category" variant="h6" component="h2" style={{color:CourseCategoryColor[courseType]}}>
             {courseTitle(courseType)} Courses
-          </Typography>
+          </Typography> */}
           <Typography id="All Courses & Codes" sx={{ mt: 2 }}>
             <StickyTableContainer>
                 <Table style={{ paddingLeft: '10px', paddingRight: '10px', paddingTop: '10px' }} stickyHeader aria-label="sticky table">
