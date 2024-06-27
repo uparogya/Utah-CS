@@ -146,7 +146,7 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
           {/* <Typography id="Courses Under Category" variant="h6" component="h2" style={{color:CourseCategoryColor[courseType]}}>
             Top 5 of {courseTitle(courseType)} Courses
           </Typography> */}
-          <div style={{ overflow: 'scroll'}}>
+          <div style={{ overflowX: 'scroll' }}>
           <PieChart
             colors={['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']}
             series={[

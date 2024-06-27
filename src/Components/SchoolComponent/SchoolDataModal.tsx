@@ -34,6 +34,110 @@ const SchoolDataModal: FC<SchoolDataModalProps> = ({ schoolEntry, titleEntry, on
     const schoolAttributeFinder = (attributeName: string) =>
         findAttribute(attributeName, titleEntry, schoolEntry);
 
+
+    // DETAILS OF WHAT I AM DOING HERE IS IN DistrictDataModal.tsx
+    const Total_Column_M_to_S: Record<string, number> = {
+        'White': 0,
+        'Hispanic': 0,
+        'Asian': 0,
+        'Black': 0,
+        'Native American': 0,
+        'Pacific Islander': 0,
+        'Two or More Races': 0
+    };
+
+    const Total_Column_M_to_S_Attributes: Record<string, string> = {
+        'Native American': 'TOTAL: American Indian or Alaska Native',
+        'Asian': 'TOTAL: Asian',
+        'Black': 'TOTAL: Black or African American',
+        'Hispanic': 'TOTAL: Hispanic or Latino',
+        'Pacific Islander': 'TOTAL: Native Hawaiian or Pacific Islander',
+        'Two or More Races': 'TOTAL: Two or more races',
+        'White': 'TOTAL: White'
+    };
+
+    Object.keys(Total_Column_M_to_S_Attributes).forEach(key => {
+        Total_Column_M_to_S[key] = (schoolAttributeFinder(Total_Column_M_to_S_Attributes[key])>0) ? schoolAttributeFinder(Total_Column_M_to_S_Attributes[key]) : 0;
+    });
+
+    const sorted_Total_Column_M_to_S = Object.fromEntries(
+        Object.entries(Total_Column_M_to_S).sort(([, valueA], [, valueB]) => valueB - valueA)
+    );
+
+    const TopTwoRace = Object.entries(sorted_Total_Column_M_to_S).slice(0,2);
+
+    const Races_Students_Count: Record<string, number> = {
+        'White': 0,
+        'Hispanic': 0,
+        'Asian': 0,
+        'Black': 0,
+        'Native American': 0,
+        'Pacific Islander': 0,
+        'Two or More Races': 0
+    };
+
+    const Races_Students_Attributes: Record<string, string> = {
+        'Native American': `${store.currentShownCSType}: American Indian or Alaska Native`,
+        'Asian': `${store.currentShownCSType}: Asian`,
+        'Black': `${store.currentShownCSType}: Black or African American`,
+        'Hispanic': `${store.currentShownCSType}: Hispanic or Latino`,
+        'Pacific Islander': `${store.currentShownCSType}: Native Hawaiian or Pacific Islander`,
+        'Two or More Races': `${store.currentShownCSType}: Two or more races`,
+        'White': `${store.currentShownCSType}: White`
+    };
+
+    Object.keys(Races_Students_Attributes).forEach(key => {
+        Races_Students_Count[key] = (schoolAttributeFinder(Races_Students_Attributes[key]))>0 ? schoolAttributeFinder(Races_Students_Attributes[key]) : 0;
+    });
+
+    const TopRaces = Object.fromEntries(
+        Object.entries(Races_Students_Count).filter(([_, value]) => value > 0)
+    );
+
+    const TopTwoRaceInSchool = Object.entries(TopRaces).slice(0,2);
+
+    const TableRowContent = () => {
+        switch (TopTwoRaceInSchool.length) {
+            case 2:
+                return (<>
+                    <TableRow>
+                        <TableCell>{TopTwoRaceInSchool[0][0]}</TableCell>
+                        <TableCell>{format(',')(TopTwoRaceInSchool[0][1])}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>{TopTwoRaceInSchool[1][0]}</TableCell>
+                        <TableCell>{format(',')(TopTwoRaceInSchool[1][1])}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Other Races</TableCell>
+                        <TableCell>{(schoolAttributeFinder(`${store.currentShownCSType}: Total`) >= 0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Total`) - TopTwoRaceInSchool[0][1] - TopTwoRaceInSchool[1][1]) : 'N/A')}</TableCell>
+                    </TableRow>
+                </>)
+            case 1:
+                return (<>
+                    <TableRow>
+                        <TableCell>{TopTwoRaceInSchool[0][0]}</TableCell>
+                        <TableCell>{format(',')(TopTwoRaceInSchool[0][1])}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>{TopTwoRaceInSchool[0][0] == TopTwoRace[0][0] ? TopTwoRace[1][0] : TopTwoRace[0][0]}</TableCell>
+                        <TableCell>{TopTwoRaceInSchool[0][0] == TopTwoRace[0][0] ? schoolAttributeFinder(Races_Students_Attributes[TopTwoRace[1][0]]) : schoolAttributeFinder(Races_Students_Attributes[TopTwoRace[0][0]])}</TableCell>
+                    </TableRow>
+                </>)
+            default:
+                return (<>
+                <TableRow>
+                    <TableCell>{TopTwoRace[0][0]}</TableCell>
+                    <TableCell>{schoolAttributeFinder(Races_Students_Attributes[TopTwoRace[0][0]])}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>{TopTwoRace[1][0]}</TableCell>
+                    <TableCell>{schoolAttributeFinder(Races_Students_Attributes[TopTwoRace[1][0]])}</TableCell>
+                </TableRow>
+                </>)
+        }
+    }
+
     return(
         <div>
             <Modal
@@ -49,44 +153,45 @@ const SchoolDataModal: FC<SchoolDataModalProps> = ({ schoolEntry, titleEntry, on
                             <Table style={{ padding: '0px', border: '1px solid rgba(0,0,0,0.05)' }} stickyHeader aria-label="sticky table">
                                 <TableHead style={{backgroundColor: 'dimgray'}}>
                                     <TableRow>
-                                        <TableCell style={{fontWeight: 'bolder', borderRight: '1px solid lightgray', color:CourseCategoryColor[store.currentShownCSType]}} rowSpan={2}> Category </TableCell>
-                                        <TableCell style={{fontWeight: 'bolder', textAlign: 'center', color:CourseCategoryColor[store.currentShownCSType]}} colSpan={2}> Students </TableCell>
+                                        <TableCell style={{fontWeight: 'bolder', borderRight: '1px solid lightgray', color:CourseCategoryColor[store.currentShownCSType]}} /*rowSpan={2}*/> Category </TableCell>
+                                        <TableCell style={{fontWeight: 'bolder', /*textAlign: 'center',*/ color:CourseCategoryColor[store.currentShownCSType]}} /*colSpan={2}*/> Students </TableCell>
                                     </TableRow>
-                                    <TableRow>
-                                        <TableCell style={{ fontWeight: 'bolder', color: CourseCategoryColor[store.currentShownCSType] }}> {courseTitle(store.currentShownCSType)} Courses </TableCell>
-                                        <TableCell style={{ fontWeight: 'bolder', color: CourseCategoryColor[store.currentShownCSType] }}> District </TableCell>
-                                    </TableRow>
+                                    {/* <TableRow>
+                                        <TableCell style={{ fontWeight: 'bolder', color: CourseCategoryColor[store.currentShownCSType] }}> {courseTitle(store.currentShownCSType)} Students </TableCell>
+                                        <TableCell style={{ fontWeight: 'bolder', color: CourseCategoryColor[store.currentShownCSType] }}> Total Students </TableCell>
+                                    </TableRow> */}
                                 </TableHead>
                                 <TableBody>
                                     <TableRow style={{backgroundColor: CourseCategoryColor[store.currentShownCSType]}}>
-                                        <TableCell style={{fontWeight: 'bolder', color: 'white'}}>Total Enrollment</TableCell>
+                                        <TableCell style={{fontWeight: 'bolder', color: 'white'}}>Total {courseTitle(store.currentShownCSType)} Enrollment</TableCell>
                                         <TableCell style={{fontWeight: 'bolder', color: 'white'}}>{schoolAttributeFinder(`${store.currentShownCSType}: Total`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Total`)) : schoolAttributeFinder(`${store.currentShownCSType}: Total`)}</TableCell>
-                                        <TableCell style={{fontWeight: 'bolder', color: 'white'}}>{schoolAttributeFinder(`TOTAL: Total`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Total`)) : schoolAttributeFinder(`TOTAL: Total`)}</TableCell>
+                                        {/* <TableCell style={{fontWeight: 'bolder', color: 'white'}}>{schoolAttributeFinder(`TOTAL: Total`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Total`)) : schoolAttributeFinder(`TOTAL: Total`)}</TableCell> */}
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Male</TableCell>
                                         <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Male`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Male`)) : schoolAttributeFinder(`${store.currentShownCSType}: Male`)}</TableCell>
-                                        <TableCell>{schoolAttributeFinder(`TOTAL: Male`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Male`)) : schoolAttributeFinder(`TOTAL: Male`)}</TableCell>
+                                        {/* <TableCell>{schoolAttributeFinder(`TOTAL: Male`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Male`)) : schoolAttributeFinder(`TOTAL: Male`)}</TableCell> */}
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Female</TableCell>
                                         <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Female`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Female`)) : schoolAttributeFinder(`${store.currentShownCSType}: Female`)}</TableCell>
-                                        <TableCell>{schoolAttributeFinder(`TOTAL: Female`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Female`)) : schoolAttributeFinder(`TOTAL: Female`)}</TableCell>
+                                        {/* <TableCell>{schoolAttributeFinder(`TOTAL: Female`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Female`)) : schoolAttributeFinder(`TOTAL: Female`)}</TableCell> */}
                                     </TableRow>
+                                    {TableRowContent()}
                                     <TableRow>
                                         <TableCell>Econ. Disadvantaged</TableCell>
                                         <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)) : schoolAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)}</TableCell>
-                                        <TableCell>{schoolAttributeFinder(`TOTAL: Eco. Dis.`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Eco. Dis.`)) : schoolAttributeFinder(`TOTAL: Eco. Dis.`)}</TableCell>
+                                        {/* <TableCell>{schoolAttributeFinder(`TOTAL: Eco. Dis.`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Eco. Dis.`)) : schoolAttributeFinder(`TOTAL: Eco. Dis.`)}</TableCell> */}
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Disability</TableCell>
                                         <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Disability`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Disability`)) : schoolAttributeFinder(`${store.currentShownCSType}: Disability`)}</TableCell>
-                                        <TableCell>{schoolAttributeFinder(`TOTAL: Disability`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Disability`)) : schoolAttributeFinder(`TOTAL: Disability`)}</TableCell>
+                                        {/* <TableCell>{schoolAttributeFinder(`TOTAL: Disability`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Disability`)) : schoolAttributeFinder(`TOTAL: Disability`)}</TableCell> */}
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>ESL</TableCell>
                                         <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)) : schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)}</TableCell>
-                                        <TableCell>{schoolAttributeFinder(`TOTAL: Eng. Learners`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Eng. Learners`)) : schoolAttributeFinder(`TOTAL: Eng. Learners`)}</TableCell>
+                                        {/* <TableCell>{schoolAttributeFinder(`TOTAL: Eng. Learners`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Eng. Learners`)) : schoolAttributeFinder(`TOTAL: Eng. Learners`)}</TableCell> */}
                                     </TableRow>
                                 </TableBody>
                             </Table>
