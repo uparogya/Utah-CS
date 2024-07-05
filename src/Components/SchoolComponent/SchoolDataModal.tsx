@@ -167,16 +167,31 @@ const SchoolDataModal: FC<SchoolDataModalProps> = ({ schoolEntry, titleEntry, on
                                         <TableCell style={{fontWeight: 'bolder', color: 'white'}}>{schoolAttributeFinder(`${store.currentShownCSType}: Total`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Total`)) : schoolAttributeFinder(`${store.currentShownCSType}: Total`)}</TableCell>
                                         {/* <TableCell style={{fontWeight: 'bolder', color: 'white'}}>{schoolAttributeFinder(`TOTAL: Total`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Total`)) : schoolAttributeFinder(`TOTAL: Total`)}</TableCell> */}
                                     </TableRow>
-                                    <TableRow>
-                                        <TableCell>Male</TableCell>
-                                        <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Male`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Male`)) : schoolAttributeFinder(`${store.currentShownCSType}: Male`)}</TableCell>
-                                        {/* <TableCell>{schoolAttributeFinder(`TOTAL: Male`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Male`)) : schoolAttributeFinder(`TOTAL: Male`)}</TableCell> */}
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>Female</TableCell>
-                                        <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Female`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Female`)) : schoolAttributeFinder(`${store.currentShownCSType}: Female`)}</TableCell>
-                                        {/* <TableCell>{schoolAttributeFinder(`TOTAL: Female`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Female`)) : schoolAttributeFinder(`TOTAL: Female`)}</TableCell> */}
-                                    </TableRow>
+                                    {
+                                        (schoolAttributeFinder(`${store.currentShownCSType}: Male`) >= 0 && isNaN(schoolAttributeFinder(`${store.currentShownCSType}: Female`))) || schoolAttributeFinder(`${store.currentShownCSType}: Male`) > schoolAttributeFinder(`${store.currentShownCSType}: Female`) ? (
+                                            <>
+                                            <TableRow>
+                                                <TableCell>Male</TableCell>
+                                                <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Male`) >= 0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Male`)) : schoolAttributeFinder(`${store.currentShownCSType}: Male`)}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>Female</TableCell>
+                                                <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Female`) >= 0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Female`)) : schoolAttributeFinder(`${store.currentShownCSType}: Female`)}</TableCell>
+                                            </TableRow>
+                                            </>
+                                        ) : (
+                                            <>
+                                            <TableRow>
+                                                <TableCell>Female</TableCell>
+                                                <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Female`) >= 0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Female`)) : schoolAttributeFinder(`${store.currentShownCSType}: Female`)}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>Male</TableCell>
+                                                <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Male`) >= 0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Male`)) : schoolAttributeFinder(`${store.currentShownCSType}: Male`)}</TableCell>
+                                            </TableRow>
+                                            </>
+                                        )
+                                    }
                                     {TableRowContent()}
                                     <TableRow>
                                         <TableCell>Econ. Disadvantaged</TableCell>
