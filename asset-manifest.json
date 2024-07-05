@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Utah-CS/static/css/main.9a471126.css",
-    "main.js": "/Utah-CS/static/js/main.9d7774c7.js",
+    "main.js": "/Utah-CS/static/js/main.9996b845.js",
     "index.html": "/Utah-CS/index.html",
     "main.9a471126.css.map": "/Utah-CS/static/css/main.9a471126.css.map",
-    "main.9d7774c7.js.map": "/Utah-CS/static/js/main.9d7774c7.js.map"
+    "main.9996b845.js.map": "/Utah-CS/static/js/main.9996b845.js.map"
   },
   "entrypoints": [
     "static/css/main.9a471126.css",
-    "static/js/main.9d7774c7.js"
+    "static/js/main.9996b845.js"
   ]
 }
