@@ -1,7 +1,6 @@
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
-import GenderRatioChart from "./CellComponents/GenderRatioChart";
 import AttributeChart from "./CellComponents/AttributeChart";
 import PercentageChart from "./CellComponents/PercentageChart";
 import Store from "../Interface/Store";
@@ -10,9 +9,8 @@ import { findAttribute } from "../Interface/AttributeFinder";
 import AttributeDialog from "./CellComponents/AttributeDialog";
 import styled from "@emotion/styled";
 import { DataContext } from "../App";
-import { PossibleCategories } from "../Preset/Constants";
-import { CourseCategoryColor, LightGray } from "../Preset/Colors";
-import { courseTitle } from "./CourseDescriptionComponent/CourseInfoModal";
+import { CourseCategoryColor } from "../Preset/Colors";
+import { courseTitle } from "./FrequentlyUsedComponents/FrequentlyUsedComponents";
 
 
 

@@ -19,6 +19,7 @@ import DataLoadingModal from './Components/DataLoadingModal';
 import CourseDefinitionTab from './Components/CourseDefinitionTab';
 import { CourseCategoryColor, LightGray } from "./Preset/Colors";
 import TabsComponent from './Components/TabsComponent/Tabs';
+import Footer from './Components/Footer';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -157,7 +158,7 @@ function App() {
                 const tempDistrictData: Array<number | string>[] = [];
                 //organize the data and add a row for charter
                 data.slice(2, -1).forEach((row) => {
-                    if ((row[0] as string).includes('District')) {
+                    if ((row[0] as string).includes('District') || ((row[0] as string).includes('Utah Schools for Deaf & Blind'))) {
                         tempDistrictData.push(row as Array<number | string>);
                     } else {
                         row.forEach((dataItem, i) => {
@@ -167,6 +168,7 @@ function App() {
                         });
                     }
                 });
+                // console.log(tempDistrictData);
                 tempDistrictData.push(charterRow);
                 // store.setSelectedDistrict(tempDistrictData.map(d => d[0] as string));
                 // console.log(store.selectedDistricts);
@@ -291,7 +293,7 @@ function App() {
                         </Grid>
                     </TabPanel>
                 </Box>
-                <footer style={{ backgroundColor: '#003789', minHeight: '50px' }}></footer>
+                <Footer></Footer>
             </div>
             <DataLoadingModal />
         </DataContext.Provider>

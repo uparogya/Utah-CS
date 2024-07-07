@@ -44,7 +44,7 @@ const SchoolTable: FC = () => {
         let filteredDistrict = newSortedSchool
             .filter(d => store.selectedDistricts.includes(d[6] as string));
         if (store.selectedDistricts.includes('Charter')) {
-            filteredDistrict = filteredDistrict.concat(newSortedSchool.filter(d => !((d[6] as string).includes('District'))));
+            filteredDistrict = filteredDistrict.concat(newSortedSchool.filter(d => !((d[6] as string).includes('District') || (d[6] as string).includes('Utah Schools for Deaf & Blind'))));
         }
 
         stateUpdateWrapperUseJSON(schoolDataToShow, filteredDistrict, setSchoolDataToShow);

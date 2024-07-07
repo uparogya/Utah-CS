@@ -3,7 +3,7 @@ import { Typography, useTheme, useMediaQuery } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { FC, useContext, useEffect, useState } from "react";
 import { CourseCategoryColor } from "../../Preset/Colors";
-import { courseTitle } from './CourseInfoModal';
+import { courseTitle, ModalTitleBar } from '../FrequentlyUsedComponents/FrequentlyUsedComponents';
 import { DataContext } from "../../App";
 import { findAttribute } from '../../Interface/AttributeFinder';
 import { PieChart } from '@mui/x-charts/PieChart';
@@ -14,12 +14,11 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '60vw',
+  maxWidth: '60vw',
   bgcolor: 'background.paper',
   border: '2px solid dimgray',
   boxShadow: 50,
   p: 4,
-  overflow: 'scroll'
 };
 
 interface CoursePieChartDisplayProps {
@@ -50,7 +49,6 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const marginLeft = isMobile ? '-60vw' : '-20vw';
 
     const courseData = useContext(DataContext).course;
     const courseAttributeFinder = (attributeName: string, selectedRow: (string | number)[]) =>
@@ -144,22 +142,26 @@ const CoursePieChartDisplay: FC<CoursePieChartDisplayProps> = ({ courseType, onC
         aria-describedby="All Courses & Codes"
       >
         <Box sx={style}>
-          <Typography id="Courses Under Category" variant="h6" component="h2" style={{color:CourseCategoryColor[courseType]}}>
-            Top 5 {courseTitle(courseType)} Courses
-          </Typography>
-          <div style={{ marginLeft }}>
+          {ModalTitleBar("Top 5 of " + courseTitle(courseType) + " Courses", CourseCategoryColor[courseType], onClose)}
+          {/* <Typography id="Courses Under Category" variant="h6" component="h2" style={{color:CourseCategoryColor[courseType]}}>
+            Top 5 of {courseTitle(courseType)} Courses
+          </Typography> */}
+          <div style={{ overflowX: 'scroll' }}>
           <PieChart
             colors={['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']}
             series={[
               {
                 data: data,
+                // highlightScope: { faded: 'global', highlighted: 'item' },
+                // faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
               },
             ]}
-            width={900}
+            width={800}
             height={200}
+            margin={ {right: 400} }
           />
           </div>
-          <br></br><span onClick={() => openModal(courseType)} style={{color:'blue',textDecoration:'underline',cursor:'pointer'}}>Show Courses</span>
+          <br></br><span onClick={() => openModal(courseType)} style={{color:'blue',textDecoration:'underline',cursor:'pointer'}}>Course List</span>
         </Box>
       </Modal>
       {selectedCourse && (
