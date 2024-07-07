@@ -103,14 +103,17 @@ const SchoolDataModal: FC<SchoolDataModalProps> = ({ schoolEntry, titleEntry, on
                     <TableRow>
                         <TableCell>{TopTwoRaceInSchool[0][0]}</TableCell>
                         <TableCell>{format(',')(TopTwoRaceInSchool[0][1])}</TableCell>
+                        <TableCell>{(TopTwoRaceInSchool[0][1] >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((TopTwoRaceInSchool[0][1]/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>{TopTwoRaceInSchool[1][0]}</TableCell>
                         <TableCell>{format(',')(TopTwoRaceInSchool[1][1])}</TableCell>
+                        <TableCell>{(TopTwoRaceInSchool[1][1] >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((TopTwoRaceInSchool[1][1]/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Other Races</TableCell>
                         <TableCell>{(schoolAttributeFinder(`${store.currentShownCSType}: Total`) >= 0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Total`) - TopTwoRaceInSchool[0][1] - TopTwoRaceInSchool[1][1]) : 'N/A')}</TableCell>
+                        <TableCell>{((schoolAttributeFinder(`${store.currentShownCSType}: Total`) - TopTwoRaceInSchool[0][1] - TopTwoRaceInSchool[1][1]) >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? (((schoolAttributeFinder(`${store.currentShownCSType}: Total`) - TopTwoRaceInSchool[0][1] - TopTwoRaceInSchool[1][1])/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                     </TableRow>
                 </>)
             case 1:
@@ -118,10 +121,12 @@ const SchoolDataModal: FC<SchoolDataModalProps> = ({ schoolEntry, titleEntry, on
                     <TableRow>
                         <TableCell>{TopTwoRaceInSchool[0][0]}</TableCell>
                         <TableCell>{format(',')(TopTwoRaceInSchool[0][1])}</TableCell>
+                        <TableCell>{(TopTwoRaceInSchool[0][1] >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((TopTwoRaceInSchool[0][1]/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>{TopTwoRaceInSchool[0][0] == TopTwoRace[0][0] ? TopTwoRace[1][0] : TopTwoRace[0][0]}</TableCell>
                         <TableCell>{TopTwoRaceInSchool[0][0] == TopTwoRace[0][0] ? schoolAttributeFinder(Races_Students_Attributes[TopTwoRace[1][0]]) : schoolAttributeFinder(Races_Students_Attributes[TopTwoRace[0][0]])}</TableCell>
+                        <TableCell>N/A</TableCell>
                     </TableRow>
                 </>)
             default:
@@ -129,11 +134,13 @@ const SchoolDataModal: FC<SchoolDataModalProps> = ({ schoolEntry, titleEntry, on
                 <TableRow>
                     <TableCell>{TopTwoRace[0][0]}</TableCell>
                     <TableCell>{schoolAttributeFinder(Races_Students_Attributes[TopTwoRace[0][0]])}</TableCell>
-                </TableRow>
+                        <TableCell>N/A</TableCell>
+                    </TableRow>
                 <TableRow>
                     <TableCell>{TopTwoRace[1][0]}</TableCell>
                     <TableCell>{schoolAttributeFinder(Races_Students_Attributes[TopTwoRace[1][0]])}</TableCell>
-                </TableRow>
+                        <TableCell>N/A</TableCell>
+                    </TableRow>
                 </>)
         }
     }
@@ -150,22 +157,22 @@ const SchoolDataModal: FC<SchoolDataModalProps> = ({ schoolEntry, titleEntry, on
                     {ModalTitleBar(schoolAttributeFinder('School Name'), CourseCategoryColor[store.currentShownCSType], onClose)}
                     <div style={{backgroundColor:'rgba(0,0,0,0.05)'}}>
                         <StickyTableContainer>
-                            <Table style={{ padding: '0px', border: '1px solid rgba(0,0,0,0.05)' }} stickyHeader aria-label="sticky table">
-                                <TableHead style={{backgroundColor: 'dimgray'}}>
+                            <Table style={{ padding: '0px', border: '1px solid rgba(0,0,0,0.05)' }} aria-label="sticky table">
+                                <TableHead style={{backgroundColor: 'white'}}>
                                     <TableRow>
-                                        <TableCell style={{fontWeight: 'bolder', borderRight: '1px solid lightgray', color:CourseCategoryColor[store.currentShownCSType]}} /*rowSpan={2}*/> Category </TableCell>
-                                        <TableCell style={{fontWeight: 'bolder', /*textAlign: 'center',*/ color:CourseCategoryColor[store.currentShownCSType]}} /*colSpan={2}*/> Students </TableCell>
+                                        <TableCell style={{fontWeight: 'bolder', borderRight: '1px solid lightgray', color:CourseCategoryColor[store.currentShownCSType]}} rowSpan={2}> Category </TableCell>
+                                        <TableCell style={{fontWeight: 'bolder', color:CourseCategoryColor[store.currentShownCSType]}} colSpan={2}> Students </TableCell>
                                     </TableRow>
-                                    {/* <TableRow>
-                                        <TableCell style={{ fontWeight: 'bolder', color: CourseCategoryColor[store.currentShownCSType] }}> {courseTitle(store.currentShownCSType)} Students </TableCell>
-                                        <TableCell style={{ fontWeight: 'bolder', color: CourseCategoryColor[store.currentShownCSType] }}> Total Students </TableCell>
-                                    </TableRow> */}
+                                    <TableRow>
+                                        <TableCell style={{ fontWeight: 'bolder', color: CourseCategoryColor[store.currentShownCSType] }}> # </TableCell>
+                                        <TableCell style={{ fontWeight: 'bolder', color: CourseCategoryColor[store.currentShownCSType] }}> % </TableCell>
+                                    </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     <TableRow style={{backgroundColor: CourseCategoryColor[store.currentShownCSType]}}>
                                         <TableCell style={{fontWeight: 'bolder', color: 'white'}}>Total {courseTitle(store.currentShownCSType)} Enrollment</TableCell>
                                         <TableCell style={{fontWeight: 'bolder', color: 'white'}}>{schoolAttributeFinder(`${store.currentShownCSType}: Total`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Total`)) : schoolAttributeFinder(`${store.currentShownCSType}: Total`)}</TableCell>
-                                        {/* <TableCell style={{fontWeight: 'bolder', color: 'white'}}>{schoolAttributeFinder(`TOTAL: Total`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Total`)) : schoolAttributeFinder(`TOTAL: Total`)}</TableCell> */}
+                                        <TableCell style={{fontWeight: 'bolder', color: 'white'}}>100%</TableCell>
                                     </TableRow>
                                     {
                                         (schoolAttributeFinder(`${store.currentShownCSType}: Male`) >= 0 && isNaN(schoolAttributeFinder(`${store.currentShownCSType}: Female`))) || schoolAttributeFinder(`${store.currentShownCSType}: Male`) > schoolAttributeFinder(`${store.currentShownCSType}: Female`) ? (
@@ -173,10 +180,12 @@ const SchoolDataModal: FC<SchoolDataModalProps> = ({ schoolEntry, titleEntry, on
                                             <TableRow>
                                                 <TableCell>Male</TableCell>
                                                 <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Male`) >= 0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Male`)) : schoolAttributeFinder(`${store.currentShownCSType}: Male`)}</TableCell>
+                                                <TableCell>{(schoolAttributeFinder(`${store.currentShownCSType}: Male`) >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((schoolAttributeFinder(`${store.currentShownCSType}: Male`)/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>Female</TableCell>
                                                 <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Female`) >= 0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Female`)) : schoolAttributeFinder(`${store.currentShownCSType}: Female`)}</TableCell>
+                                                <TableCell>{(schoolAttributeFinder(`${store.currentShownCSType}: Female`) >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((schoolAttributeFinder(`${store.currentShownCSType}: Female`)/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                             </TableRow>
                                             </>
                                         ) : (
@@ -184,10 +193,12 @@ const SchoolDataModal: FC<SchoolDataModalProps> = ({ schoolEntry, titleEntry, on
                                             <TableRow>
                                                 <TableCell>Female</TableCell>
                                                 <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Female`) >= 0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Female`)) : schoolAttributeFinder(`${store.currentShownCSType}: Female`)}</TableCell>
+                                                <TableCell>{(schoolAttributeFinder(`${store.currentShownCSType}: Female`) >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((schoolAttributeFinder(`${store.currentShownCSType}: Female`)/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>Male</TableCell>
                                                 <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Male`) >= 0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Male`)) : schoolAttributeFinder(`${store.currentShownCSType}: Male`)}</TableCell>
+                                                <TableCell>{(schoolAttributeFinder(`${store.currentShownCSType}: Male`) >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((schoolAttributeFinder(`${store.currentShownCSType}: Male`)/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                             </TableRow>
                                             </>
                                         )
@@ -196,17 +207,17 @@ const SchoolDataModal: FC<SchoolDataModalProps> = ({ schoolEntry, titleEntry, on
                                     <TableRow>
                                         <TableCell>Econ. Disadvantaged</TableCell>
                                         <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)) : schoolAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)}</TableCell>
-                                        {/* <TableCell>{schoolAttributeFinder(`TOTAL: Eco. Dis.`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Eco. Dis.`)) : schoolAttributeFinder(`TOTAL: Eco. Dis.`)}</TableCell> */}
+                                        <TableCell>{(schoolAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`) >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((schoolAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Disability</TableCell>
                                         <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Disability`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Disability`)) : schoolAttributeFinder(`${store.currentShownCSType}: Disability`)}</TableCell>
-                                        {/* <TableCell>{schoolAttributeFinder(`TOTAL: Disability`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Disability`)) : schoolAttributeFinder(`TOTAL: Disability`)}</TableCell> */}
+                                        <TableCell>{(schoolAttributeFinder(`${store.currentShownCSType}: Disability`) >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((schoolAttributeFinder(`${store.currentShownCSType}: Disability`)/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>ESL</TableCell>
                                         <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)) : schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)}</TableCell>
-                                        {/* <TableCell>{schoolAttributeFinder(`TOTAL: Eng. Learners`) >=0 ? format(',')(schoolAttributeFinder(`TOTAL: Eng. Learners`)) : schoolAttributeFinder(`TOTAL: Eng. Learners`)}</TableCell> */}
+                                        <TableCell>{(schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`) >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>

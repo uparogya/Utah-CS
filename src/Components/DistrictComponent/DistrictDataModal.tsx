@@ -123,14 +123,17 @@ const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEnt
                     <TableRow>
                         <TableCell>{TopTwoRaceInDistrict[0][0]}</TableCell>
                         <TableCell>{format(',')(TopTwoRaceInDistrict[0][1])}</TableCell>
+                        <TableCell>{(TopTwoRaceInDistrict[0][1] >0 && districtAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((TopTwoRaceInDistrict[0][1]/districtAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>{TopTwoRaceInDistrict[1][0]}</TableCell>
                         <TableCell>{format(',')(TopTwoRaceInDistrict[1][1])}</TableCell>
+                        <TableCell>{(TopTwoRaceInDistrict[1][1] >0 && districtAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((TopTwoRaceInDistrict[1][1]/districtAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Other Races</TableCell>
                         <TableCell>{(districtAttributeFinder(`${store.currentShownCSType}: Total`) >= 0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: Total`) - TopTwoRaceInDistrict[0][1] - TopTwoRaceInDistrict[1][1]) : 'N/A')}</TableCell>
+                        <TableCell>{(districtAttributeFinder(`${store.currentShownCSType}: Total`) >0 && (districtAttributeFinder(`${store.currentShownCSType}: Total`) - TopTwoRaceInDistrict[0][1] - TopTwoRaceInDistrict[1][1]) >0) ? (((districtAttributeFinder(`${store.currentShownCSType}: Total`) - TopTwoRaceInDistrict[0][1] - TopTwoRaceInDistrict[1][1])/districtAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                     </TableRow>
                 </>)
             case 1:
@@ -143,10 +146,12 @@ const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEnt
                     <TableRow>
                         <TableCell>{TopTwoRaceInDistrict[0][0]}</TableCell>
                         <TableCell>{format(',')(TopTwoRaceInDistrict[0][1])}</TableCell>
-                    </TableRow>
+                        <TableCell>{(TopTwoRaceInDistrict[0][1] >0 && districtAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((TopTwoRaceInDistrict[0][1]/districtAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
+                        </TableRow>
                     <TableRow>
                         <TableCell>{TopTwoRaceInDistrict[0][0] == TopTwoRace[0][0] ? TopTwoRace[1][0] : TopTwoRace[0][0]}</TableCell>
                         <TableCell>{TopTwoRaceInDistrict[0][0] == TopTwoRace[0][0] ? districtAttributeFinder(Races_Students_Attributes[TopTwoRace[1][0]]) : districtAttributeFinder(Races_Students_Attributes[TopTwoRace[0][0]])}</TableCell>
+                        <TableCell>N/A</TableCell>
                     </TableRow>
                 </>)
             default:
@@ -155,10 +160,12 @@ const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEnt
                 <TableRow>
                     <TableCell>{TopTwoRace[0][0]}</TableCell>
                     <TableCell>{districtAttributeFinder(Races_Students_Attributes[TopTwoRace[0][0]])}</TableCell>
+                    <TableCell>N/A</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>{TopTwoRace[1][0]}</TableCell>
                     <TableCell>{districtAttributeFinder(Races_Students_Attributes[TopTwoRace[1][0]])}</TableCell>
+                    <TableCell>N/A</TableCell>
                 </TableRow>
                 </>)
         }
@@ -180,35 +187,39 @@ const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEnt
                     </Typography> */}
                     <div style={{backgroundColor:'rgba(0,0,0,0.05)'}}>
                         <StickyTableContainer>
-                            <Table style={{ padding: '0px', border: '1px solid rgba(0,0,0,0.05)' }} stickyHeader aria-label="sticky table">
-                                <TableHead style={{backgroundColor: 'dimgray'}}>
+                            <Table style={{ padding: '0px', border: '1px solid rgba(0,0,0,0.05)'}}  aria-label="sticky table">
+                                <TableHead style={{backgroundColor: 'white'}}>
                                     <TableRow>
-                                        <TableCell style={{fontWeight: 'bolder', color:CourseCategoryColor[store.currentShownCSType]}}>
-                                            Category
-                                        </TableCell>
-                                        <TableCell style={{fontWeight: 'bolder', color:CourseCategoryColor[store.currentShownCSType]}}>
-                                            Students
-                                        </TableCell>
+                                        <TableCell style={{fontWeight: 'bolder', color:CourseCategoryColor[store.currentShownCSType], borderRight: '1px solid lightgray'}} rowSpan={2}> Category </TableCell>
+                                        <TableCell style={{fontWeight: 'bolder', color:CourseCategoryColor[store.currentShownCSType]}} colSpan={2}> Students </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell style={{ fontWeight: 'bolder', color: CourseCategoryColor[store.currentShownCSType] }}> # </TableCell>
+                                        <TableCell style={{ fontWeight: 'bolder', color: CourseCategoryColor[store.currentShownCSType] }}> % </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     <TableRow style={{backgroundColor: CourseCategoryColor[store.currentShownCSType], color: 'white'}}>
                                         <TableCell style={{fontWeight: 'bolder', color: 'white'}}>Total {courseTitle(store.currentShownCSType)} Enrollment</TableCell>
                                         <TableCell style={{fontWeight: 'bolder', color: 'white'}}>{districtAttributeFinder(`${store.currentShownCSType}: Total`) >=0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: Total`)) : districtAttributeFinder(`${store.currentShownCSType}: Total`)}</TableCell>
+                                        <TableCell style={{fontWeight: 'bolder', color: 'white'}}>100%</TableCell>
                                     </TableRow>
                                     {TableRowContent()}
                                     <TableRow>
                                         <TableCell>Econ. Disadvantaged</TableCell>
                                         <TableCell>{districtAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`) >=0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)) : districtAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)}</TableCell>
+                                        <TableCell>{(districtAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`) >0 && districtAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((districtAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`)/districtAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Disability</TableCell>
                                         <TableCell>{districtAttributeFinder(`${store.currentShownCSType}: Disability`) >= 0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: Disability`)) : districtAttributeFinder(`${store.currentShownCSType}: Disability`)}</TableCell>
-                                    </TableRow>
+                                        <TableCell>{(districtAttributeFinder(`${store.currentShownCSType}: Disability`) >0 && districtAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((districtAttributeFinder(`${store.currentShownCSType}: Disability`)/districtAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
+                                        </TableRow>
                                     <TableRow>
                                         <TableCell>ESL</TableCell>
                                         <TableCell>{districtAttributeFinder(`${store.currentShownCSType}: Eng. Learners`) >= 0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)) : districtAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)}</TableCell>
-                                    </TableRow>
+                                        <TableCell>{(districtAttributeFinder(`${store.currentShownCSType}: Eng. Learners`) >0 && districtAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((districtAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)/districtAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
+                                        </TableRow>
                                 </TableBody>
                             </Table>
                         </StickyTableContainer>
