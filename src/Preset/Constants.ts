@@ -11,7 +11,6 @@ export const PossibleCategories = [
 ];
 
 // Add a cut off for smallest student category to be shown
-//test
 
 export const RaceDictionary: { [key: string]: string; } = {
     white: 'White',
