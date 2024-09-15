@@ -30,7 +30,7 @@
         "d3-shape": "^3.2.0",
         "d3-transition": "^3.0.1",
         "express": "^4.18.2",
-        "gh-pages": "^6.0.0",
+        "gh-pages": "^6.1.1",
         "mobx": "^6.6.1",
         "mobx-react-lite": "^3.4.0",
         "nginx": "^1.0.8",
