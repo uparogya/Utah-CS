@@ -7,11 +7,10 @@ import { observer } from "mobx-react-lite";
 import styled from '@emotion/styled';
 import { CourseCategoryColor } from "../Preset/Colors";
 import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
-import PieChartIcon from '@mui/icons-material/PieChart';
 import CourseInfoModal from "./CourseDescriptionComponent/CourseInfoModal";
 import CoursePieChartDisplay from "./CourseDescriptionComponent/CoursePieChartDisplay";
-import ArticleIcon from '@mui/icons-material/Article'
+import ArticleIcon from '@mui/icons-material/Article';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 interface CategoryCardProps {
     categoryKey: string;
@@ -87,7 +86,7 @@ const CourseDefinitionTab: FC = () => {
                                 {/* <RevealData categoryKey='CS' onClick={() => openPieChart('CS')} aria-label="info">
                                     <PieChartIcon />
                                 </RevealData> */}
-                                All CS
+                                All CS <button onClick={() => openPieChart('CS')} className="bi bi-pie-chart-fill" style={{color: CourseCategoryColor['CS'], fontSize: '25px', border: 'none', backgroundColor: 'white'}}></button>
                                 {/* <RevealData categoryKey='CS' onClick={() => openModal('CS')} aria-label="info">
                                     <InfoIcon />
                                 </RevealData> */}
@@ -116,12 +115,14 @@ const CourseDefinitionTab: FC = () => {
                                 {/* <RevealData categoryKey='CSC' onClick={() => openPieChart('CSC')} aria-label="info">
                                     <PieChartIcon />
                                 </RevealData> */}
-                                Core CS
+                                Core CS <button onClick={() => openPieChart('CSC')} className="bi bi-pie-chart-fill" style={{color: CourseCategoryColor['CSC'], fontSize: '25px', border: 'none', backgroundColor: 'white'}}></button>
                                 {/* <RevealData categoryKey='CSC' onClick={() => openModal('CSC')} aria-label="info">
                                     <InfoIcon />
                                 </RevealData> */}
                             </CategoryTitle>
-                            <CategoryDescription>These courses directly teach fundamental computer science or programming skills. They are divided into two categories: <b style={{color:CourseCategoryColor['CSB']}}>Basic CS</b> and <b style={{color:CourseCategoryColor['CSA']}}>Advanced CS</b>.</CategoryDescription>
+                            <CategoryDescription>
+                                These courses directly teach fundamental computer science or programming skills. They are divided into two categories: <b style={{color:CourseCategoryColor['CSB']}}>Basic CS</b> and <b style={{color:CourseCategoryColor['CSA']}}>Advanced CS</b>.
+                            </CategoryDescription>
                         </CardContent>
                     </CategoryCard>
                 </Grid>
@@ -132,7 +133,7 @@ const CourseDefinitionTab: FC = () => {
                                 {/* <RevealData categoryKey='CSR' onClick={() => openPieChart('CSR')} aria-label="info">
                                     <PieChartIcon />
                                 </RevealData> */}
-                                Related CS
+                                Related CS <button onClick={() => openPieChart('CSR')} className="bi bi-pie-chart-fill" style={{color: CourseCategoryColor['CSR'], fontSize: '25px', border: 'none', backgroundColor: 'white'}}></button>
                                 {/* <RevealData categoryKey='CSR' onClick={() => openModal('CSR')} aria-label="info">
                                     <InfoIcon />
                                 </RevealData> */}
@@ -153,7 +154,7 @@ const CourseDefinitionTab: FC = () => {
                                 {/* <RevealData categoryKey='CSB' onClick={() => openPieChart('CSB')} aria-label="info">
                                     <PieChartIcon />
                                 </RevealData> */}
-                                Basic CS
+                                Basic CS <button onClick={() => openPieChart('CSB')} className="bi bi-pie-chart-fill" style={{color: CourseCategoryColor['CSB'], fontSize: '25px', border: 'none', backgroundColor: 'white'}}></button>
                                 {/* <RevealData categoryKey='CSB' onClick={() => openModal('CSB')} aria-label="info">
                                     <InfoIcon />
                                 </RevealData> */}
@@ -169,7 +170,7 @@ const CourseDefinitionTab: FC = () => {
                                 {/* <RevealData categoryKey='CSA' onClick={() => openPieChart('CSA')} aria-label="info">
                                     <PieChartIcon />
                                 </RevealData> */}
-                                Advanced CS
+                                Advanced CS <button onClick={() => openPieChart('CSA')} className="bi bi-pie-chart-fill" style={{color: CourseCategoryColor['CSA'], fontSize: '25px', border: 'none', backgroundColor: 'white'}}></button>
                                 {/* <RevealData categoryKey="CSA" onClick={() => openModal('CSA')} aria-label="info">
                                     <InfoIcon />
                                 </RevealData> */}

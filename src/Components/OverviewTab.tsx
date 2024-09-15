@@ -16,6 +16,7 @@ import { json } from "d3-fetch";
 import { interpolateBlues } from 'd3-scale-chromatic';
 import { format } from "d3-format";
 import CourseInfoModal from "./CourseDescriptionComponent/CourseInfoModal";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const OverviewTab: FC = () => {
 
@@ -231,7 +232,12 @@ const OverviewTab: FC = () => {
         <OverviewGridItem item xs={6} onClick={() => openModal(store.currentShownCSType)} style={{'cursor':'pointer'}}>
             <OverviewCard 
                 mainText={
-                    <span>{currentCSTypeShortName} Courses</span>
+                    <span>
+                        {currentCSTypeShortName} Courses
+                        <br/><span style={{display: 'flex', justifyContent: 'end'}}>
+                            <button onClick={() => openModal(store.currentShownCSType)} className="bi bi-info-circle-fill" style={{color: CourseCategoryColor[store.currentShownCSType], fontSize: 'larger', border: 'none', backgroundColor: 'white'}}></button>
+                        </span>
+                    </span>
                 }
                 subText={
                     <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
@@ -243,7 +249,12 @@ const OverviewTab: FC = () => {
         <OverviewGridItem item xs={6}>
             <OverviewCard
                 mainText={
-                    <span>Schools <b>Offering</b> {currentCSTypeShortName} Courses</span>
+                    <span>
+                        Schools <b>Offering</b> {currentCSTypeShortName} Courses
+                        <br/><span style={{display: 'flex', justifyContent: 'end'}}>
+                            <button onClick={() => store.updateShowPercentage()} className="bi bi-toggles" style={{color: CourseCategoryColor[store.currentShownCSType], fontSize: 'larger', border: 'none', backgroundColor: 'white'}}></button>
+                        </span>
+                    </span>
                 }
                 subText={
                     <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
@@ -257,7 +268,13 @@ const OverviewTab: FC = () => {
         <OverviewGridItem item xs={6}>
             <OverviewCard
                 mainText={
-                    <span>Students <b>Participating</b> in {currentCSTypeShortName} Courses</span>
+                    <span>
+                        Students <b>Participating</b> in {currentCSTypeShortName} Courses
+                        <br/><span style={{display: 'flex', justifyContent: 'end'}}>
+                            <button onClick={() => store.updateShowPercentage()} className="bi bi-toggles" style={{color: CourseCategoryColor[store.currentShownCSType], fontSize: 'larger', border: 'none', backgroundColor: 'white'}}></button>
+                        </span>
+                    </span>
+                    
                 }
                 subText={
                     <span style={{ color: CourseCategoryColor[store.currentShownCSType] }}>
