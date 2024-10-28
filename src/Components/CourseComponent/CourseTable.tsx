@@ -118,7 +118,7 @@ const CourseTable: FC = () => {
                     isSorting={sortAttribute === 'Eco. Dis.'}
                     isSortUp={sortUp} />
                 <SortableHeader
-                    headerName='ESL'
+                    headerName='Eng Learner'
                     onClick={() => toggleSort('Eng. Learners')}
                     isSortPercentage={sortPercentage}
                     isSorting={sortAttribute === 'Eng. Learners'}

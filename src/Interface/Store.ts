@@ -14,7 +14,7 @@ export class AppStore {
         this.showPercentage = true;
         makeAutoObservable(this);
         this.currentShownCSType = 'CSC';
-        this.schoolYearShowing = '2022-23';
+        this.schoolYearShowing = '2023-24';
         this.dataLoading = true;
     }
 
