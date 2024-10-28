@@ -35,13 +35,14 @@ export const DefaultEnrollment = {
 
 // Add new school year here, need to mat
 export const PossibleSchoolYears = [
-    '2019-20', '2020-21', '2021-22', '2022-23'
+    '2019-20', '2020-21', '2021-22', '2022-23', '2023-24'
 ];
 
 // The link to the data, probably need to change once the project is updated to the new domain name
 // export const linkToData = 'https://chxhana.github.io/Utah-CS/updated_data/all_data.xlsx';
 // export const linkToData = '/updated_data/all_data.xlsx';
-export const linkToData = '/updated_data/all_data_test.xlsx';
+// export const linkToData = '/updated_data/all_data_test.xlsx';
+export const linkToData = '/updated_data/2024_02.xlsx';
 
 // export const linkToGeoJson = 'https://chxhana.github.io/Utah-CS/updated_data/Utah_School_District_Boundaries.geojson'
 export const linkToGeoJson = '/updated_data/Utah_School_District_Boundaries.geojson'

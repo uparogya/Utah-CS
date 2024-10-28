@@ -65,7 +65,7 @@ const TrendContainer: FC = () => {
     const courseCategoryLabel = `${PossibleCategories.find(d => d.key === store.currentShownCSType)?.shortName}`;
 
     //Students enrolled in ${courseCategoryLabel}
-    const RequiredDemographic = [`TotalStudents`, 'Male', 'Female', 'White', 'Hispanic', 'EconDisadvantaged', 'Disability','ESL'];
+    const RequiredDemographic = [`TotalStudents`, 'Male', 'Female', 'White', 'Hispanic', 'EconDisadvantaged', 'Disability','EnglishLearner'];
     const RowHeight = 30;
     const Margin = { top: 50, left: 100, right: 50, bottom: (RequiredDemographic.length + 0.5) * 10};
     const currentCSType = PossibleCategories.find(d => d.key === store.currentShownCSType);
@@ -120,7 +120,7 @@ const TrendContainer: FC = () => {
                 Hispanic: stateAttributeFinder(`${store.currentShownCSType}: Hispanic or Latino`, year),
                 EconDisadvantaged: stateAttributeFinder(`${store.currentShownCSType}: Eco. Dis.`, year),
                 Disability: stateAttributeFinder(`${store.currentShownCSType}: Disability`, year),
-                ESL: stateAttributeFinder(`${store.currentShownCSType}: Eng. Learners`, year),
+                EnglishLearner: stateAttributeFinder(`${store.currentShownCSType}: Eng. Learners`, year),
                 StateTotal: stateAttributeFinder(`TOTAL: Total`, year),
             })
             );

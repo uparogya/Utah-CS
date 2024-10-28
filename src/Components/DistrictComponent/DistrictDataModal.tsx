@@ -216,7 +216,7 @@ const DistrictDataModal: FC<DistrictDataModalProps> = ({ districtEntry, titleEnt
                                         <TableCell>{(districtAttributeFinder(`${store.currentShownCSType}: Disability`) >0 && districtAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((districtAttributeFinder(`${store.currentShownCSType}: Disability`)/districtAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                         </TableRow>
                                     <TableRow>
-                                        <TableCell>ESL</TableCell>
+                                        <TableCell>English Learner</TableCell>
                                         <TableCell>{districtAttributeFinder(`${store.currentShownCSType}: Eng. Learners`) >= 0 ? format(',')(districtAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)) : districtAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)}</TableCell>
                                         <TableCell>{(districtAttributeFinder(`${store.currentShownCSType}: Eng. Learners`) >0 && districtAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((districtAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)/districtAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                         </TableRow>
