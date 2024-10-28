@@ -50,7 +50,7 @@ const StateTable: FC = () => {
                     <TableCell style={{fontWeight:'bolder'}}>Race</TableCell>
                     <TableCell style={{fontWeight:'bolder'}}>Econ Disadvantaged</TableCell>
                     <TableCell style={{fontWeight:'bolder'}}>Disability</TableCell>
-                    <TableCell style={{fontWeight:'bolder'}}>ESL</TableCell>
+                    <TableCell style={{fontWeight:'bolder'}}>English Learner</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>

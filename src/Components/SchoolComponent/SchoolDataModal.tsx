@@ -215,7 +215,7 @@ const SchoolDataModal: FC<SchoolDataModalProps> = ({ schoolEntry, titleEntry, on
                                         <TableCell>{(schoolAttributeFinder(`${store.currentShownCSType}: Disability`) >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((schoolAttributeFinder(`${store.currentShownCSType}: Disability`)/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell>ESL</TableCell>
+                                        <TableCell>English Learner</TableCell>
                                         <TableCell>{schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`) >=0 ? format(',')(schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)) : schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)}</TableCell>
                                         <TableCell>{(schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`) >0 && schoolAttributeFinder(`${store.currentShownCSType}: Total`) >0) ? ((schoolAttributeFinder(`${store.currentShownCSType}: Eng. Learners`)/schoolAttributeFinder(`${store.currentShownCSType}: Total`))*100).toFixed(2) + '%' : 'N/A'}</TableCell>
                                     </TableRow>
