@@ -42,7 +42,7 @@ export const PossibleSchoolYears = [
 // export const linkToData = 'https://chxhana.github.io/Utah-CS/updated_data/all_data.xlsx';
 // export const linkToData = '/updated_data/all_data.xlsx';
 // export const linkToData = '/updated_data/all_data_test.xlsx';
-export const linkToData = '/updated_data/2024_02.xlsx';
+export const linkToData = '/updated_data/2024_04.xlsx';
 
 // export const linkToGeoJson = 'https://chxhana.github.io/Utah-CS/updated_data/Utah_School_District_Boundaries.geojson'
 export const linkToGeoJson = '/updated_data/Utah_School_District_Boundaries.geojson'
