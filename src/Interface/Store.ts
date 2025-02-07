@@ -13,7 +13,7 @@ export class AppStore {
         this.selectedDistricts = [];
         this.showPercentage = true;
         makeAutoObservable(this);
-        this.currentShownCSType = 'CSC';
+        this.currentShownCSType = 'CS';
         this.schoolYearShowing = '2023-24';
         this.dataLoading = true;
     }
