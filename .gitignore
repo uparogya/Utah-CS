@@ -23,5 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 /.vscode
-/public/data
+# /public/data
 # /public/updated_data
