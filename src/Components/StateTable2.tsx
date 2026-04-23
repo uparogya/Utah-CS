@@ -1,11 +1,10 @@
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Typography } from "@mui/material";
-import { FC, useContext, useEffect, useState, useMemo } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Store from "../Interface/Store2";
 import { DataContext } from "../App2"; 
 import { observer } from "mobx-react-lite";
 import styled from "@emotion/styled";
 import { format } from "d3-format";
-import { ColorPalette } from "../Preset/Constants2";
 import AttributeChart from "../Components/CellComponents/AttributeChart2";
 
 const StateTableCell = styled(TableCell)({
@@ -29,17 +28,13 @@ const initGroup = (keys: string[]): StatGroup => {
 const raceKeys = ['white', 'hispanic', 'asian', 'black', 'native', 'pacific', 'twoOrMore'];
 const specKeys = ['ecoDis', 'disability', 'engLearner'];
 
-const StateTable: FC = () => {
-    const store = useContext(Store);
-    const { statePopData, stateCSData, courseData } = useContext(DataContext);
+interface StateTableProps {
+    categoryColor: string;
+}
 
-    const categoryColor = useMemo(() => {
-        if (!courseData?.byCategory) return '#000';
-        const categories = Object.keys(courseData.byCategory).sort();
-        const index = categories.indexOf(store.courseCategory);
-        if (index >= 0) return ColorPalette[index % ColorPalette.length];
-        return '#000'; 
-    }, [courseData, store.courseCategory]);
+const StateTable: FC<StateTableProps> = ({ categoryColor }) => {
+    const store = useContext(Store);
+    const { statePopData, stateCSData } = useContext(DataContext);
 
     const [popStats, setPopStats] = useState({
         total: 0,
@@ -103,19 +98,32 @@ const StateTable: FC = () => {
 
     useEffect(() => {
         const currentYearRows = stateCSData[store.schoolYearShowing] || [];
+
         let total = 0, mTotal = 0, fTotal = 0;
         const race = initGroup(raceKeys);
         const special = initGroup(specKeys);
 
         currentYearRows.forEach((row: any) => {
-            const category = String(row[2] || '').trim();
+            const categoryFromRow = String(row[2] || '').trim();
             const genderLabel = String(row[3] || '').trim();
-            if (store.courseCategory !== 'All' && category !== store.courseCategory) return;
+
+            let shouldInclude = false;
+
+            if (store.courseCategory === 'CS Total' || store.courseCategory === 'All') {
+                shouldInclude = true;
+            } else if (store.courseCategory === 'CS Foundational') {
+                shouldInclude = categoryFromRow !== 'CS-Related';
+            } else {
+                shouldInclude = categoryFromRow === store.courseCategory;
+            }
+
+            if (!shouldInclude) return; 
 
             const processBlock = (startIndex: number) => {
                 const val = Number(row[startIndex]) || 0;
                 if (val === 0) return;
                 total += val;
+                
                 const isFem = genderLabel === 'Girls';
                 const isMale = genderLabel === 'Boys';
                 if (isFem) fTotal += val;
@@ -136,7 +144,9 @@ const StateTable: FC = () => {
 
                 addStat('native', 1); addStat('asian', 2); addStat('black', 3);
                 addStat('hispanic', 4); addStat('pacific', 5); addStat('twoOrMore', 6);
-                addStat('white', 7); addSpec('disability', 8); addSpec('ecoDis', 10);
+                addStat('white', 7); 
+                addSpec('disability', 8); 
+                addSpec('ecoDis', 10);
                 addSpec('engLearner', 11);
             };
 
@@ -193,7 +203,7 @@ const StateTable: FC = () => {
                                 borderBottom: `2px solid ${categoryColor}`,
                                 display: 'inline-block'
                             }}>
-                                {store.courseCategory === 'All' ? 'All CS' : store.courseCategory}
+                                {store.courseCategory === 'All' ? 'CS Total' : store.courseCategory}
                             </div>
                             <Typography variant="caption" display="block" color="textSecondary" sx={{ mt: 0.5 }}>
                                 ({store.courseLevel === 'All' ? 'All Levels' : store.courseLevel})

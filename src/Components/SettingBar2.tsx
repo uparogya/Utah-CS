@@ -1,7 +1,8 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import Store from "../Interface/Store2";
-import { Grid, FormControl, Select, MenuItem, SelectChangeEvent, InputLabel } from "@mui/material";
+import { Grid, FormControl, Select, MenuItem, SelectChangeEvent, InputLabel, Divider, FormHelperText, Box } from "@mui/material";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { PossibleSchoolYears } from "../Preset/Constants2";
 import { DataContext } from "../App2";
 
@@ -25,15 +26,29 @@ const SettingBar: FC = () => {
         store.updateCourseLevel(e.target.value);
     };
 
-    const availableCategories = courseData?.byCategory 
-        ? Object.keys(courseData.byCategory).sort() 
-        : [];
+    const fromSheet = useMemo(() => {
+        return courseData?.byCategory 
+            ? Object.keys(courseData.byCategory).sort() 
+            : [];
+    }, [courseData]);
+    
+    const availableCategories = useMemo(() => {
+        return ["CS Total", "CS Foundational", ...fromSheet];
+    }, [fromSheet]);
+
+    const getCategoryDefinition = (cat: string) => {
+        if (cat === "CS Total") return "All course categories, including CS-Related.";
+        if (cat === "CS Foundational") return "All course categories, excluding CS-Related.";
+        return null;
+    };
+
+    const selectedDef = getCategoryDefinition(store.courseCategory);
 
     return (
         <Grid 
             container 
             spacing={2} 
-            alignItems="center" 
+            alignItems="flex-start"
             justifyContent="center" 
             sx={{ marginTop: '10px', paddingBottom: '10px' }}
         >
@@ -48,12 +63,28 @@ const SettingBar: FC = () => {
                         onChange={handleCategoryChange}
                         label="Course Category"
                     >
-                        {availableCategories.map((cat) => (
-                            <MenuItem key={`${cat}-mi`} value={cat}>
-                                {cat}
-                            </MenuItem>
-                        ))}
+                        {availableCategories.map((cat) => {
+                            const isFirstSheetItem = fromSheet.length > 0 && cat === fromSheet[0];
+                            const isManual = cat === "CS Total" || cat === "CS Foundational";
+
+                            return [
+                                isFirstSheetItem && <Divider key="cat-divider" sx={{ my: 1 }} />,
+                                
+                                <MenuItem key={`${cat}-mi`} value={cat}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        {cat}
+                                        {isManual && <InfoOutlinedIcon sx={{ fontSize: '1rem', color: '#94a3b8' }} />}
+                                    </Box>
+                                </MenuItem>
+                            ];
+                        })}
                     </Select>
+                    
+                    {selectedDef && (
+                        <FormHelperText sx={{ color: '#003789', fontWeight: 400 }}>
+                            {selectedDef}
+                        </FormHelperText>
+                    )}
                 </FormControl>
 
                 <FormControl variant="outlined" size="small" sx={{ minWidth: 120 }}>

@@ -7,11 +7,18 @@ export class AppStore {
     courseCategory: string;
     courseLevel: string;
 
+    selectedDistricts: string[];
+    hoveredDistrict: string | null;
+
     constructor() {
         this.schoolYearShowing = '2024-25';
         this.showPercentage = false;
-        this.courseCategory = 'Core CS';
+        this.courseCategory = 'CS Total';
         this.courseLevel = 'All';
+
+        this.selectedDistricts = [];
+        this.hoveredDistrict = null;
+
         makeAutoObservable(this);
     }
 
@@ -29,6 +36,22 @@ export class AppStore {
 
     updateCourseLevel(newLevel: string) {
         this.courseLevel = newLevel;
+    }
+
+    setHoveredDistrict(districtName: string | null) {
+        this.hoveredDistrict = districtName;
+    }
+
+    setSelectedDistricts(districts: string[]) {
+        this.selectedDistricts = districts;
+    }
+
+    updateSelectedDistrict(districtName: string) {
+        if (this.selectedDistricts.includes(districtName)) {
+            this.selectedDistricts = this.selectedDistricts.filter(d => d !== districtName);
+        } else {
+            this.selectedDistricts.push(districtName);
+        }
     }
 }
 
